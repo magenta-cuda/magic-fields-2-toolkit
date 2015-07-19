@@ -611,21 +611,24 @@ EOD
         # N.B. requires jQuery UI
 
         $mt_show_tabs = function( $atts, $macro ) {
+            static $tabs_id = 0;
+            ++$tabs_id;
             error_log( 'mt_show_tabs():$macro=' . $macro );
             static $tab_id = 0;
             $first_tab_id = $tab_id;
             $titles = [ ];
-            $macro = preg_replace_callback( '#[show_macro.*?title=("|\')([^\1]*)\1.*?[/show_macro]#',
+            $macro = preg_replace_callback( '#\[show_macro.*?title=("|\')(.*?)\1.*?\[/show_macro]#',
                 function( $matches ) use ( &$tab_id, &$titles ) {
-                    error_log( "$mt_show_tabs():$matches=" . print_r( $matches, true ) );
+                    error_log( '$mt_show_tabs():$matches=' . print_r( $matches, true ) );
                     $titles[] = $matches[2];
                     return '<div id="mf2tk-tab-' . $tab_id++ . '">' . do_shortcode( $matches[0] ) . '</div>';
             }, $macro );
-            $head = '';
+            $head = '<ul>';
             for ( $i = $first_tab_id; $i < $tab_id; $i++ ) {
-                $head += "<li><a href=\"#mf2tk-tab-{$i}\">" . $titles[ $i - $first_tab_id ] . '</a></li>';
+                $head .= "<li><a href=\"#mf2tk-tab-{$i}\">" . $titles[ $i - $first_tab_id ] . '</a></li>';
             }
-            return $head . $macro;
+            $head .= '</ul>';
+            return "<div id=\"mf2tk-tabs-{$tabs_id}\">" . $head . $macro . '</div>';
         };
        
         if ( !empty( $options[ 'mt_show_tabs' ] ) ) {

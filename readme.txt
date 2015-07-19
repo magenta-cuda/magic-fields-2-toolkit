@@ -73,7 +73,6 @@ Version 0.4.6 has a new default content macro for sortable tables. However, the 
 
 == Changelog ==
 = 1.1 =
-* Fixes for WordPress 4.3 beta
 * Added a mt_show_tabs shortcode for displaying a list of [show_macro] shortcodes in jQuery UI tabs
 * mt_show_gallery shortcode for alt_images fields now support mouse-over popups and clickable links
 
@@ -376,6 +375,5 @@ added fields for embed, audio and video
 * Some code rewritten to improve software quality.
 
 = 1.1 =
-* Fixes for WordPress 4.3 beta
 * Added a mt_show_tabs shortcode for displaying a list of [show_macro] shortcodes in jQuery UI tabs
 * mt_show_gallery shortcode for alt_images fields now support mouse-over popups and clickable links
