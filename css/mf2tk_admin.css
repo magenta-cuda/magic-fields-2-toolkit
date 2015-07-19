@@ -1,0 +1,257 @@
+div.scpbcfw-admin-search-fields-help,div.scpbcfw-admin-search-fields-display-button{
+    background-color:#f0f0f0;
+    width:4em;
+    float:right;
+    border:2px solid black;
+    border-radius:7px;
+    text-align:center;
+    margin:0px;
+}
+
+div.scpbcfw-admin-search-fields-help:hover,div.scpbcfw-admin-search-fields-display-button:hover{
+    background-color:white;
+}
+
+h4.scpbcfw-admin-search-fields-title{
+    display:inline;
+}
+
+div.scpbcfw-admin-search-fields{
+    padding:5px;
+    border:2px solid gray;
+    border-radius:7px;
+    margin:5px 0px;
+}
+
+div.scpbcfw-admin-search-fields-name{
+    font-size:16px;
+    font-weight:bold;
+    width:66%;
+    float:left;
+    border:2px solid transparent;
+    text-align:left;
+    margin:0px;
+}
+
+div.scpbcfw-admin-search-fields-options-container{
+    padding:5px;
+    border:2px solid gray;
+    border-radius:7px;
+    margin:5px 0px;
+}
+
+div.scpbcfw-admin-search-fields-option{
+    padding:10px;
+    border:1px solid gray;
+    margin:5px;
+}
+
+input.scpbcfw-admin-search-fields-option-checkbox{
+    float:right;
+    margin-top:5px;
+    margin-left:5px;
+}
+
+input.scpbcfw-admin-search-fields-option-number{
+    float:right;
+    text-align:right;
+}
+
+textarea.scpbcfw-admin-search-fields-option-textarea{
+    width:90%;
+}
+
+body.settings_page_magic-fields-2-toolkit-page table.form-table{
+    width:auto;
+    border-collapse:collapse;
+}
+
+body.settings_page_magic-fields-2-toolkit-page table.form-table,
+body.settings_page_magic-fields-2-toolkit-page table.form-table th,
+body.settings_page_magic-fields-2-toolkit-page table.form-table td{
+    border:2px solid black;
+    background-color:LightGray;
+}
+
+body.settings_page_magic-fields-2-toolkit-page table.form-table th,
+body.settings_page_magic-fields-2-toolkit-page table.form-table td{
+    padding:5px 20px;
+}
+
+body.settings_page_magic-fields-2-toolkit-page table.form-table th{
+    width:300px;
+    text-align:right;
+}
+
+body.settings_page_magic-fields-2-toolkit-page table.form-table td{
+    width:50px;
+}
+
+div.mf2tk-field-input-main,
+div.mf2tk-field-input-optional{
+    border:2px solid black;
+    padding:5px 20px;
+    margin:10px 50px;
+}
+
+div.mf2tk-field-input-main  h6,
+div.mf2tk-field-input-optional h6{
+    display:inline;
+}
+
+div.mf2tk-field-input-optional button.mf2tk-field_value_pane_button{
+    font-size:10px;
+    font-weight:bold;
+    padding:0px 5px;
+    float:right;
+    border:2px solid black;
+    border-radius:5px;
+    background-color:LightGray;
+}
+
+div.mf2tk-field-input-optional button.mf2tk-field_value_pane_button:hover{
+    background-color:white;
+}
+
+div.mf2tk-field_value_pane{
+    overflow:auto;
+}
+
+div.mf2tk-field-input-main div.mf2tk-field_value_pane input[type="text"],
+div.mf2tk-field-input-main div.mf2tk-field_value_pane input[type="url"],
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane input[type="text"],
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane input[type="url"],
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane textarea{
+    width:97%;
+}
+
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-media-library-button,
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane button.mf2tk-media-library-button,
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-test-load-button,
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane button.mf2tk-test-load-button{
+    font-size:10px;
+    font-weight:bold;
+    padding:0px 5px;
+    float:left;
+    border:2px solid black;
+    border-radius:5px;
+    background-color:LightGray;
+}
+
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-media-library-button:hover,
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane button.mf2tk-media-library-button:hover,
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-alt_media_admin-refresh:hover,
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane button.mf2tk-alt_media_admin-refresh:hover,
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-alt_embed_admin-refresh:hover,
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-test-load-button:hover,
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane button.mf2tk-test-load-button:hover{
+    background-color:white;
+}
+
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-alt_media_admin-refresh,
+div.mf2tk-field-input-optional div.mf2tk-field_value_pane button.mf2tk-alt_media_admin-refresh,
+div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-alt_embed_admin-refresh{
+    font-size:10px;
+    font-weight:bold;
+    padding:0px 5px;
+    float:right;
+    border:2px solid black;
+    border-radius:5px;
+    background-color:LightGray;
+}
+
+div.mf2tk-field-input-optional textarea.mf2tk-how-to-use{
+    display:block;
+}
+
+div.mf2tk-field-input-optional textarea.mf2tk-how-to-use{
+    display:block;
+}
+
+div.mf2tk-field-input-optional button.mf2tk-how-to-use,
+div.mf2tk-field-input-optional button.mf2tk-refresh-table-shortcode{
+    font-size:10px;
+    font-weight:bold;
+    padding:0px 5px;
+    border:2px solid black;
+    border-radius:5px;
+    background-color:LightGray;
+}
+
+div.mf2tk-field-input-optional button.mf2tk-how-to-use:hover,
+div.mf2tk-field-input-optional button.mf2tk-refresh-table-shortcode:hover{
+    background-color:white;
+}
+
+div.mf2tk-field-input-optional fieldset.mf2tk-configure{
+    border:1px solid gray;
+    padding-bottom:10px;
+    margin-bottom:10px;
+}
+
+div.mf2tk-field-input-optional label.mf2tk-configure{
+    clear:both;
+    display:inline;
+    float:none;
+}
+
+div.mf2tk-field-input-optional input.mf2tk-configure{
+    display:inline-block;
+    float:none;
+    vertical-align:text-bottom;
+    margin-right:5px;
+    margin-bottom:0;
+}
+
+div.mf2tk-field-input-optional input.mf2tk-configure[type="number"]{
+}
+
+div.mf2tk-field-input-optional input.mf2tk-configure[type="checkbox"],
+div.mf2tk-field-input-optional input.mf2tk-configure[type="radio"]{
+}
+
+div.mf2tk-field-input-optional fieldset.mf2tk-configure.mf2tk-fields span{
+    font-size:smaller;
+    margin-left:25px;
+}
+
+div.mf2tk-dragable-field-after{
+    height:2px;
+    width:16em;
+    background-color:white;
+    margin-top:3px;
+}
+
+div.mf2tk-dragable-field-after.mf2tk-hover{
+    background-color:black;
+}
+
+h3#mf2tk-edit-search-result-template-h3, button#mf2tk-edit-search-result-template-close-button{
+    margin-left:10px;
+    margin-right:10px;
+}
+
+textarea#mf2tk-search-result-template-textarea{
+    width:96%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+button#mf2tk-save-search-result-template-button,button#mf2tk-search-result-template-refresh-button{
+    background-color:#f0f0f0;
+    width:18em;
+    float:right;
+    border:2px solid black;
+    border-radius:7px;
+    text-align:center;
+    margin:0px;
+}
+
+button#mf2tk-save-search-result-template-button:hover,button#mf2tk-search-result-template-refresh-button:hover{
+    background-color:white;
+}
+
+
+button#mf2tk-save-search-result-template-button{
+    margin-top:5px;
+}
