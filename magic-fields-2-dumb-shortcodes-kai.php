@@ -628,7 +628,7 @@ EOD
                 $head .= "<li><a href=\"#mf2tk-tab-{$i}\">" . $titles[ $i - $first_tab_id ] . '</a></li>';
             }
             $head .= '</ul>';
-            return "<div id=\"mf2tk-tabs-{$tabs_id}\">" . $head . $macro . '</div>';
+            return "<div id=\"mf2tk-tabs-{$tabs_id}\" class=\"mf2tk-mt_tabs-jquery_pre_tabs\">" . $head . $macro . '</div>';
         };
        
         if ( !empty( $options[ 'mt_show_tabs' ] ) ) {
@@ -641,6 +641,7 @@ EOD
         remove_filter( 'the_content', 'wpautop' );
         add_action( 'wp_enqueue_scripts', function( ) {
             wp_enqueue_style( 'mf2tk_media', plugins_url( 'css/mf2tk_media.css', __FILE__ ) );
+            wp_enqueue_style( 'mf2tk-jquery-ui', plugins_url( 'css/mf2tk-jquery-ui.min.css', __FILE__ ) );
             # remove bottom margin from mediaelement when inside a caption container
             #wp_add_inline_style( 'wp-mediaelement',
             #    'figure.wp-caption div.mejs-container,figure.wp-caption div.wp-video,figure.wp-caption iframe{margin:0;}' );
