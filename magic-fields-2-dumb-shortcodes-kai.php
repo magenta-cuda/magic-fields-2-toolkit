@@ -610,17 +610,17 @@ EOD
         # [show_macro macro="..." title="..."][/show_macro][/mt_show_tabs]
         # N.B. requires jQuery UI
 
-        $mt_show_tabs = function( $atts, $macro ) {
+        $mt_show_tabs = function( $atts, $macro ) use ( $options ) {
             static $tabs_id = 0;
             ++$tabs_id;
             error_log( 'mt_show_tabs():$macro=' . $macro );
             static $tab_id = 0;
             $first_tab_id = $tab_id;
             $titles = [ ];
-            $macro = preg_replace_callback( '#\[show_macro.*?title=("|\')(.*?)\1.*?\[/show_macro]#',
+            $macro = preg_replace_callback( "#\\[({$options['show_macro']}|{$options['show_macro_alias']}).*?title=(\"|')(.*?)\\2.*?\\[/\\1]#",
                 function( $matches ) use ( &$tab_id, &$titles ) {
                     error_log( '$mt_show_tabs():$matches=' . print_r( $matches, true ) );
-                    $titles[] = $matches[2];
+                    $titles[] = $matches[3];
                     return '<div id="mf2tk-tab-' . $tab_id++ . '">' . do_shortcode( $matches[0] ) . '</div>';
             }, $macro );
             $head = '<ul>';
