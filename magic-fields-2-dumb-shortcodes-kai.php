@@ -31,8 +31,14 @@ include_once( dirname( __FILE__ ) . '/magic-fields-2-post-filter.php' );
 
 class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
     use Magic_Fields_2_Toolkit_Post_Filter;
-	public static $recursion_separator = '>';
+    
+    private static $options = NULL;
+	private static $recursion_separator = '>';
+    private static $show_custom_field = NULL;
+    
     public function __construct() {
+   
+        self::$options = $options = mf2tk\get_tags( );
         
         # wrapper for the individual values of a field
         $wrap_value = function( $value, $field, $type, $filters, $before, $after, $separator, $classes = array(),
@@ -88,7 +94,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
 		};
         
         # this implements the "[show_custom_field]" shortcode
-        $show_custom_field = function( $post_id, $the_names, $before, $after, $separator, $filter, $field_before,
+        self::$show_custom_field = $show_custom_field = function( $post_id, $the_names, $before, $after, $separator, $filter, $field_before,
             $field_after, $field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename,
 			$multi_before, $multi_after, $multi_separator, $finals, $path, $parent_ids = [ ], $atts = [ ] )
             use ( &$show_custom_field, $wrap_value, $wrap_field_value, $wrap_group_value ) {
@@ -444,201 +450,30 @@ EOD
             }
             return $content;
         };
-        
-        $options = mf2tk\get_tags( );
 
-        $show_custom_field_wrapper = function( $atts ) use ( &$show_custom_field ) {
-            global $post;
-            extract( shortcode_atts( array(
-                'field' => 'something',
-                'before' => '',
-                'after' => '',
-                'separator' => '',
-                'filter' => NULL,
-                'multi_before' => NULL,
-                'multi_after' => NULL,
-                'multi_separator' => NULL,
-                'field_before' => '',
-                'field_after' => '',
-                'field_separator' => '',
-                'field_rename' => '',
-                'group_before' => '',
-                'group_after' => '',
-                'group_separator' => '',
-                'group_rename' => '',
-                'final' => NULL,
-                'post_id' => NULL,
-                'post_before' => '',
-                'post_after' => ''
-            ), $atts ) );
-            if ( $post_id === NULL ) { $post_id = $post->ID; }
-            if ( $multi_before === NULL ) { $multi_before = $before; }
-            if ( $multi_after === NULL ) { $multi_after = $after; }
-            if ( $multi_separator === NULL ) { $multi_separator = $separator; }
-            if ( is_numeric( $post_id) ) {
-                # single numeric post id
-                $rtn = '';
-                if ( $post_before ) { $rtn .= $post_before; }
-                $rtn .= $show_custom_field( $post_id, $field, $before, $after, $separator, $filter, $field_before, $field_after,
-					$field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before,
-					$multi_after, $multi_separator, $final, '', [ ], $atts );
-                if ( $post_after ) { $rtn .= $post_after; }
-                return $rtn;
-            } else {
-                # handle multiple posts
-                # first get list of post ids
-                $post_ids = Magic_Fields_2_Toolkit_Dumb_Shortcodes::get_posts_with_spec( $post_id );
-                $rtn = '';
-                foreach ( $post_ids as $post_id ) {
-                    # do each post accumulating the output in $rtn
-                    if ( $post_before ) { $rtn .= $post_before; }
-                    $rtn .= $show_custom_field( $post_id, $field, $before, $after, $separator, $filter, $field_before, $field_after,
-                        $field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before,
-                        $multi_after, $multi_separator, $final, '', [ ], $atts );
-                    if ( $post_after ) { $rtn .= $post_after; }
-                }
-                return $rtn;
-            }
-        };
-        
         if ( !empty( $options[ 'show_custom_field' ] ) ) {
-            add_shortcode( $options[ 'show_custom_field' ], $show_custom_field_wrapper );
+            add_shortcode( $options[ 'show_custom_field' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::show_custom_field_wrapper' );
         }
         if ( !empty( $options[ 'show_custom_field_alias' ] ) ) {
-            add_shortcode( $options[ 'show_custom_field_alias' ], $show_custom_field_wrapper );
+            add_shortcode( $options[ 'show_custom_field_alias' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::show_custom_field_wrapper' );
         }
-        
-        # The shortcode "mt_show_gallery" displays the selected images in a standard WordPress gallery.
-        # Since, the standard WordPress gallery only works with images in its Media Library only images
-        # in fields of type image_media_field and alt_image_field are selected. Images in fields of type
-        # image_field are ignored since they are stored in a proprietary non-WordPress standard way.
-        # The filter tk_filter_by_type__image_media__alt_image() is used to accomplish this.
-        
-        $mt_show_gallery = function( $atts ) use ( &$show_custom_field ) {
-            global $post;
-            extract( shortcode_atts( [
-                'field'   => 'something',
-                'post_id' => NULL,
-                'filter'  => NULL,
-                'final'   => NULL,
-                'mode'    => 'wordpress'
-            ], $atts ) );
-            if ( $post_id === NULL ) {
-                $post_id = $post->ID;
-            }
-            if ( strtolower( $mode ) === 'wordpress' ) {
-                if ( is_numeric( $post_id) ) {
-                    # single numeric post id
-                    $rtn = $show_custom_field( $post_id, $field, '', '', ',',
-                        'tk_use_raw_value;tk_filter_by_type__image_media__alt_image',
-                        '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts );
-                } else {
-                    # handle multiple posts
-                    # first get list of post ids
-                    $post_ids = Magic_Fields_2_Toolkit_Dumb_Shortcodes::get_posts_with_spec( $post_id );
-                    $rtn = '';
-                    foreach ( $post_ids as $post_id ) {
-                        # do each post accumulating the output in $rtn
-                        $rtn .= ',' . $show_custom_field( $post_id, $field, '', '', ',',
-                            'tk_use_raw_value;tk_filter_by_type__image_media__alt_image',
-                            '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts );
-                    }
-                }
-                $upload_base_url = wp_upload_dir()[ 'baseurl' ];
-                $upload_base_url_length = strlen( $upload_base_url );
-                $rtn = array_filter( array_map( function( $v ) use ( $upload_base_url, $upload_base_url_length ) {
-                    global $wpdb;
-                    if ( is_numeric( $v ) ) {
-                        return $v;
-                    }
-                    if ( strpos( $v, $upload_base_url ) !== 0 ) {
-                        return FALSE;
-                    }
-                    $path = substr( $v, $upload_base_url_length + 1 );
-                    $post_id = $wpdb->get_col( $wpdb->prepare(
-                        "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value = %s", $path
-                    ) );
-                    if ( $post_id ) {
-                        return $post_id[0];
-                    }
-                    return FALSE;
-                }, explode( ',', $rtn ) ) );
-                $rtn = implode( ',', $rtn );
-                $gallery = "[gallery ids=\"$rtn\""; 
-                $atts = array_diff_key( $atts, [ 'field' => TRUE, 'post_id' => TRUE, 'filter' => TRUE, 'final' => TRUE ] );
-                foreach ( $atts as $key => $value ) {
-                    $gallery .= " $key=\"$value\"";
-                }
-                $gallery .= ']';
-                return do_shortcode( $gallery );
-            } else if ( strtolower( $mode ) === 'toolkit' ) {
-                # In 'toolkit' mode display the selected alt_image fields with uniform small size and float left alignment.
-                # The mouse-over popup and clickable link options are also applied.
-                $atts[ 'align' ] = 'alignleft';
-                if ( !array_key_exists( 'width', $atts ) ) {
-                    $atts[ 'width' ] = '120';
-                }
-                if ( is_numeric( $post_id) ) {
-                    # single numeric post id
-                    return $show_custom_field( $post_id, $field, '', '', '', 'tk_filter_by_type__alt_image;url_to_media',
-                        '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts ) . '<br style="clear:both;">';
-                } else {
-                    # handle multiple posts
-                    # first get list of post ids
-                    $post_ids = Magic_Fields_2_Toolkit_Dumb_Shortcodes::get_posts_with_spec( $post_id );
-                    $rtn = '';
-                    foreach ( $post_ids as $post_id ) {
-                        # do each post accumulating the output in $rtn
-                        $rtn .= $show_custom_field( $post_id, $field, '', '', '', 'tk_filter_by_type__alt_image;url_to_media',
-                            '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts );
-                    }
-                    return $rtn . '<br style="clear:both;">';
-                }
-                
-            }
-        };
         
         if ( !empty( $options[ 'mt_show_gallery' ] ) ) {
-            add_shortcode( $options[ 'mt_show_gallery' ], $mt_show_gallery );
+            add_shortcode( $options[ 'mt_show_gallery' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_gallery' );
         }
         if ( !empty( $options[ 'mt_show_gallery_alias' ] ) ) {
-            add_shortcode( $options[ 'mt_show_gallery_alias' ], $mt_show_gallery );
+            add_shortcode( $options[ 'mt_show_gallery_alias' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_gallery' );
         }
 
-        # The [mt_show_tabs] shows each enclosed [show_macro] in its own tab. This shortcode has the form:
-        # [mt_show_tabs class="..."][show_macro macro="..." title="..."][/show_macro]
-        # [show_macro macro="..." title="..."][/show_macro][/mt_show_tabs]
-        # N.B. requires jQuery UI
-
-        $mt_show_tabs = function( $atts, $macro ) use ( $options ) {
-            static $tabs_id = 0;
-            ++$tabs_id;
-            error_log( 'mt_show_tabs():$macro=' . $macro );
-            static $tab_id = 0;
-            $first_tab_id = $tab_id;
-            $titles = [ ];
-            $macro = preg_replace_callback( "#\\[({$options['show_macro']}|{$options['show_macro_alias']}).*?title=(\"|')(.*?)\\2.*?\\[/\\1]#",
-                function( $matches ) use ( &$tab_id, &$titles ) {
-                    error_log( '$mt_show_tabs():$matches=' . print_r( $matches, true ) );
-                    $titles[] = $matches[3];
-                    return '<div id="mf2tk-tab-' . $tab_id++ . '">' . do_shortcode( $matches[0] ) . '</div>';
-            }, $macro );
-            $head = '<ul>';
-            for ( $i = $first_tab_id; $i < $tab_id; $i++ ) {
-                $head .= "<li><a href=\"#mf2tk-tab-{$i}\">" . $titles[ $i - $first_tab_id ] . '</a></li>';
-            }
-            $head .= '</ul>';
-            return "<div id=\"mf2tk-tabs-{$tabs_id}\" class=\"mf2tk-mt_tabs-jquery_pre_tabs\">" . $head . $macro . '</div>';
-        };
-       
         if ( !empty( $options[ 'mt_show_tabs' ] ) ) {
-            add_shortcode( $options[ 'mt_show_tabs' ], $mt_show_tabs );
+            add_shortcode( $options[ 'mt_show_tabs' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_tabs' );
         }
         if ( !empty( $options[ 'mt_show_tabs_alias' ] ) ) {
-            add_shortcode( $options[ 'mt_show_tabs_alias' ], $mt_show_tabs );
+            add_shortcode( $options[ 'mt_show_tabs_alias' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_tabs' );
         }
 
         remove_filter( 'the_content', 'wpautop' );
+        
         add_action( 'wp_enqueue_scripts', function( ) {
             wp_enqueue_style( 'mf2tk_media', plugins_url( 'css/mf2tk_media.css', __FILE__ ) );
             wp_enqueue_style( 'mf2tk-jquery-ui', plugins_url( 'css/mf2tk-jquery-ui.min.css', __FILE__ ) );
@@ -648,8 +483,183 @@ EOD
             wp_enqueue_script( 'mf2tk_alt_media', plugins_url( 'js/mf2tk_alt_media.js', __FILE__ ), [ 'jquery' ] );
             wp_enqueue_script( 'jquery-ui-tabs' );
         } );
+
+    }   #public function __construct() {
+        
+    public static function show_custom_field_wrapper( $atts ) {
+        global $post;
+        extract( shortcode_atts( array(
+            'field' => 'something',
+            'before' => '',
+            'after' => '',
+            'separator' => '',
+            'filter' => NULL,
+            'multi_before' => NULL,
+            'multi_after' => NULL,
+            'multi_separator' => NULL,
+            'field_before' => '',
+            'field_after' => '',
+            'field_separator' => '',
+            'field_rename' => '',
+            'group_before' => '',
+            'group_after' => '',
+            'group_separator' => '',
+            'group_rename' => '',
+            'final' => NULL,
+            'post_id' => NULL,
+            'post_before' => '',
+            'post_after' => ''
+        ), $atts ) );
+        $show_custom_field = self::$show_custom_field;
+        if ( $post_id === NULL ) { $post_id = $post->ID; }
+        if ( $multi_before === NULL ) { $multi_before = $before; }
+        if ( $multi_after === NULL ) { $multi_after = $after; }
+        if ( $multi_separator === NULL ) { $multi_separator = $separator; }
+        if ( is_numeric( $post_id) ) {
+            # single numeric post id
+            $rtn = '';
+            if ( $post_before ) { $rtn .= $post_before; }
+            $rtn .= $show_custom_field( $post_id, $field, $before, $after, $separator, $filter, $field_before, $field_after,
+                $field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before,
+                $multi_after, $multi_separator, $final, '', [ ], $atts );
+            if ( $post_after ) { $rtn .= $post_after; }
+            return $rtn;
+        } else {
+            # handle multiple posts
+            # first get list of post ids
+            $post_ids = Magic_Fields_2_Toolkit_Dumb_Shortcodes::get_posts_with_spec( $post_id );
+            $rtn = '';
+            foreach ( $post_ids as $post_id ) {
+                # do each post accumulating the output in $rtn
+                if ( $post_before ) { $rtn .= $post_before; }
+                $rtn .= $show_custom_field( $post_id, $field, $before, $after, $separator, $filter, $field_before, $field_after,
+                    $field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before,
+                    $multi_after, $multi_separator, $final, '', [ ], $atts );
+                if ( $post_after ) { $rtn .= $post_after; }
+            }
+            return $rtn;
+        }
     }
-}   
+
+    # The shortcode [mt_gallery] displays the selected images in a standard WordPress gallery.
+    # Since, the standard WordPress gallery only works with images in its Media Library only images
+    # in fields of type image_media_field and alt_image_field are selected. Images in fields of type
+    # image_field are ignored since they are stored in a proprietary non-WordPress standard way.
+    # The filter tk_filter_by_type__image_media__alt_image() is used to accomplish this.
+    
+    public static function mt_show_gallery( $atts ) {
+        global $post;
+        extract( shortcode_atts( [
+            'field'   => 'something',
+            'post_id' => NULL,
+            'filter'  => NULL,
+            'final'   => NULL,
+            'mode'    => 'wordpress'
+        ], $atts ) );
+        if ( $post_id === NULL ) {
+            $post_id = $post->ID;
+        }
+        $show_custom_field = self::$show_custom_field;
+        if ( strtolower( $mode ) === 'wordpress' ) {
+            if ( is_numeric( $post_id) ) {
+                # single numeric post id
+                $rtn = $show_custom_field( $post_id, $field, '', '', ',',
+                    'tk_use_raw_value;tk_filter_by_type__image_media__alt_image',
+                    '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts );
+            } else {
+                # handle multiple posts
+                # first get list of post ids
+                $post_ids = Magic_Fields_2_Toolkit_Dumb_Shortcodes::get_posts_with_spec( $post_id );
+                $rtn = '';
+                foreach ( $post_ids as $post_id ) {
+                    # do each post accumulating the output in $rtn
+                    $rtn .= ',' . $show_custom_field( $post_id, $field, '', '', ',',
+                        'tk_use_raw_value;tk_filter_by_type__image_media__alt_image',
+                        '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts );
+                }
+            }
+            $upload_base_url = wp_upload_dir()[ 'baseurl' ];
+            $upload_base_url_length = strlen( $upload_base_url );
+            $rtn = implode( ',', array_filter( array_map( function( $v ) use ( $upload_base_url, $upload_base_url_length ) {
+                global $wpdb;
+                if ( is_numeric( $v ) ) {
+                    return $v;
+                }
+                if ( strpos( $v, $upload_base_url ) !== 0 ) {
+                    return FALSE;
+                }
+                $path = substr( $v, $upload_base_url_length + 1 );
+                $post_id = $wpdb->get_col( $wpdb->prepare(
+                    "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value = %s", $path
+                ) );
+                if ( $post_id ) {
+                    return $post_id[0];
+                }
+                return FALSE;
+            }, explode( ',', $rtn ) ) ) );
+            $gallery = "[gallery ids=\"$rtn\""; 
+            $atts = array_diff_key( $atts, [ 'field' => TRUE, 'post_id' => TRUE, 'filter' => TRUE, 'final' => TRUE ] );
+            foreach ( $atts as $key => $value ) {
+                $gallery .= " $key=\"$value\"";
+            }
+            $gallery .= ']';
+            return do_shortcode( $gallery );
+        } else if ( strtolower( $mode ) === 'toolkit' ) {
+            # In 'toolkit' mode display the selected alt_image fields with uniform small size and float left alignment.
+            # The mouse-over popup and clickable link options are also applied.
+            $atts[ 'align' ] = 'alignleft';
+            if ( !array_key_exists( 'width', $atts ) ) {
+                $atts[ 'width' ] = '120';
+            }
+            if ( is_numeric( $post_id) ) {
+                # single numeric post id
+                return $show_custom_field( $post_id, $field, '', '', '', 'tk_filter_by_type__alt_image;url_to_media',
+                    '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts ) . '<br style="clear:both;">';
+            } else {
+                # handle multiple posts
+                # first get list of post ids
+                $post_ids = Magic_Fields_2_Toolkit_Dumb_Shortcodes::get_posts_with_spec( $post_id );
+                $rtn = '';
+                foreach ( $post_ids as $post_id ) {
+                    # do each post accumulating the output in $rtn
+                    $rtn .= $show_custom_field( $post_id, $field, '', '', '', 'tk_filter_by_type__alt_image;url_to_media',
+                        '', '', ',', '', '', '', '', '', NULL, NULL, NULL, NULL, '', [ ], $atts );
+                }
+                return $rtn . '<br style="clear:both;">';
+            }
+        }
+    }   # public static function mt_show_gallery( $atts ) {
+
+    # The shortcode [mt_tabs] shows each enclosed [mt_template] shortcode in its own tab. This shortcode has the form:
+    # [mt_tabs class="..."]
+    # [mt_template macro="..." title="..."][/mt_template]
+    # [mt_template macro="..." title="..."][/mt_template]
+    # [/mt_tabs]
+    # N.B. requires jQuery UI
+
+    public static function mt_show_tabs( $atts, $macro ) {
+        static $tabs_id = 0;
+        ++$tabs_id;
+        error_log( 'mt_show_tabs():$macro=' . $macro );
+        static $tab_id = 0;
+        $first_tab_id = $tab_id;
+        $titles = [ ];
+        $options = self::$options;
+        $macro = preg_replace_callback( "#\\[({$options['show_macro']}|{$options['show_macro_alias']}).*?title=(\"|')(.*?)\\2.*?\\[/\\1]#",
+            function( $matches ) use ( &$tab_id, &$titles ) {
+                error_log( '$mt_show_tabs():$matches=' . print_r( $matches, true ) );
+                $titles[] = $matches[3];
+                return '<div id="mf2tk-tab-' . $tab_id++ . '">' . do_shortcode( $matches[0] ) . '</div>';
+        }, $macro );
+        $head = '<ul>';
+        for ( $i = $first_tab_id; $i < $tab_id; $i++ ) {
+            $head .= "<li><a href=\"#mf2tk-tab-{$i}\">" . $titles[ $i - $first_tab_id ] . '</a></li>';
+        }
+        $head .= '</ul>';
+        return "<div id=\"mf2tk-tabs-{$tabs_id}\" class=\"mf2tk-mt_tabs-jquery_pre_tabs\">" . $head . $macro . '</div>';
+    }   # public static function mt_show_tabs( $atts, $macro ) {
+
+}   # class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
 
 new Magic_Fields_2_Toolkit_Dumb_Shortcodes();
 
