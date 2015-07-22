@@ -84,19 +84,21 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                 # filters should now be in the namespace mf2tk but for compatibility with older code also check
                 # the global namespace. N.B. global filters are now deprecated
                 if ( ( $mf2tk = function_exists( 'mf2tk\\' . $filter ) ) || function_exists( $filter ) ) {
-                    $value = call_user_func( ( $mf2tk ? 'mf2tk\\' : '' ) . $filter, $value, $field, $type, $classes,
-                        $group_index, $field_index, $post_id, $atts );
+                    $value = call_user_func( ( $mf2tk ? 'mf2tk\\' : '' ) . $filter,
+                        $value, $field, $type, $classes, $group_index, $field_index, $post_id, $atts );
                 } else if ( preg_match( '/(\w+?__)(\w+)/', $filter, $matches ) ) {
                     # this is filter with an __ suffix; the prefix is the name of the function that implements the
                     # filter; the suffix is passed as the first argument to the function
                     if ( ( $mf2tk = function_exists( 'mf2tk\\' . $matches[1] ) ) || function_exists( $matches[1] ) ) {
-                        $value = call_user_func( ( $mf2tk ? 'mf2tk\\' : '' ) . $matches[1], $matches[2], $value, $field,
-                            $type, $classes, $group_index, $field_index, $post_id, $atts );
+                        $value = call_user_func( ( $mf2tk ? 'mf2tk\\' : '' ) . $matches[1],
+                            $matches[2], $value, $field, $type, $classes, $group_index, $field_index, $post_id, $atts );
                     }
                 }
             }
         }
-        if ( $value === NULL || $value === '' || $value === FALSE ) { return ''; }
+        if ( $value === NULL || $value === '' || $value === FALSE ) {
+            return '';
+        }
         return $before . $value . $after . $separator;
     }   # public static function wrap_value( $value, $field, $type, $filters, $before, $after, $separator, $classes = array(),
         
@@ -109,26 +111,26 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
             $label = trim( $path . self::$recursion_separator . $label, self::$recursion_separator );
         }
         $label = str_replace( ' ', '&nbsp;', $label );
-        return str_replace( '<!--$class-->', $class, str_replace( '<!--$Field-->', $label,
-            str_replace( '<!--$field-->', $field, $before ) ) ). $value
-            . str_replace( '<!--$class-->', $class, str_replace( '<!--$Field-->', $label,
-            str_replace( '<!--$field-->', $field, $after ) ) ) . $separator;
+        # do text substitution for the embedded comments '<!--$class-->', '<!--$field-->' and '<!--$Field-->' in the $before and $after text
+        return str_replace( '<!--$class-->', $class, str_replace( '<!--$Field-->', $label, str_replace( '<!--$field-->', $field, $before ) ) ). $value
+            . str_replace( '<!--$class-->', $class, str_replace( '<!--$Field-->', $label, str_replace( '<!--$field-->', $field, $after ) ) ) . $separator;
     }   # public static function wrap_field_value( $value, $before, $after, $separator, $label, $field, $class, $field_rename, $path ) {
 
     # wrapper for a group of fields
 
     public static function wrap_group_value( $value, $before, $after, $separator, $label, $group, $index, $class, $rename, $path ) {
-        if ( !$label ) { $label = $group; }
+        if ( !$label ) {
+            $label = $group;
+        }
         if ( function_exists( $rename ) ) {
             list( $label, $group ) = call_user_func( $rename, $label, $group, $path );
         } else {
             $label = trim( $path . self::$recursion_separator . $label, self::$recursion_separator );
         }
         $label = str_replace( ' ', '&nbsp;', $label );
-        return str_replace( '<!--$class-->', $class, str_replace( '<!--$Group-->', $label,
-            str_replace( '<!--$group-->', $group, $before ) ) ). $value
-            . str_replace( '<!--$class-->', $class, str_replace( '<!--$Group-->', $label,
-            str_replace( '<!--$group-->', $group, $after ) ) ) . $separator;
+        # do text substitution for the embedded comments '<!--$class-->', '<!--$group-->' and '<!--$Group-->' in the $before and $after text
+        return str_replace( '<!--$class-->', $class, str_replace( '<!--$Group-->', $label, str_replace( '<!--$group-->', $group, $before ) ) ). $value
+            . str_replace( '<!--$class-->', $class, str_replace( '<!--$Group-->', $label, str_replace( '<!--$group-->', $group, $after ) ) ) . $separator;
     }   # public static function wrap_group_value( $value, $before, $after, $separator, $label, $group, $index, $class, $rename, $path ) {
 
     # show_custom_field() implements the [mt_field] shortcode
@@ -139,7 +141,9 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
         global $wpdb;
         $content = '';
         $the_fields = $the_names;
-        if ( !substr_compare( $the_fields, '{', 0, 1 ) ) { $the_fields = trim( $the_fields, '{}' ); }
+        if ( !substr_compare( $the_fields, '{', 0, 1 ) ) {
+            $the_fields = trim( $the_fields, '{}' );
+        }
         # field parameter is of the form: field_specifier1;field_specifier2;field_specifier3 ...
         preg_match_all( '/(([^{};]+)(\.{[^{}]+})?)(;|$)/', $the_fields, $fields );
         $the_fields = $fields[1];
@@ -150,8 +154,8 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
             # do first path component
             # because the wordpress editor seems to insert noise spaces trim the component 
             $field = trim( $names[0] );
-            if ( !preg_match( '/((\*_\*)|([\w-]+(\*)?))(<(\*|[\w\s]+)((,|><)(\*|\d+))?>)?(g|f)?(:((\*?-?[a-zA-Z0-9_]+),?)+)?/',
-                $field, $matches ) || $matches[0] != $field ) {
+            if ( !preg_match( '/((\*_\*)|([\w-]+(\*)?))(<(\*|[\w\s]+)((,|><)(\*|\d+))?>)?(g|f)?(:((\*?-?[a-zA-Z0-9_]+),?)+)?/', $field, $matches )
+                || $matches[0] != $field ) {
                 return '<div style="border:2px solid red;color:red;padding:5px;">'
                     . "\"$field\" is an invalid field expression for short code: show_custom_field.</div>";
             }
@@ -160,6 +164,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
             } else {
                 return '#ERROR#';
             }
+            # if no index is specified use the default 1
             if ( array_key_exists( 6, $matches ) ) {
                 $the_group_index = $matches[6];
             } else {
@@ -171,41 +176,50 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                 $the_field_index = 1;
             }
             $fields_by_group = ( array_key_exists( 10, $matches ) && $matches[10] == 'f' ) ? FALSE : TRUE;
-            $the_group_excludes = array();
-            $the_group_classes = array();
-            $the_excludes = array();
-            $the_classes = array();
+            # extract the field filter, field exclusion filter, group filter and group exclusion filter
+            $the_group_excludes = [ ];
+            $the_group_classes = [ ];
+            $the_excludes = [ ];
+            $the_classes = [ ];
             if ( array_key_exists( 11, $matches ) ) {
                 $raw_classes = explode( ',', substr( $matches[11], 1 ) );
                 foreach ( $raw_classes as $raw_class ) {
                     if (        substr_compare( $raw_class, '*-', 0, 2 ) === 0 ) {
-                        $the_group_excludes[] = substr( $raw_class, 2 );
+                        $the_group_excludes[ ] = substr( $raw_class, 2 );
                     } else if ( substr_compare( $raw_class, '*',  0, 1 ) === 0 ) {
-                        $the_group_classes[]  = substr( $raw_class, 1 );
+                        $the_group_classes[ ]  = substr( $raw_class, 1 );
                     } else if ( substr_compare( $raw_class, '-',  0, 1 ) === 0 ) {
-                        $the_excludes[]       = substr( $raw_class, 1 );
+                        $the_excludes[ ]       = substr( $raw_class, 1 );
                     } else {
-                        $the_classes[]        = $raw_class;
+                        $the_classes[ ]        = $raw_class;
                     }
                 }
             } else {
                 $the_classes = NULL;
             }
+            # extract the group name
             $all_group_names = $wpdb->get_col( $wpdb->prepare(
                 'SELECT name FROM ' . MF_TABLE_CUSTOM_GROUPS . ' WHERE post_type = %s', get_post_type( $post_id ) ) );
-            if ( $the_field == '*_*' ) {
+            if ( substr( $the_field, 0, 2 ) === '*_' ) {
+                # group name is the wild card so use all group names
                 $group_names = $all_group_names;
             } else if ( substr_compare( $the_field, '__default_', 0, 10 ) === 0 ) {
-                $group_names = array( '__default' );
+                # default group explicitly specified
+                $group_names = [ '__default' ];
             } else {
-                $group_names = explode( '_', $the_field, 2 );   # group names should not use underscores
-                if ( count( $group_names ) == 2 ) {
+                # the group name should be delimited by an underscore
+                # N.B. group names should not have embedded underscores - this is a bad design deficiency in Magic Fields 2               
+                $group_names = explode( '_', $the_field, 2 );
+                if ( count( $group_names ) > 1 ) {
+                    # remove the field name from the array
                     array_pop( $group_names );
                     if ( !in_array( $group_names[0], $all_group_names ) ) {
-                        $group_names = array( '__default' );
+                        # the group name is not valid so assume the underscore was part of the field name
+                        $group_names = [ '__default' ];
                     }
-                } else { 
-                    $group_names = array( '__default' );
+                } else {
+                    # no group specified so use the default group
+                    $group_names = [ '__default' ];
                 }
             }
             $the_field0 = $the_field;
@@ -271,11 +285,12 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                     continue;
                 }
                 if ( $the_group_index === '*' ) {
-                    #$group_indices = get_order_group( key( $fields ), $post_id );
+                    # get all possible group indexes for $fields
                     $group_indices = $wpdb->get_col( $wpdb->prepare( 'SELECT DISTINCT group_count FROM '
                         . MF_TABLE_POST_META . " WHERE post_id = %d AND field_name in ( '"
                         . implode( '\', \'', array_keys( $fields ) ) . '\' ) ORDER BY group_count ASC', (int) $post_id ) );
                 } else if ( !is_numeric( $the_group_index ) ) {
+                    # this is a symbolic group index so resolve to a numeric index using get_group_index_for_key()
                     if ( function_exists( 'mf2tk\get_group_index_for_key' ) ) {
                         $group_indices = [ mf2tk\get_group_index_for_key( $the_group, $the_field, $the_group_index ) ];
                     } else {
@@ -290,6 +305,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                     $skip_field1 = FALSE;
                     $groups_value = '';
                     foreach ( $group_indices as $group_index ) {
+                        # $mf2tk_key_value is the symbolic index for this group also used as the group label
                         $mf2tk_key_value = mf2tk\get( $mf2tk_key_name, $group_index, 1, $post_id );
                         $fields_value = '';
                         # inner field loop
@@ -307,6 +323,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                             $skip_field2 = FALSE;
                             $classes = null;
                             if ( $not_magic_field ) {
+                                # these are psuedo fields (__parent, __post_title, __post_arthor), taxonomy fields and ordinary custom fields
                                 if ( !$the_classes ) {
                                     if ( $field == '__parent' ) {
                                         # handle the psuedo field __parent
@@ -314,8 +331,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                                             $parent_ids1 = $parent_ids;
                                             $parent_id = array_pop( $parent_ids1 );
                                             $label = $wpdb->get_var( $wpdb->prepare(
-                                                'SELECT name FROM ' . MF_TABLE_POSTTYPES . ' WHERE type = %s',
-                                                get_post_type( $parent_id ) ) );
+                                                'SELECT name FROM ' . MF_TABLE_POSTTYPES . ' WHERE type = %s', get_post_type( $parent_id ) ) );
                                             $field_value .= self::show_custom_field( $parent_id, $names[1], $before, $after,
                                                 $separator, $filter, $field_before, $field_after, $field_separator,
                                                 $field_rename, $group_before, $group_after, $group_separator, $group_rename,
@@ -324,14 +340,13 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                                                 . $field_separator;
                                             $recursion = TRUE;
                                         } else {
-                                            $field_value .= self::wrap_value( end( $parent_ids ), $field, 'related_type', $filter, $before,
-                                                $after, $separator );
+                                            $field_value .= self::wrap_value( end( $parent_ids ), $field, 'related_type', $filter, $before, $after,
+                                                $separator );
                                             reset( $parent_ids );
                                         }
                                     } else if ( $field == '__post_title' ) {
                                         # handle the psuedo field __post_title as a related_type if url_to_link is available
-                                        $url_to_link_available = (boolean) array_intersect(
-                                            [ 'url_to_link', 'url_to_link2' ], explode( ';', $filter ) );
+                                        $url_to_link_available = (boolean) array_intersect( [ 'url_to_link', 'url_to_link2' ], explode( ';', $filter ) );
                                         $field_value .= self::wrap_value( ( $url_to_link_available ? $post_id
                                             : get_the_title( $post_id ) ), $field, ( $url_to_link_available ? 'related_type'
                                             : 'textbox' ), $filter, $before, $after, $separator );
@@ -344,36 +359,38 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
 EOD
                                             , (integer) $post_id ), OBJECT );
                                         # TODO author id and display name
-                                        $url_to_link_available = (boolean) array_intersect(
-                                            [ 'url_to_link', 'url_to_link2' ], explode( ';', $filter ) );
-                                        $field_value .= self::wrap_value( ( $url_to_link_available ? $author[0]->ID
-                                            : $author[0]->display_name ), $field, ( $url_to_link_available ? 'author'
-                                            : 'textbox' ), $filter, $before, $after, $separator );
+                                        $url_to_link_available = (boolean) array_intersect( [ 'url_to_link', 'url_to_link2' ], explode( ';', $filter ) );
+                                        $field_value .= self::wrap_value( ( $url_to_link_available ? $author[0]->ID : $author[0]->display_name ), $field,
+                                            ( $url_to_link_available ? 'author' : 'textbox' ), $filter, $before, $after, $separator );
                                         $label = "Author";
                                     } else if ( ( $terms = get_the_terms( $post_id, $field ) ) && is_array( $terms ) ) {
+                                        # $field is a taxonomy field
                                         foreach ( wp_list_pluck( $terms, 'name' ) as $term ) {
-                                            $field_value .= self::wrap_value( $term, $field, 'taxonomy', $filter, $before, $after,
-                                                $separator );
+                                            $field_value .= self::wrap_value( $term, $field, 'taxonomy', $filter, $before, $after, $separator );
                                         }
                                         $column = $wpdb->get_col( $wpdb->prepare(
-                                            'SELECT name FROM ' . MF_TABLE_CUSTOM_TAXONOMY . ' WHERE type = %s',
-                                            $field ) );
+                                            'SELECT name FROM ' . MF_TABLE_CUSTOM_TAXONOMY . ' WHERE type = %s', $field ) );
                                         if ( array_key_exists( 0, $column ) ) {
                                             $label = $column[0];
                                         }
                                     } else {
+                                        # finally try as an ordinary custom field
                                         $values = get_post_custom_values( $field, $post_id );
                                         if ( is_array( $values ) ) {
                                             foreach ( $values as $value ) {
-                                                if ( is_object( $value ) || is_array( $value ) ) { $value = serialize( $value ); }
-                                                $field_value .= self::wrap_value( $value, $field, NULL, $filter, $before, $after,
-                                                    $separator );
+                                                # if not a scalar then serialize it as we cannot handle non scalars
+                                                if ( is_object( $value ) || is_array( $value ) ) {
+                                                    $value = serialize( $value );
+                                                }
+                                                $field_value .= self::wrap_value( $value, $field, NULL, $filter, $before, $after, $separator );
                                             }
                                         }
                                     }
                                 }
                             } else {
+                                # handle magic fields
                                 if ( $the_field_index === '*' ) {
+                                    # wild card so get all possible field indexes
                                     $field_indices = get_order_field( $field, $group_index, $post_id );
                                     if ( !$field_indices ) {
                                         $field_indices = [ 1 ];
@@ -387,17 +404,21 @@ EOD
                                         # if the psuedo filter "tk_use_raw_value" is specified return the raw value from database
                                         $value = mf2tk\get_data2( $field, $group_index, $field_index, $post_id )['meta_value'];
                                     } else if ( $data[ 'type' ] === 'alt_numeric' ) {
-                                        # alt_numeric is a toolkit field and always should process its raw value
+                                        # alt_numeric is a toolkit field and always should process its raw value as returned by alt_numeric_field::get_numeric()
                                         $value = alt_numeric_field::get_numeric( $field, $group_index, $field_index, $post_id, $atts );
                                     } else {
                                         $value = mf2tk\get( $field, $group_index, $field_index, $post_id );
                                     }
                                     preg_match( '/\[\*([a-zA-Z0-9_]+,?)+\*\]/', $data[ 'description' ], $classes );
-                                    if ( $classes ) { $classes = explode( ',', trim( $classes[0], '[]*' ) ); }
+                                    if ( $classes ) {
+                                        $classes = explode( ',', trim( $classes[0], '[]*' ) );
+                                    }
+                                    # apply the class filter
                                     if ( $the_classes && ( !$classes || !array_intersect( $the_classes, $classes ) ) ) {
                                         $skip_field1 = $skip_field2 = TRUE;
                                         continue;
                                     }
+                                    # apply the class exclusion filter
                                     if ( $the_excludes && ( $classes && array_intersect( $the_excludes, $classes ) ) ) {
                                         $skip_field1 = $skip_field2 = TRUE;
                                         continue;
@@ -417,6 +438,7 @@ EOD
                                                         # $names[1] is a field specifier
                                                         $parent_ids1 = $parent_ids;
                                                         array_push( $parent_ids1, $post_id );
+                                                        # recursively call show_custom_field() with post id set to $value
                                                         $field_value .= self::show_custom_field( $value, $names[1], $before, $after,
                                                             $separator, $filter, $field_before, $field_after, $field_separator,
                                                             $field_rename, $group_before, $group_after, $group_separator,
@@ -425,6 +447,7 @@ EOD
                                                             . $field_separator;
                                                         $recursion = TRUE;
                                                     } else {
+                                                        # no additional field specifier so $value is the terminal value
                                                         $field_value .= self::wrap_value( $value, $field, $data['type'], $filter, $before,
                                                                 $after, $separator, $classes );
                                                     }
@@ -432,24 +455,29 @@ EOD
                                             }
                                         }
                                     } else {
+                                        # value is not a post id
                                         if ( is_array( $value ) ) {
+                                            # value is multi valued
                                             if ( $value ) {
+                                                # wrap each individual value as a value of a multi-valued field and concatenate into $multi_value
+                                                # this will apply the filter $filter and append the separator $multi_separator
                                                 $multi_value = '';
-                                                foreach ( $value as $the_value ) {                            
-                                                    $multi_value .= self::wrap_value( $the_value, $field, $data['type'], $filter,
-                                                        $multi_before, $multi_after, $multi_separator, $classes );
+                                                foreach ( $value as $the_value ) {
+                                                    $multi_value .= self::wrap_value( $the_value, $field, $data['type'], $filter, $multi_before, $multi_after,
+                                                        $multi_separator, $classes );
                                                 }
-                                                if ( $multi_separator && substr( $multi_value, strlen( $multi_value )
-                                                        - strlen( $multi_separator ) ) === $multi_separator ) {
-                                                    $multi_value = substr( $multi_value, 0, strlen( $multi_value )
-                                                        - strlen( $multi_separator ) );
+                                                # remove the trailing separator
+                                                if ( $multi_separator && substr_compare( $multi_value, $multi_separator,
+                                                    strlen( $multi_value ) - strlen( $multi_separator ) ) ===  0 ) {
+                                                    $multi_value = substr( $multi_value, 0, strlen( $multi_value ) - strlen( $multi_separator ) );
                                                 }
-                                                $field_value .= self::wrap_value( $multi_value, NULL, NULL, NULL, $before, $after,
-                                                    $separator, $classes );
+                                                # finally wrap as a value of a field, i.e. prepend the $before prefix and append the $after suffix
+                                                $field_value .= self::wrap_value( $multi_value, NULL, NULL, NULL, $before, $after, $separator, $classes );
                                             }
                                         } else {
-                                            $field_value .= self::wrap_value( $value, $field, $data['type'], $filter, $before, $after,
-                                                $separator, $classes, $group_index, $field_index, $post_id, $atts );
+                                            # single value
+                                            $field_value .= self::wrap_value( $value, $field, $data['type'], $filter, $before, $after, $separator, $classes,
+                                                $group_index, $field_index, $post_id, $atts );
                                         }
                                     }
                                 } # foreach ( $field_indices as $field_index ) { # results in $field_value
@@ -462,21 +490,25 @@ EOD
                                 continue;
                             }
                             if ( !$recursion ) {
-                                if ( $separator
-                                    && substr( $field_value, strlen( $field_value ) - strlen( $separator ) ) === $separator ) {
+                                # remove the trailing separator
+                                if ( $separator && substr_compare( $field_value, $separator, strlen( $field_value ) - strlen( $separator ) ) === 0 ) {
                                     $field_value = substr( $field_value, 0, strlen( $field_value ) - strlen( $separator ) );
                                 }
-                                $fields_value .= self::wrap_field_value( $field_value, $field_before, $field_after, $field_separator,
-                                    $label, $field, is_array( $classes ) ? implode( ' ', $classes ) : '', $field_rename, $path );
+                                # wrap the field
+                                $fields_value .= self::wrap_field_value( $field_value, $field_before, $field_after, $field_separator, $label, $field,
+                                    is_array( $classes ) ? implode( ' ', $classes ) : '', $field_rename, $path );
                             } else {
+                                # already wrapped by a recursive call so just use the returned value
                                 $fields_value .= $field_value;
                             }
                         } # foreach ( $fields as $field2 => $label2 ) { # results in $fields_value
                         if ( $fields_by_group ) {
-                            if ( $field_separator && substr( $fields_value, strlen( $fields_value ) - strlen( $field_separator ) )
-                                === $field_separator ) {
+                            # remove the trailing separator
+                            if ( $field_separator && substr_compare( $fields_value, $field_separator, strlen( $fields_value ) - strlen( $field_separator ) )
+                                === 0 ) {
                                 $fields_value = substr( $fields_value, 0, strlen( $fields_value ) - strlen( $field_separator ) );
                             }
+                            # wrap the group
                             $content .= self::wrap_group_value( $fields_value, $group_before, $group_after, $group_separator,
                                 $mf2tk_key_value, "$group_name-$group_index", $group_index,
                                 is_array( $mf2tk_key_classes ) ? implode( ' ', $mf2tk_key_classes ) : '', $group_rename, $path );
@@ -485,22 +517,23 @@ EOD
                                 break;
                             }
                             if ( !$recursion ) {
-                                if ( $separator && substr_compare( $field_value, $separator, strlen( $field_value )
-                                    - strlen( $separator ) ) === 0 ) {
+                                # remove the trailing separator
+                                if ( $separator && substr_compare( $field_value, $separator, strlen( $field_value ) - strlen( $separator ) ) === 0 ) {
                                     $field_value = substr( $field_value, 0, strlen( $field_value ) - strlen( $separator ) );
                                 }
+                                # wrap the group
                                 $groups_value .= self::wrap_group_value( $field_value, $group_before, $group_after, $group_separator,
                                     $mf2tk_key_value, "$group_name-$group_index", $group_index,
-                                    is_array( $mf2tk_key_classes ) ? implode( ' ', $mf2tk_key_classes ) : '', $group_rename,
-                                    $path );
+                                    is_array( $mf2tk_key_classes ) ? implode( ' ', $mf2tk_key_classes ) : '', $group_rename, $path );
                             } else {
+                                # already wrapped by a recursive call so just use the returned value
                                 $groups_value .= $field_value;
                             }
                         }
                     } # foreach ( $group_indices as $group_index ) { # results in $content or $groups_value
                     if ( $fields_by_group ) {
-                        if ( $group_separator && substr_compare( $content, $group_separator, strlen( $content )
-                            - strlen( $group_separator ) ) === 0 ) {
+                        # remove trailing group separator
+                        if ( $group_separator && substr_compare( $content, $group_separator, strlen( $content ) - strlen( $group_separator ) ) === 0 ) {
                             $content = substr( $content, 0, strlen( $content ) - strlen( $group_separator ) );
                         }
                         # if using inner field loop do outer field loop only once
@@ -509,14 +542,16 @@ EOD
                     if ( $skip_field1 ) {
                         continue;
                     }
-                    if ( $group_separator && substr_compare( $groups_value, $group_separator, strlen( $groups_value )
-                        - strlen( $group_separator ) ) === 0 ) {
+                    # remove trailing group separator
+                    if ( $group_separator && substr_compare( $groups_value, $group_separator, strlen( $groups_value ) - strlen( $group_separator ) ) === 0 ) {
                         $groups_value = substr( $groups_value, 0, strlen( $group_value ) - strlen( $group_separator ) );
                     }
                     if ( !$recursion ) {
+                        # wrap the field
                         $content .= self::wrap_field_value( $groups_value, $field_before, $field_after, $field_separator,
                             $label, $field, is_array( $classes ) ? implode( ' ', $classes ) : '', $field_rename, $path );
                     } else {
+                        # already wrapped by a recursive call so just use the returned value
                         $content .= $groups_value;
                     }
                 } # foreach ( $fields1 as $field1 => $label1 ) { # results in $content
@@ -524,8 +559,7 @@ EOD
             $content .= $field_separator;
         } # foreach ( $the_fields as $the_name ) {
         # remove trailing field separator
-        if ( $field_separator && substr_compare( $content, $field_separator, -strlen( $field_separator ),
-            strlen( $field_separator ) ) === 0 ) {
+        if ( $field_separator && substr_compare( $content, $field_separator, -strlen( $field_separator ), strlen( $field_separator ) ) === 0 ) {
             $content = substr( $content, 0, - strlen( $field_separator ) );
         }
         if ( $finals !== NULL ) {
@@ -577,11 +611,15 @@ EOD
         if ( is_numeric( $post_id) ) {
             # single numeric post id
             $rtn = '';
-            if ( $post_before ) { $rtn .= $post_before; }
+            if ( $post_before ) {
+                $rtn .= $post_before;
+            }
             $rtn .= self::show_custom_field( $post_id, $field, $before, $after, $separator, $filter, $field_before, $field_after,
                 $field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before,
                 $multi_after, $multi_separator, $final, '', [ ], $atts );
-            if ( $post_after ) { $rtn .= $post_after; }
+            if ( $post_after ) {
+                $rtn .= $post_after;
+            }
             return $rtn;
         } else {
             # handle multiple posts
@@ -590,11 +628,15 @@ EOD
             $rtn = '';
             foreach ( $post_ids as $post_id ) {
                 # do each post accumulating the output in $rtn
-                if ( $post_before ) { $rtn .= $post_before; }
+                if ( $post_before ) {
+                    $rtn .= $post_before;
+                }
                 $rtn .= self::show_custom_field( $post_id, $field, $before, $after, $separator, $filter, $field_before, $field_after,
                     $field_separator, $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before,
                     $multi_after, $multi_separator, $final, '', [ ], $atts );
-                if ( $post_after ) { $rtn .= $post_after; }
+                if ( $post_after ) {
+                    $rtn .= $post_after;
+                }
             }
             return $rtn;
         }
