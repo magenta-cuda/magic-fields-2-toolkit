@@ -720,7 +720,6 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
     public static function mt_show_tabs( $atts, $macro ) {
         static $tabs_id = 0;
         ++$tabs_id;
-        error_log( 'mt_show_tabs():$macro=' . $macro );
         static $tab_id = 0;
         $first_tab_id = $tab_id;
         $titles = [ ];
