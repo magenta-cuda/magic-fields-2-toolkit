@@ -11,121 +11,120 @@ class alt_image_field extends mf_custom_fields {
         $this->description = __( 'This is an alternate Magic Fields 2 field for images.', $mf_domain );
     }
   
-    public function _options() {
+    public function _options( ) {
         global $mf_domain;
-    
-        return array(
-            'option'  => array(
-                'max_width'  => array(
+        $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];
+        return [
+            'option'  => [
+                'max_width'  => [
                     'type'        =>  'text',
                     'id'          =>  'max_width',
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  'width in pixels - this value can be overridden by specifying a "width" parameter' .
-                                      ' with the "show_custom_field" shortcode',
+                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a "width" parameter with the ', $mf_domain )
+                                          . "$show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'max_height'  => array(
+                ],
+                'max_height'  => [
                     'type'        =>  'text',
                     'id'          =>  'max_height',
                     'label'       =>  __( 'Height', $mf_domain ),
                     'name'        =>  'mf_field[option][max_height]',
                     'default'     =>  '0',
-                    'description' =>  'height in pixels - 0 lets the browser set the height to preserve the aspect ratio' .
-                                      ' - recommended - this value can be overridden by specifying a "height" parameter' .
-                                      ' with the "show_custom_field" shortcode',
+                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the ',
+                                          $mf_domain ) . "$show_custom_field_tag shortcode",
                     'value'       =>  '0',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'align' => array(
+                ],
+                'align' => [
                     'type'        => 'select',
                     'id'          => 'align',
                     'label'       => __( 'Alignment', $mf_domain ),
                     'name'        =>  'mf_field[option][align]',
                     'default'     => '',
-                    'options'     => array(
-                                        'aligncenter' => 'Center',
-                                        'alignright'  => 'Right',
-                                        'alignleft'   => 'Left',
-                                        'alignnone'   => 'None',
-                                    ),
-                    'add_empty'   => false,
-                    'description' => 'alignment is effective only if a caption is specified ' .
-                                     '- this value can be overridden by specifying an "align" parameter with the ' .
-                                     '"show_custom_field" shortcode ' .
-                                     '- the parameter values are "aligncenter", "alignright" and "alignleft"',
+                    'options'     => [
+                                        'aligncenter' => __( 'Center', $mf_domain ),
+                                        'alignright'  => __( 'Right',  $mf_domain ),
+                                        'alignleft'   => __( 'Left',   $mf_domain ),
+                                        'alignnone'   => __( 'None',   $mf_domain )
+                                    ],
+                    'add_empty'   => FALSE,
+                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the ',
+                                        $mf_domain ) . "$show_custom_field_tag shortcode" . __( ' - the parameter values are ', $mf_domain )
+                                        . '&quot;aligncenter&quot;, &quot;alignright&quot; ' . __( 'and', $mf_domain ) . ' &quot;alignleft&quot;',
                     'value'       => '',
                     'div_class'   => '',
                     'class'       => ''
-                ),
-                'class_name'  => array(
+                ],
+                'class_name'  => [
                     'type'        =>  'text',
                     'id'          =>  'class_name',
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  'This is the class option of the WordPress caption shortcode' .
-                                      ' and is set only if a caption is specified' .
-                                      ' - this value can be overridden by specifying a "class_name" parameter with the' .
-                                      ' "show_custom_field" shortcode ',
+                    'description' =>  __( <<<EOD
+This is the class option of the WordPress caption shortcode and is set only if a caption is specified
+- this value can be overridden by specifying a "class_name" parameter with the "show_custom_field" shortcode
+EOD
+                                  , $mf_domain ),
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'popup_width'  => array(
+                ],
+                'popup_width'  => [
                     'type'        =>  'text',
                     'id'          =>  'popup_width',
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
                     'default'     =>  '320',
-                    'description' =>  'mouseover popup width in pixels - this value can be overridden by specifying a ' .
-                                      '"popup_width" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the ',
+                                          $mf_domain ) . "$show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'popup_height'  => array(
+                ],
+                'popup_height'  => [
                     'type'        =>  'text',
                     'id'          =>  'popup_height',
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
                     'default'     =>  '240',
-                    'description' =>  'mouseover popup height in pixels - this value can be overridden by specifying a ' .
-                                      '"popup_height" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the ',
+                                          $mf_domain ) . "$show_custom_field_tag shortcode",
                     'value'       =>  '240',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'popup_style'  => array(
+                ],
+                'popup_style'  => [
                     'type'        =>  'text',
                     'id'          =>  'popup_style',
                     'label'       =>  __( 'Mouseover Popup Style', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_style]',
                     'default'     =>  'background-color:white;border:2px solid black;',
-                    'description' =>  'mouseover popup style - this value can be overridden by specifying a ' .
-                                      '"popup_style" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the ',
+                                          $mf_domain ) . "$show_custom_field_tag shortcode",
                     'value'       =>  'background-color:white;border:2px solid black;',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
+                ],
                 'popup_classname' => [
                     'type'        =>  'text',
                     'id'          =>  'popup_classname',
                     'label'       =>  __( 'Mouseover Popup Classname', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_classname]',
                     'default'     =>  'background-color:white;border:2px solid black;',
-                    'description' =>  'mouseover popup classname - this value can be overridden by specifying a ' .
-                                      '"popup_classname" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the ',
+                                          $mf_domain ) . "$show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ]
-            )
-        );
+            ]
+        ];
     }
 
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
