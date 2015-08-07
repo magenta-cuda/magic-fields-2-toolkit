@@ -64,106 +64,109 @@ class Magic_Fields_2_Toolkit_Settings {
     }
     
     public function __construct( ) {
+        global $mf_domain;
+
         add_action( 'admin_enqueue_scripts', function( ) {
             wp_enqueue_style( 'mf2tk_admin', plugins_url( 'css/mf2tk_admin.css', __FILE__ ) );
             wp_enqueue_style( 'dashicons' );
             wp_enqueue_script( 'mf2tk_clean_mf_files', plugins_url( 'js/mf2tk_clean_mf_files.js', __FILE__ ), [ 'jquery' ] );
         } );
-        add_action( 'admin_init', function() {
-            if ( !defined( 'MF_PATH' ) ) { return; }
+        
+        add_action( 'admin_init', function( ) {
+            global $mf_domain;
+            if ( !defined( 'MF_PATH' ) ) {
+                return;
+            }
             $options = get_option( 'magic_fields_2_toolkit_enabled', [ ] );
             foreach ( Magic_Fields_2_Toolkit_Settings::$fields as $field ) {
                 Magic_Fields_2_Toolkit_Settings::sync_field_and_option( $field, $options );
             }
-            add_settings_section( 'magic_fields_2_toolkit_settings_sec', 'Features',
-                function( ) {
-                    echo( '<div style="padding:10px 50px;">' . __( 'Use this form to enable specific features.', 'mf2tk' )
-                        . '</div>' );
-                }, 'magic-fields-2-toolkit-page' );	
+
+            add_settings_section( 'magic_fields_2_toolkit_settings_sec', __( 'Features', $mf_domain ), function( ) {
+                global $mf_domain;
+?>
+<div style="padding:10px 50px;"><?php _e( 'Use this form to enable specific features.', $mf_domain ); ?></div>
+<?php
+            }, 'magic-fields-2-toolkit-page' );
+
             $settings = [
-                ['dumb_shortcodes', 'Dumb Shortcodes', 'shortcode'],
-                ['dumb_macros', 'Content Templates', 'macros'],
-                ['alt_template_field', 'Alt Template Field', 'alt_template'],
-                ['alt_table_field', 'Alt Table Field', 'alt_table'],
-                ['alt_numeric_field', 'Alt Numeric Field', 'alt_numeric'],
-                ['alt_url_field', 'Alt URL Field', 'alt_url'],
-                ['alt_related_type_field', 'Alt Related Type Field', 'alt_related'],
-                ['alt_embed_field', 'Alt Embed Field', 'embed'],
-                ['alt_video_field', 'Alt Video Field', 'video'],
-                ['alt_audio_field', 'Alt Audio Field', 'audio'],
-                ['alt_image_field', 'Alt Image Field', 'image'],
-                ['alt_textbox_field', 'Alt Textbox Field', 'alt_textbox'],
-                ['alt_dropdown_field', 'Alt Dropdown Field', 'alt_dropdown'],
-                ['search_using_magic_fields', 'Search using Magic Fields', 'search'],
-                ['custom_post_copier', 'Custom Post Copier', 'copy'],
-                ['clean_files_mf', 'Clean Folder files_mf', 'unreferenced'],
-                ['alt_get_audio', 'Alt Get Audio', 'alt_audio'],
-                ['utility_functions', 'Utility Functions', 'utility_functions']
+                ['dumb_shortcodes',           __( 'Dumb Shortcodes',           $mf_domain ), 'shortcode'         ],
+                ['dumb_macros',               __( 'Content Templates',         $mf_domain ), 'macros'            ],
+                ['alt_template_field',        __( 'Alt Template Field',        $mf_domain ), 'alt_template'      ],
+                ['alt_table_field',           __( 'Alt Table Field',           $mf_domain ), 'alt_table'         ],
+                ['alt_numeric_field',         __( 'Alt Numeric Field',         $mf_domain ), 'alt_numeric'       ],
+                ['alt_url_field',             __( 'Alt URL Field',             $mf_domain ), 'alt_url'           ],
+                ['alt_related_type_field',    __( 'Alt Related Type Field',    $mf_domain ), 'alt_related'       ],
+                ['alt_embed_field',           __( 'Alt Embed Field',           $mf_domain ), 'embed'             ],
+                ['alt_video_field',           __( 'Alt Video Field',           $mf_domain ), 'video'             ],
+                ['alt_audio_field',           __( 'Alt Audio Field',           $mf_domain ), 'audio'             ],
+                ['alt_image_field',           __( 'Alt Image Field',           $mf_domain ), 'image'             ],
+                ['alt_textbox_field',         __( 'Alt Textbox Field',         $mf_domain ), 'alt_textbox'       ],
+                ['alt_dropdown_field',        __( 'Alt Dropdown Field',        $mf_domain ), 'alt_dropdown'      ],
+                ['search_using_magic_fields', __( 'Search using Magic Fields', $mf_domain ), 'search'            ],
+                ['custom_post_copier',        __( 'Custom Post Copier',        $mf_domain ), 'copy'              ],
+                ['clean_files_mf',            __( 'Clean Folder files_mf',     $mf_domain ), 'unreferenced'      ],
+                ['alt_get_audio',             __( 'Alt Get Audio',             $mf_domain ), 'alt_audio'         ],
+                ['utility_functions',         __( 'Utility Functions',         $mf_domain ), 'utility_functions' ]
             ];
+
             array_walk( $settings, function( $v, $i, $options ) {
                 $name  = $v[0];
                 $title = $v[1];
                 $help  = $v[2];
-                add_settings_field( "magic_fields_2_toolkit_$name", __( $title, 'mf2tk' ),
-                    function() use ( $name, $help, $options ) {
-                        echo( "<input name=\"magic_fields_2_toolkit_enabled[$name]\" type=\"checkbox\" value=\"enabled\""
-                            . ( ( is_array( $options ) && array_key_exists( $name, $options ) ) ? ' checked' : '' ) . '>' );
-                        echo( "<a href=\"http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#$help\" "
-                            . 'target="_blank"><div class="dashicons dashicons-info" '
-                            . 'style="text-decoration:none;padding-left:7px;"></div></a>' );
-                    },
-                    'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_settings_sec' );
-            }, $options );
-            add_settings_section( 'magic_fields_2_toolkit_tags_sec', 'Labels',
-                function( ) {
-                    echo( __( <<<EOD
-<div style="padding:10px 50px;">The original labels that the toolkit used are inconsistent.
-Use this form to rename them to your liking, e.g., you can use short labels to reduce typing.
-Aliases are supported so that you can use the old label and new label simultaneously until the old label is completely
-replaced.
-N.B. this does not change existing labels in the post content of existing posts.
-My current convention is to use a &quot;mt_&quot; prefix but you are free to use your own convention.</div>
-EOD
-                    , 'mf2tk' ) );
-                }, 'magic-fields-2-toolkit-page' );	
+                add_settings_field( "magic_fields_2_toolkit_$name", $title, function( ) use ( $name, $help, $options ) {
+?>
+<a href="http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#<?php echo $help; ?>" target="_blank"><div class="dashicons dashicons-info"
+    style="text-decoration:none;padding-right:10px;vertical-align:middle;"></div></a>
+<input name="magic_fields_2_toolkit_enabled[<?php echo $name; ?>]" type="checkbox" value="enabled"
+    <?php echo is_array( $options ) && array_key_exists( $name, $options ) ? ' checked' : ''; ?> style="margin:0px;">
+<?php
+                }, 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_settings_sec' );
+            }, $options );   # array_walk( $settings, function( $v, $i, $options ) {
+
+            add_settings_section( 'magic_fields_2_toolkit_tags_sec', __( 'Labels', $mf_domain ), function( ) {
+                global $mf_domain;
+?>
+<div style="padding:10px 50px;"><?php _e( 'The original labels that the toolkit used are inconsistent. Use this form to rename them to your liking, e.g., you can use short labels to reduce typing. Aliases are supported so that you can use the old label and new label simultaneously until the old label is completely replaced. N.B. this does not change existing labels in the post content of existing posts. My current convention is to use a &quot;mt_&quot; prefix but you are free to use your own convention.',
+    $mf_domain ); ?></div>
+<?php
+            }, 'magic-fields-2-toolkit-page' );   # add_settings_section( 'magic_fields_2_toolkit_tags_sec', __( 'Labels', $mf_domain ), function( ) {
+
             $tags = [
-                [ 'show_custom_field',       'shortcode to show a custom field' ],
-                [ 'show_custom_field_alias', 'alias shortcode to show a custom field' ],
-                [ 'show_macro',              'shortcode to show a content template' ],
-                [ 'show_macro_alias',        'alias shortcode to show a content template' ],
-                [ 'mt_show_gallery',         'shortcode to show a gallery' ],
-                [ 'mt_show_gallery_alias',   'alias shortcode to show a gallery' ],
-                [ 'mt_show_tabs',            'shortcode to show tabs' ],
-                [ 'mt_show_tabs_alias',      'alias shortcode to tabs' ]
-                
+                [ 'show_custom_field',       __( 'shortcode to show a custom field',           $mf_domain ) ],
+                [ 'show_custom_field_alias', __( 'alias shortcode to show a custom field',     $mf_domain ) ],
+                [ 'show_macro',              __( 'shortcode to show a content template',       $mf_domain ) ],
+                [ 'show_macro_alias',        __( 'alias shortcode to show a content template', $mf_domain ) ],
+                [ 'mt_show_gallery',         __( 'shortcode to show a gallery',                $mf_domain ) ],
+                [ 'mt_show_gallery_alias',   __( 'alias shortcode to show a gallery',          $mf_domain ) ],
+                [ 'mt_show_tabs',            __( 'shortcode to show tabs',                     $mf_domain ) ],
+                [ 'mt_show_tabs_alias',      __( 'alias shortcode to tabs',                    $mf_domain ) ]   
             ];
+            
             array_walk( $tags, function( $v, $i, $options ) {
                 $name  = $v[0];
                 $title = $v[1];
                 $value = !empty( $options[ $name ] ) ? $options[ $name ] : '';
-                add_settings_field( "magic_fields_2_toolkit-tags-$name", __( $title, 'mf2tk' ), function( $a ) {
+                add_settings_field( "magic_fields_2_toolkit-tags-$name", $title, function( $a ) {
                     $name  = $a[0];
                     $value = $a[1];
                     echo( "<input name=\"magic_fields_2_toolkit_tags[$name]\" type=\"text\" value=\"$value\">" );
                 }, 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_tags_sec', [ $name, $value ] );
-            }, mf2tk\get_tags( ) );
-            add_settings_section( 'magic_fields_2_toolkit_sync_sec',
-                'Sync the Toolkit\'s Fields with the Fields of Magic Fields 2',
+            }, mf2tk\get_tags( ) );   # array_walk( $tags, function( $v, $i, $options ) {
+
+            add_settings_section( 'magic_fields_2_toolkit_sync_sec', __( 'Sync the Toolkit\'s Fields with the Fields of Magic Fields 2', $mf_domain ),
                 function( ) {
+                    global $mf_domain;
 ?>
 <div>
-<div style="width:70%;padding:10px 50px 50px 50px;float:left;">The latest version of the toolkit's fields ( alt_*_field )
-must be copied to the &quot;fields_types&quot; folder of &quot;Magic Fields 2" plugin. The toolkit should handle this
-automatically. However, this can fail to happen if you update the Magic Fields 2 plugin (Since the toolkit needs to be
-installed after &quot;Magic Fields 2&quot;.) or you upgrade the toolkit by manually copying the files (The activation code
-will not run in  this case.). You can force the toolkit to synchronize its fields with those in the &quot;fields_types&quot;
-folder of &quot;Magic Fields 2" plugin at anytime by clicking the &quot;Sync Fields&quot; button to the right.</div>
+<div style="width:70%;padding:10px 50px 50px 50px;float:left;"><?php _e( 'The latest version of the toolkit\'s fields ( alt_*_field ) must be copied to the &quot;fields_types&quot; folder of the &quot;Magic Fields 2&quot; plugin. The toolkit should handle this automatically. However, this can fail to happen if you update the Magic Fields 2 plugin (Since the toolkit needs to be installed after &quot;Magic Fields 2&quot;.) or you upgrade the toolkit by manually copying the files (The activation code will not run in  this case.). You can force the toolkit to synchronize its fields with those in the &quot;fields_types&quot; folder of &quot;Magic Fields 2&quot; plugin at anytime by clicking the &quot;Sync Fields&quot; button to the right.',
+    $mf_domain); ?></div>
 <input name="mf2tk-sync-fields" id="mf2tk-sync-fields" class="button button-primary" value="Sync Fields" type="button"
     style="float:left;margin:30px 20px;">
 <div style="clear:both;"></div>
 </div>
 <?php
-                }, 'magic-fields-2-toolkit-page' );
+            }, 'magic-fields-2-toolkit-page' );   # add_settings_section( 'magic_fields_2_toolkit_sync_sec', __( 'Sync the Toolkit\'s Fields with the Fields of Magic Fields 2', $mf_domain ),
                 
             register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_enabled', function( $input ) {
                 if ( $input === NULL ) {
@@ -174,7 +177,8 @@ folder of &quot;Magic Fields 2" plugin at anytime by clicking the &quot;Sync Fie
                     $input = Magic_Fields_2_Toolkit_Settings::do_field_type_option( $field, $input, $options );
                 }
                 return $input;
-            } );
+            } );   # register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_enabled', function( $input ) {
+
             register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_tags', function( $input ) {
                 if ( $input === NULL ) {
                     $input = [ ];
@@ -198,30 +202,32 @@ folder of &quot;Magic Fields 2" plugin at anytime by clicking the &quot;Sync Fie
                     update_option( 'tpcti_options', $tpcti_options );
                 }
                 return $input;
-            } );
+            } );   # register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_tags', function( $input ) {
             
         } );   # add_action( 'admin_init', function() {
             
         add_action( 'admin_menu', function( ) {
+            global $mf_domain;
             if ( !defined( 'MF_PATH' ) ) {
                 return;
             }
-            add_options_page( 'Magic Fields 2 Toolkit', 'Magic Fields 2 Toolkit', 'manage_options',
+            add_options_page( __( 'Magic Fields 2 Toolkit', $mf_domain ), __( 'Magic Fields 2 Toolkit', $mf_domain ), 'manage_options',
                 'magic-fields-2-toolkit-page', function( ) {
-                    if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == TRUE ) {
-                    }
-                    echo( '<h1>Magic Fields 2 Toolkit</h1><form method="post" action="options.php">' );
-                    settings_fields( 'magic-fields-2-toolkit-page' ); 
-                    do_settings_sections( 'magic-fields-2-toolkit-page' );
-                    submit_button( );
-                    echo( '</form>' );
+                global $mf_domain;
+                if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] == TRUE ) {
+                }
+                echo( '<h1>' . __( 'Magic Fields 2 Toolkit', $mf_domain ) . '</h1><form method="post" action="options.php">' );
+                settings_fields( 'magic-fields-2-toolkit-page' ); 
+                do_settings_sections( 'magic-fields-2-toolkit-page' );
+                submit_button( );
+                echo( '</form>' );
 ?>
 <div style="border:2px solid black;background-color:LightGray;padding:10px;margin:30px 25px;font-size:larger;font-weight:bold;">
-For usage instructions please visit <a href="http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/">the online 
-documentation</a>.</div>
+<?php _e( 'For usage instructions please visit ', $mf_domain ); ?>
+<a href="http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/" target="_blank"><?php _e( 'the online documentation', $mf_domain ); ?></a>.</div>
 <?php
-            } );
-        }, 11 );
+            } );   # add_options_page( 'Magic Fields 2 Toolkit', 'Magic Fields 2 Toolkit', 'manage_options', 'magic-fields-2-toolkit-page', function( ) {
+        }, 11 );   # add_action( 'admin_menu', function( ) {
 
         # AJAX action 'wp_ajax_mf2tk_sync_fields' syncs the toolkit's fields with the fields in "Magic Fields 2"
 
@@ -230,7 +236,7 @@ documentation</a>.</div>
             foreach ( Magic_Fields_2_Toolkit_Settings::$fields as $field ) {
                 Magic_Fields_2_Toolkit_Settings::sync_field_and_option( $field, $options );
             }
-            die( 'The fields: ' . implode( ', ', Magic_Fields_2_Toolkit_Settings::$fields ) . ' have been synchronized.' );
+            die( __( 'The fields: ', $mf_domain ) . implode( ', ', Magic_Fields_2_Toolkit_Settings::$fields ) . __( ' have been synchronized.', $mf_domain ) );
         } );
 
     }   # public function __construct( ) {
