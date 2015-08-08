@@ -160,8 +160,8 @@ div.mf2tk-field-input-main div.mf2tk-field_value_pane button.mf2tk-alt_embed_adm
     background-color:LightGray;
 }
 
-div.mf2tk-field-input-optional textarea.mf2tk-how-to-use{
-    display:block;
+div.mf2tk-field-input-optional.mf2tk-usage-field  div.mf2tk-field_value_pane ul li{
+    list-style:square inside;
 }
 
 div.mf2tk-field-input-optional textarea.mf2tk-how-to-use{

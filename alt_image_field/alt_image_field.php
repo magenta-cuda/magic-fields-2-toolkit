@@ -6,7 +6,7 @@ class alt_image_field extends mf_custom_fields {
     private static $suffix_link    = '_mf2tk_link';
     private static $suffix_hover   = '_mf2tk_hover';
     
-    public function _update_description(){
+    public function _update_description( ) {
         global $mf_domain;
         $this->description = __( 'This is an alternate Magic Fields 2 field for images.', $mf_domain );
     }
@@ -104,10 +104,11 @@ EOD
                     'id'          =>  'popup_style',
                     'label'       =>  __( 'Mouseover Popup Style', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_style]',
-                    'default'     =>  'background-color:white;border:2px solid black;',
+                    'default'     =>  'background-color:transparent;text-align:center;',
                     'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
-                    'value'       =>  'background-color:white;border:2px solid black;',
+                                          $mf_domain ) . "$show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
+                                          . __( 'is good for text overlays', $mf_domain ),
+                    'value'       =>  'background-color:transparent;text-align:center;',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -116,7 +117,7 @@ EOD
                     'id'          =>  'popup_classname',
                     'label'       =>  __( 'Mouseover Popup Classname', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_classname]',
-                    'default'     =>  'background-color:white;border:2px solid black;',
+                    'default'     =>  '',
                     'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the ',
                                           $mf_domain ) . "$show_custom_field_tag shortcode",
                     'value'       =>  '',
@@ -129,6 +130,9 @@ EOD
 
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
         global $mf_domain, $post;
+        error_log( '##### alt_image_field::display_field():backtrace=' . print_r( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), true ) );
+        error_log( '##### alt_image_field::display_field():$post=' . print_r( $post, true ) );
+        error_log( '##### alt_image_field::display_field():$field=' . print_r( $field, true ) );
         # setup main field
         $field_id = "mf2tk-$field[name]-$group_index-$field_index";
         $input_value = str_replace( '"', '&quot;', $field['input_value'] );
@@ -158,79 +162,86 @@ EOD
         $no_caption_padding = 0;
         $no_caption_border = 2;
         $no_caption_width = $width + 2 * ( $no_caption_padding + $no_caption_border );
+        # get the user defined shortcode
+        $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];
         # generate and return the HTML
-        $output = <<<EOD
+        ob_start( );
+?>
 <div class="media_field_mf">
     <!-- main audio field -->
     <div class="mf2tk-field-input-main">
-        <h6>URL of Image</h6>
+        <h6><?php _e( 'URL of Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane">
-            <input type="text" name="$field[input_name]" id="$field_id" class="mf2tk-img" maxlength="2048"
-                placeholder="URL of the image" value="$input_value" $field[input_validate]>
-            <button id="{$field_id}.media-library-button" class="mf2tk-media-library-button">
-                Get URL from Media Library</button>
-            <button id="{$field_id}.refresh-button" class="mf2tk-alt_media_admin-refresh">Reload Media</button>
+            <input type="text" name="<?php echo $field['input_name']; ?>" id="<?php echo $field_id; ?>" class="mf2tk-img" maxlength="2048"
+                placeholder="<?php _e( 'URL of the image', $mf_domain ); ?>" value="<?php echo $input_value; ?>" <?php echo $field['input_validate']; ?>>
+            <button id="<?php echo $field_id; ?>.media-library-button" class="mf2tk-media-library-button"><?php _e( 'Get URL from Media Library', $mf_domain ); ?></button>
+            <button id="<?php echo $field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh"><?php _e( 'Reload Media', $mf_domain ); ?></button>
             <br>
-            <div style="width:{$width}px;padding-top:10px;margin:auto;">
-                <img class="mf2tk-poster" src="$input_value"{$attrWidth}{$attrHeight}>
+            <div style="width:<?php echo $width; ?>px;padding-top:10px;margin:auto;">
+                <img class="mf2tk-poster" src="<?php echo "$input_value\"{$attrWidth}{$attrHeight}"; ?>>
             </div>
         </div>
     </div>
     <!-- optional caption field -->
     <div class="mf2tk-field-input-optional mf2tk-caption-field">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>Optional Caption for Image</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'Optional Caption for Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <input type="text" name="$caption_input_name" maxlength="256" placeholder="optional caption for image"
-                value="$caption_input_value">
+            <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256"
+                placeholder="<?php _e( 'optional caption for image', $mf_domain ); ?>" value="<?php echo $caption_input_value; ?>">
         </div>
     </div>
     <!-- optional link field -->
     <div class="mf2tk-field-input-optional">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>Optional Link for Image</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'Optional Link for Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <input type="url" name="$link_input_name" maxlength="2048" placeholder="optional link for image"
-                value="$link_input_value">
-            <button class="mf2tk-test-load-button" style="float:right;" onclick="event.preventDefault();
-                window.open(this.parentNode.querySelector('input[type=\'url\']').value,'_blank');">Test Load</button>
+            <input type="url" name="<?php echo $link_input_name; ?>" maxlength="2048"
+                placeholder="<?php _e( 'optional link for image', $mf_domain ); ?>" value="<?php echo $link_input_value; ?>">
+            <button class="mf2tk-test-load-button" style="float:right;"><?php _e( 'Test Load', $mf_domain ); ?></button>
         </div>
     </div>
     <!-- optional hover field -->
     <div class="mf2tk-field-input-optional">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>Optional Mouseover Popup for Image</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'Optional Mouseover Popup for Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <textarea name="$hover_input_name" rows="8" cols="80"
-                placeholder="Enter post content fragment with show_custom_field and/or show_macro shortcodes. This will be displayed as a popup when the mouse is over the image. Although this could be plain HTML, using a reusable content template is probably more convenient.">$hover_input_value</textarea>
+            <textarea name="<?php echo $hover_input_name; ?>" rows="8" cols="80"
+                placeholder="<?php _e( 'Enter post content fragment with show_custom_field and/or show_macro shortcodes. This will be displayed as a popup when the mouse is over the image. Although this could be plain HTML, using a reusable content template is probably more convenient.',
+                $mf_domain ); ?>"><?php echo $hover_input_value; ?></textarea>
         </div>
     </div>
     <!-- usage instructions -->    
     <div class="mf2tk-field-input-optional mf2tk-usage-field">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>How to Use</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <ul>
-                <li class="mf2tk-how-to-use-with-caption" style="list-style:square inside;{$how_to_use_with_caption_style}">Use with the Toolkit's shortcode - (with caption):<br>
+                <li class="mf2tk-how-to-use-with-caption" style="<?php echo $how_to_use_with_caption_style; ?>">
+                    <?php _e( 'Use with the Toolkit\'s shortcode - (with caption):', $mf_domain ); ?><br>
                     <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[show_custom_field field="$field[name]$index" filter="url_to_media"]'>
-                    - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in
-                        <strong>Text</strong> mode
-                <li class="mf2tk-how-to-use-no-caption" style="list-style:square inside;{$how_to_use_no_caption_style}">Use with the Toolkit's shortcode - (no caption):<br>
-                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:{$no_caption_width}px;border:{$no_caption_border}px solid black;background-color:gray;padding:{$no_caption_padding}px;margin:0 auto;"&gt;
-    [show_custom_field field="$field[name]$index" filter="url_to_media"]
+                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]'>
+                    - <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?></li>
+                <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
+                    <?php _e( 'Use with the Toolkit\'s shortcode - (no caption)', $mf_domain ); ?>:<br>
+                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div
+                        style="width:<?php echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0 auto;"&gt;
+    [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?> filter="url_to_media"]
 &lt;/div&gt;</textarea><br>
-                    - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in
-                        <strong>Text</strong> mode
-                <li style="list-style:square inside">Call the PHP function:<br>
-                    alt_image_field::get_image( "$field[name]", $group_index, $field_index, \$post_id, \$atts = array() )
+                    - <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?></li>
+                <li><?php _e( 'Call the PHP function', $mf_domain ); ?>:<br>
+                    alt_image_field::get_image( <?php echo "\"$field[name]\", $group_index, $field_index, $post->ID,"; ?> $atts = array() )</li>
             </ul>
         </div>
     </div>
 </div>
 <br>
-EOD;
-        #error_log( '##### alt_image_field::display_field():$output=' . $output );
+<?php
+        $output = ob_get_contents( );
+        ob_end_clean( );
+        error_log( '##### alt_image_field::display_field():$output=' . $output );
         return $output;
     }
   

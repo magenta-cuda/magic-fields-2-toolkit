@@ -232,6 +232,7 @@ class Magic_Fields_2_Toolkit_Settings {
         # AJAX action 'wp_ajax_mf2tk_sync_fields' syncs the toolkit's fields with the fields in "Magic Fields 2"
 
         add_action( 'wp_ajax_mf2tk_sync_fields', function( ) {
+            global $mf_domain;
             $options = get_option( 'magic_fields_2_toolkit_enabled', [ ] );
             foreach ( Magic_Fields_2_Toolkit_Settings::$fields as $field ) {
                 Magic_Fields_2_Toolkit_Settings::sync_field_and_option( $field, $options );

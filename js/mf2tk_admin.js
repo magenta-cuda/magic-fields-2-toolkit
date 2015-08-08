@@ -68,13 +68,19 @@ mf2tk_globals.caption_field_change=function(){
         noCaption.css("display","list-item");
     }
 };
-    
+
+mf2tk_globals.test_load_link_click=function(e){
+  e.preventDefault();
+  window.open(jQuery(this.parentNode).find("input[type='url']").val(),'_blank');
+};
+
 jQuery(document).ready(function(){
     // wire up media specific handlers
     var mfField=jQuery("div.media_field_mf");
     mfField.find('button.mf2tk-media-library-button').click(mf2tk_globals.mf2tk_media_library_button_click);
     mfField.find("button.mf2tk-alt_media_admin-refresh").click(mf2tk_globals.mf2tk_alt_media_admin_refresh_click);
     mfField.find("button.mf2tk-alt_embed_admin-refresh").click(mf2tk_globals.mf2tk_alt_embed_admin_refresh_click);
+    mfField.find("button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
     mfField.find("div.mf2tk-field-input-optional.mf2tk-caption-field input").change(mf2tk_globals.caption_field_change);
 });
 
@@ -561,6 +567,7 @@ jQuery(document).ready(function($) {
             duplicate.find('button.mf2tk-media-library-button').click(mf2tk_globals.mf2tk_media_library_button_click);
             duplicate.find('button.mf2tk-alt_media_admin-refresh').click(mf2tk_globals.mf2tk_alt_media_admin_refresh_click);
             duplicate.find('button.mf2tk-alt_embed_admin-refresh').click(mf2tk_globals.mf2tk_alt_embed_admin_refresh_click);
+            duplicate.find("button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
             duplicate.find("div.mf2tk-field-input-optional.mf2tk-caption-field input").change(mf2tk_globals.caption_field_change);
             return false;
         }
