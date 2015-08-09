@@ -687,7 +687,9 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
         } else if ( strtolower( $mode ) === 'toolkit' ) {
             # In 'toolkit' mode display the selected alt_image fields with uniform small size and float left alignment.
             # The mouse-over popup and clickable link options are also applied.
-            $atts[ 'align' ] = 'alignleft';
+            //$atts[ 'align' ] = 'alignleft';
+            $atts[ 'align'      ] = 'alignnone';
+            $atts[ 'class_name' ] = 'mf2tk-image-inline-block';
             if ( !array_key_exists( 'width', $atts ) ) {
                 $atts[ 'width' ] = '120';
             }

@@ -23,3 +23,8 @@ figure.wp-caption.mf2tk-alt-image figcaption.wp-caption-text,figure.wp-caption.m
     color:black;
     margin:0px;
 }
+
+div.wp-caption.mf2tk-image-inline-block{
+    display:inline-block;
+    vertical-align:middle;
+}
