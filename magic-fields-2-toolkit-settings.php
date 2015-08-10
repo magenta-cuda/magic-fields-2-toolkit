@@ -237,7 +237,8 @@ class Magic_Fields_2_Toolkit_Settings {
             foreach ( Magic_Fields_2_Toolkit_Settings::$fields as $field ) {
                 Magic_Fields_2_Toolkit_Settings::sync_field_and_option( $field, $options );
             }
-            die( __( 'The fields: ', $mf_domain ) . implode( ', ', Magic_Fields_2_Toolkit_Settings::$fields ) . __( ' have been synchronized.', $mf_domain ) );
+            die( __( 'The fields: ', $mf_domain ) . implode( ', ', Magic_Fields_2_Toolkit_Settings::$fields ) . ' '
+                . __( 'have been synchronized.', $mf_domain ) );
         } );
 
     }   # public function __construct( ) {

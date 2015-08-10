@@ -216,7 +216,7 @@
                     <input type="text" class="mf2tk-how-to-use" size="50" readonly
                         value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]'>
                     - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( ' copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
                 <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
                     <?php _e( 'Use with the Toolkit\'s shortcode - (no caption):', $mf_domain ); ?><br>
                     <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:<?echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0 auto;"&gt;

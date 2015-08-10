@@ -13,97 +13,98 @@ class alt_video_field extends mf_custom_fields {
         $this->description = __( 'This is a Magic Fields 2 field for WordPress\'s video shortcode facility.', $mf_domain );
     }
   
-    public function _options() {
+    public function _options( ) {
         global $mf_domain;
-    
-        return array(
-            'option'  => array(
-                'max_width'  => array(
+        $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];    
+        return [
+            'option'  => [
+                'max_width'  => [
                     'type'        =>  'text',
                     'id'          =>  'max_width',
-                    'label'       =>  __('Width',$mf_domain),
+                    'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  'width in pixels - this value can be overridden by specifying a "width" parameter' .
-                                      ' with the "show_custom_field" shortcode',
+                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
+                                          . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'max_height'  => array(
+                ],
+                'max_height'  => [
                     'type'        =>  'text',
                     'id'          =>  'max_height',
-                    'label'       =>  __('Height',$mf_domain),
+                    'label'       =>  __( 'Height', $mf_domain ),
                     'name'        =>  'mf_field[option][max_height]',
                     'default'     =>  '0',
-                    'description' =>  'height in pixels - 0 lets the browser set the height to preserve the aspect ratio' .
-                                      ' - recommended but you must at least load the meta data on page load ' .
-                                      ' - 0 does not work for Flash videos - this value can be overridden by specifying a' .
-                                      ' "height" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended but you must at least load the meta data on page load - 0 does not work for Flash videos - this value can be overridden by specifying a &quot;height&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '0',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'loop' => array(
+                ],
+                'loop' => [
                     'type'        => 'checkbox',
                     'id'          => 'loop',
                     'label'       => __( 'Loop to beginning when finished and continue playing', $mf_domain ),
                     'name'        => 'mf_field[option][loop]',
                     'default'     =>  '',
-                    'description' =>  'this value can be overridden by specifying an "loop" parameter with the' .
-                                      ' "show_custom_field" shortcode - the parameter value is "on" or "off"',
+                    'description' =>  __( 'this value can be overridden by specifying an "loop" parameter with the', $mf_domain )
+                                      . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain ) . ' "on" '
+                                      . __( 'or', $mf_domain ) . ' "off"',
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'autoplay' => array(
+                ],
+                'autoplay' => [
                     'type'        => 'checkbox',
                     'id'          => 'autoplay',
                     'label'       => __( 'Automatically play as soon as the media file is ready', $mf_domain ),
                     'name'        => 'mf_field[option][autoplay]',
                     'default'     =>  '',
-                    'description' =>  'this value can be overridden by specifying an "autoplay" parameter with the' .
-                                      ' "show_custom_field" shortcode - the parameter value is "on" or "off"',
+                    'description' =>  __( 'this value can be overridden by specifying an "autoplay" parameter with the', $mf_domain )
+                                      . " $show_custom_field_tag shortcode - " . __( 'the parameter value is ', $mf_domain ) . ' "on" '
+                                      . __( 'or', $mf_domain ) . ' "off"',
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'preload' => array(
+                ],
+                'preload' => [
                     'type'        => 'select',
                     'id'          => 'preload',
                     'label'       => __( 'When the page loads', $mf_domain ),
                     'name'        =>  'mf_field[option][preload]',
                     'default'     => 'metadata',
-                    'options'     => array(
-                                        'metadata' => 'load only the metadata',
-                                        'none'     => 'Do not load the video',
-                                        'auto'     => 'Load the entire video'
-                                    ),
-                    'add_empty'   => false,
-                    'description' => 'this value can be overridden by specifying a "preload" parameter with the' .
-                                     ' "show_custom_field" shortcode - the parameter value is "metadata", "none"' .
-                                     ' or "auto" - "auto" loads the entire video',
+                    'options'     => [
+                                        'metadata' => __( 'load only the metadata', $mf_domain ), 
+                                        'none'     => __( 'Do not load the video',  $mf_domain ),
+                                        'auto'     => __( 'Load the entire video',  $mf_domain )
+                                     ],
+                    'add_empty'   => FALSE,
+                    'description' => __( 'this value can be overridden by specifying a &quot;preload&quot; parameter with the',
+                                         $mf_domain ) . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain )
+                                         . ' &quot;metadata&quot;, &quot;none&quot; ' .  __( 'or', $mf_domain ) . ' &quot;auto&quot; - &quot;auto&quot; '
+                                         . __( 'loads the entire video', $mf_domain ),
                     'value'       => 'metadata',
                     'div_class'   => '',
                     'class'       => ''
-                ),
+                ],
                 'align' => [
                     'type'        => 'select',
                     'id'          => 'align',
                     'label'       => __( 'Alignment', $mf_domain ),
                     'name'        =>  'mf_field[option][align]',
                     'default'     => 'aligncenter',
-                    'options'     => array(
-                                        'aligncenter' => 'Center',
-                                        'alignright'  => 'Right',
-                                        'alignleft'   => 'Left',
-                                        'alignnone'   => 'None',
-                                    ),
-                    'add_empty'   => false,
-                    'description' => 'alignment is effective only if a caption is specified' .
-                                     ' - this value can be overridden by specifying an "align" parameter with the' .
-                                     ' "show_custom_field" shortcode' .
-                                     ' - the parameter value is "aligncenter", "alignright" or "alignleft"',
+                    'options'     => [
+                                        'aligncenter' => __( 'Center', $mf_domain ),
+                                        'alignright'  => __( 'Right',  $mf_domain ),
+                                        'alignleft'   => __( 'Left',   $mf_domain ),
+                                        'alignnone'   => __( 'None',   $mf_domain )
+                                     ],
+                    'add_empty'   => FALSE,
+                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the',
+                                         $mf_domain ) . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain )
+                                        . ' &quot;aligncenter&quot;, &quot;alignright&quot;, &quot;alignleft&quot; ' . __( 'or', $mf_domain )
+                                        . ' &quot;alignnone&quot;',
                     'value'       => 'aligncenter',
                     'div_class'   => '',
                     'class'       => ''
@@ -114,10 +115,8 @@ class alt_video_field extends mf_custom_fields {
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  'This is the class option of the WordPress caption shortcode' .
-                                      ' and is set only if a caption is specified' .
-                                      ' - this value can be overridden by specifying a "class_name" parameter with the' .
-                                      ' "show_custom_field" shortcode ',
+                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a "class_name" parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -128,10 +127,8 @@ class alt_video_field extends mf_custom_fields {
                     'label'       =>  __( 'Default Aspect Ratio - width:height, e.g. 16:9', $mf_domain ),
                     'name'        =>  'mf_field[option][aspect_ratio]',
                     'default'     =>  '4:3',
-                    'description' =>  'If the browser determines the height then use this as the aspect ratio' .
-                                      ' when the browser is unable to determine the aspect ratio - i.e. for Flash videos' .
-                                      ' - this value can be overridden by specifying a "aspect_ratio" parameter with the' .
-                                      ' "show_custom_field" shortcode ',
+                    'description' =>  __( 'If the browser determines the height then use this as the aspect ratio when the browser is unable to determine the aspect ratio - i.e. for Flash videos - this value can be overridden by specifying a &quot;aspect_ratio&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '4:3',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -142,8 +139,8 @@ class alt_video_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
                     'default'     =>  '320',
-                    'description' =>  'mouseover popup width in pixels - this value can be overridden by specifying a ' .
-                                      '"popup_width" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -154,8 +151,8 @@ class alt_video_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
                     'default'     =>  '240',
-                    'description' =>  'mouseover popup height in pixels - this value can be overridden by specifying a ' .
-                                      '"popup_height" parameter with the "show_custom_field" shortcode',
+                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '240',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -165,10 +162,11 @@ class alt_video_field extends mf_custom_fields {
                     'id'          =>  'popup_style',
                     'label'       =>  __( 'Mouseover Popup Style', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_style]',
-                    'default'     =>  'background-color:white;border:2px solid black;',
-                    'description' =>  'mouseover popup style - this value can be overridden by specifying a ' .
-                                      '"popup_style" parameter with the "show_custom_field" shortcode',
-                    'value'       =>  'background-color:white;border:2px solid black;',
+                    'default'     =>  'background-color:transparent;text-align:center;',
+                    'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
+                                          . __( 'is good for text overlays', $mf_domain ),
+                    'value'       =>  'background-color:transparent;text-align:center;',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -177,15 +175,15 @@ class alt_video_field extends mf_custom_fields {
                     'id'          =>  'popup_classname',
                     'label'       =>  __( 'Mouseover Popup Classname', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_classname]',
-                    'default'     =>  'background-color:white;border:2px solid black;',
-                    'description' =>  'mouseover popup classname - this value can be overridden by specifying a ' .
-                                      '"popup_classname" parameter with the "show_custom_field" shortcode',
+                    'default'     =>  '',
+                    'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ]
-            )
-        );
+            ]
+        ];
     }
 
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
