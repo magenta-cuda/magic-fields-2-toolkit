@@ -3,20 +3,22 @@
 class alt_numeric_field extends mf_custom_fields {
 
     public function _update_description( ) {
-        $this->description = __( "Numeric field with currency prefix and/or unit suffix", 'mf2tk' );
+        global $mf_domain;
+        $this->description = __( "Numeric field with currency prefix and/or unit suffix", $mf_domain );
     }
   
-    public function _options(){
+    public function _options( ) {
+        global $mf_domain;
+        $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];    
         return [
             'option' => [
                 'precision' => [
                     'type'        => 'text',
                     'id'          => 'numeric_precision',
-                    'label'       => __( 'Precision', 'mf2tk' ),
+                    'label'       => __( 'Precision', $mf_domain ),
                     'name'        => 'mf_field[option][precision]',
-                    'description' => __( 'number of decimal places; 0 for integers - second parameter to PHP\'s number_format()' .
-                                     ' - this value can be overridden by specifying a "precision" parameter' .
-                                     ' with the "show_custom_field" shortcode', 'mf2tk' ),
+                    'description' => __( 'number of decimal places; 0 for integers - second parameter to PHP\'s number_format() - this value can be overridden by specifying a &quot;precision&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       => '2',
                     'div_class'   => '',
                     'class'       => ''
@@ -24,13 +26,10 @@ class alt_numeric_field extends mf_custom_fields {
                 'unit'=> [
                     'type'        => 'text',
                     'id'          => 'numeric_unit',
-                    'label'       => __( 'Unit of Measurement', 'mf2tk' ),
+                    'label'       => __( 'Unit of Measurement', $mf_domain ),
                     'name'        => 'mf_field[option][unit]',
-                    'description' => esc_attr__( 'unit of measurement, e.g. "in", "sq mi", " fl oz", ... or "%" ' .
-                                     'or counter e.g. "item:items", " man: men" given as singular:plural pair ' .
-                                     '- really just a suffix to append to the value' .
-                                     ' - this value can be overridden by specifying a "unit" parameter' .
-                                     ' with the "show_custom_field" shortcode', 'mf2tk' ),
+                    'description' => esc_attr__( 'unit of measurement, e.g. &quot;in&quot;, &quot;sq mi&quot;, &quot; fl oz&quot;, ... or &quot;%&quot; or counter e.g. &quot;item:items&quot;, &quot; man: men&quot; given as singular:plural pair - really just a suffix to append to the value - this value can be overridden by specifying a &quot;unit&quot; parameter with the',
+                                         $mf_domain ) . " $show_custom_field_tag shortcode", # TODO: esc_html__()?
                     'value'       => '',
                     'div_class'   => '',
                     'class'       => ''
@@ -38,12 +37,10 @@ class alt_numeric_field extends mf_custom_fields {
                 'currency'=> [
                     'type'        => 'text',
                     'id'          => 'numeric_currency',
-                    'label'       => __( 'Currency', 'mf2tk' ),
+                    'label'       => __( 'Currency', $mf_domain ),
                     'name'        => 'mf_field[option][currency]',
-                    'description' => __( 'currency code e.g. $, &amp;euro;, &amp;#128;, &amp;#x80; ... ' .
-                                     '- really just a prefix to prepend to the value' .
-                                     ' - this value can be overridden by specifying a "currency" parameter' .
-                                     ' with the "show_custom_field" shortcode', 'mf2tk' ),
+                    'description' => __( 'currency code e.g. &quot;$&quot;, &quot;&amp;euro;&quot;, &quot;&amp;#128;&quot;,  &quot;&amp;#x80;&quot; ... - really just a prefix to prepend to the value - this value can be overridden by specifying a &quot;currency&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       => '',
                     'div_class'   => '',
                     'class'       => ''
@@ -51,9 +48,9 @@ class alt_numeric_field extends mf_custom_fields {
                 'min' => [
                     'type'        => 'text',
                     'id'          => 'numeric_min',
-                    'label'       => __( 'Minimum', 'mf2tk' ),
+                    'label'       => __( 'Minimum', $mf_domain ),
                     'name'        => 'mf_field[option][min]',
-                    'description' => __( 'minimum', 'mf2tk' ),
+                    'description' => __( 'minimum', $mf_domain ),
                     'value'       => '0',
                     'div_class'   => '',
                     'class'       => ''
@@ -61,9 +58,9 @@ class alt_numeric_field extends mf_custom_fields {
                 'max' => [
                     'type'        => 'text',
                     'id'          => 'numeric_max',
-                    'label'       => __( 'Maximum', 'mf2tk' ),
+                    'label'       => __( 'Maximum', $mf_domain ),
                     'name'        => 'mf_field[option][max]',
-                    'description' => __( 'maximum', 'mf2tk' ),
+                    'description' => __( 'maximum', $mf_domain ),
                     'value'       => '',
                     'div_class'   => '',
                     'class'       => ''
@@ -71,9 +68,9 @@ class alt_numeric_field extends mf_custom_fields {
                 'step' => [
                     'type'        => 'text',
                     'id'          => 'numeric_step',
-                    'label'       => __( 'Step Size', 'mf2tk' ),
+                    'label'       => __( 'Step Size', $mf_domain ),
                     'name'        => 'mf_field[option][step]',
-                    'description' => __( 'step size', 'mf2tk' ),
+                    'description' => __( 'step size', $mf_domain ),
                     'value'       => '1',
                     'div_class'   => '',
                     'class'       => ''
@@ -81,11 +78,10 @@ class alt_numeric_field extends mf_custom_fields {
                 'decimal_point' => [
                     'type'        => 'text',
                     'id'          => 'numeric_decimal_point',
-                    'label'       => __( 'Decimal Point', 'mf2tk' ),
+                    'label'       => __( 'Decimal Point', $mf_domain ),
                     'name'        => 'mf_field[option][decimal_point]',
-                    'description' => __( 'The separator for the decimal point - third parameter to PHP\'s number_format()' .
-                                     ' - this value can be overridden by specifying a "decimal_point" parameter' .
-                                     ' with the "show_custom_field" shortcode', 'mf2tk' ),
+                    'description' => __( 'The separator for the decimal point - third parameter to PHP\'s number_format() - this value can be overridden by specifying a &quot;decimal_point&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       => '.',
                     'div_class'   => '',
                     'class'       => ''
@@ -93,11 +89,10 @@ class alt_numeric_field extends mf_custom_fields {
                 'thousands_separator' => [
                     'type'        => 'text',
                     'id'          => 'numeric_thousands_separator',
-                    'label'       => __( 'Thousands Separator', 'mf2tk' ),
+                    'label'       => __( 'Thousands Separator', $mf_domain ),
                     'name'        => 'mf_field[option][thousands_separator]',
-                    'description' => __( 'The thousands separator - fourth parameter to PHP\'s number_format()' .
-                                     ' - this value can be overridden by specifying a "thousands_separator" parameter' .
-                                     ' with the "show_custom_field" shortcode', 'mf2tk' ),
+                    'description' => __( 'The thousands separator - fourth parameter to PHP\'s number_format() - this value can be overridden by specifying a &quot;thousands_separator&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       => ',',
                     'div_class'   => '',
                     'class'       => ''
@@ -107,6 +102,9 @@ class alt_numeric_field extends mf_custom_fields {
     }
   
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
+        global $post;
+        global $mf_domain;
+        $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];    
         $options =& $field['options'];
         $min  = ( array_key_exists( 'min',  $options ) && is_numeric ( $options['min']  ) )
                     ? " min  = \"$options[min]\""  : '';
@@ -123,35 +121,41 @@ class alt_numeric_field extends mf_custom_fields {
             $unit = $value == 1 ? $unit[0] : $unit[1];
         }
         $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
-        return <<<EOT
+        ob_start( );
+?>
 <div class="text_field_mf">
     <div class="mf2tk-field-input-main">
         <div class="mf2tk-field_value_pane">
-            <div><span>$currency</span><input type="number" name="$field[input_name]" placeholder="$field[label]"
-                value="$value" $min$max$step style="display:inline-block;text-align:right;width:16em;" /><span>$unit</span>
+            <div><span><?php echo $currency; ?></span><input type="number" name="<?php echo $field['input_name']; ?>" placeholder="<?php echo $field[label]; ?>"
+                value="<?php echo $value; ?>" <?php echo "$min$max$step"; ?> style="display:inline-block;text-align:right;width:16em;" />
+                <span><?php echo $unit; ?></span>
             </div>
         </div>
-        <div style="font-size:75%;margin:5px 50px;">Value has $options[precision] decimal places.</div>
+        <div style="font-size:75%;margin:5px 50px;"><?php _e( 'Value has', $mf_domain ); echo " $options[precision] ";
+            _e( 'decimal places.', $mf_domain ); ?></div>
     </div>
     <!-- usage instructions -->
     <div class="mf2tk-field-input-optional">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>How to Use</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <ul>
-                <li style="list-style:square inside">Use with the Toolkit's shortcode:<br>
+                <li style="list-style:square inside"><?php _e( 'Use with the Toolkit\'s shortcode:', $mf_domain ); ?><br>
                     <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[show_custom_field field="$field[name]$index"]'>
-                    - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in
-                        <strong>Text</strong> mode
-                <li style="list-style:square inside">Call the PHP function:<br>
-                    alt_numeric_field::get_numeric( "$field[name]", $group_index, $field_index, \$post_id )
+                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>"]'>
+                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+                <li style="list-style:square inside"><?php _e( 'Call the PHP function:', $mf_domain ); ?><br>
+                    alt_numeric_field::get_numeric( "<?php echo $field['name']; ?>", <?php echo "$group_index, $field_index, $post->ID"; ?> )
             </ul>
         </div>
     </div>
 </div>
-<!-- $field[input_validate] -->
-EOT;
+<?php
+        $output = ob_get_contents( );
+        ob_end_clean( );
+        error_log( '##### alt_numeric_field::display_field():$output=' . $output );
+        return $output;
     }
     
     public static function get_numeric( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL, $atts = [ ] ) {

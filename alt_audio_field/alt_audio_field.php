@@ -50,9 +50,9 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       => __( 'Loop to beginning when finished and continue playing', $mf_domain ),
                     'name'        => 'mf_field[option][loop]',
                     'default'     =>  '',
-                    'description' => __( 'this value can be overridden by specifying an "loop" parameter with the ',
-                                         $mf_domain ) . "$show_custom_field_tag shortcode" . __( ' - the parameter value is ', $mf_domain )
-                                         . '"on" ' . __( 'or', $mf_domain ) . ' "off"',
+                    'description' => __( 'this value can be overridden by specifying an "loop" parameter with the', $mf_domain )
+                                         . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain )
+                                         . ' "on" ' . __( 'or', $mf_domain ) . ' "off"',
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -63,9 +63,9 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       => __( 'Automatically play as soon as the media file is ready', $mf_domain ),
                     'name'        => 'mf_field[option][autoplay]',
                     'default'     =>  '',
-                    'description' =>  __( 'this value can be overridden by specifying an "autoplay" parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode" . __( ' - the parameter value is ', $mf_domain )
-                                          . '"on" ' . __( 'or', $mf_domain ) . ' "off"',
+                    'description' => __( 'this value can be overridden by specifying an "autoplay" parameter with the', $mf_domain )
+                                         . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain )
+                                         . ' "on" ' . __( 'or', $mf_domain ) . ' "off"',
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -82,9 +82,9 @@ class alt_audio_field extends mf_custom_fields {
                                         'auto'     => __( 'Load the entire audio',  $mf_domain )
                                     ],
                     'add_empty'   => FALSE,
-                    'description' => __( 'this value can be overridden by specifying a &quot;preload&quot; parameter with the ', $mf_domain )
-                                         . "$show_custom_field_tag shortcode" . __( ' - the parameter value is ', $mf_domain )
-                                         . '&quot;metadata&quot;, &quot;none&quot; ' . __( 'or', $mf_domain ) . ' &quot;auto&quot; - &quot;auto&quot; '
+                    'description' => __( 'this value can be overridden by specifying a &quot;preload&quot; parameter with the', $mf_domain )
+                                         . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain )
+                                         . ' &quot;metadata&quot;, &quot;none&quot; ' . __( 'or', $mf_domain ) . ' &quot;auto&quot; - &quot;auto&quot; '
                                          . __( 'loads the entire audio', $mf_domain ),
                     'value'       => 'metadata',
                     'div_class'   => '',
@@ -103,9 +103,9 @@ class alt_audio_field extends mf_custom_fields {
                                         'alignnone'   => __( 'None',    $mf_domain )
                                     ],
                     'add_empty'   => FALSE,
-                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the ',
-                                        $mf_domain ) . "$show_custom_field_tag shortcode " . __( '- the parameter values are ', $mf_domain )
-                                        . '&quot;aligncenter&quot;, &quot;alignright&quot; ' . __( 'and', $mf_domain ) . ' &quot;alignleft&quot;',
+                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the',
+                                        $mf_domain ) . " $show_custom_field_tag shortcode - " . __( 'the parameter values are', $mf_domain )
+                                        . ' &quot;aligncenter&quot;, &quot;alignright&quot; ' . __( 'and', $mf_domain ) . ' &quot;alignleft&quot;',
                     'value'       => 'aligncenter',
                     'div_class'   => '',
                     'class'       => ''
@@ -116,8 +116,8 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a &quot;class_name&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a &quot;class_name&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -128,8 +128,8 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -140,8 +140,8 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
                     'default'     =>  '240',
-                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '240',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -152,9 +152,9 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Style', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_style]',
                     'default'     =>  'background-color:transparent;text-align:center;',
-                    'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode"
-                                          . ' - &quot;background-color:transparent;text-align:center;&quot; is good for text overlays',
+                    'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
+                                          . __( 'is good for text overlays', $mf_domain ),
                     'value'       =>  'background-color:transparent;text-align:center;',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -165,8 +165,8 @@ class alt_audio_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Classname', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_classname]',
                     'default'     =>  '',
-                    'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
