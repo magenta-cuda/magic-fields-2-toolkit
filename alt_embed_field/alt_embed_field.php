@@ -4,83 +4,79 @@ class alt_embed_field extends mf_custom_fields {
 
     private static $suffix_caption = '_mf2tk_caption';
 
-    public function _update_description() {
+    public function _update_description( ) {
         global $mf_domain;
-        
         $this->description = __( 'This is a Magic Fields 2 field for WordPress\'s embed shortcode facility.', $mf_domain );
     }
   
     public function _options() {
         global $mf_domain;
-        
-        return array(
-            'option'  => array(
-                'max_width'  => array(
+        $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];            
+        return [
+            'option'  => [
+                'max_width'  => [
                     'type'        =>  'text',
                     'id'          =>  'embed_max_width',
-                    'label'       =>  __('Width',$mf_domain),
+                    'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  'width in pixels - this value can be overridden by specifying a "width" parameter' .
-                                      ' with the "show_custom_field" shortcode',
+                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a &quot;width&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'max_height'  => array(
+                ],
+                'max_height'  => [
                     'type'        =>  'text',
                     'id'          =>  'embed_max_height',
-                    'label'       =>  __('Height',$mf_domain),
+                    'label'       =>  __( 'Height', $mf_domain ),
                     'name'        =>  'mf_field[option][max_height]',
                     'default'     =>  '0',
-                    'description' =>  'height in pixels' .
-                                       ' - 0 lets the browser set the height to preserve the aspect ratio - recommended' .
-                                       ' - this value can be overridden by specifying a "height" parameter' .
-                                       ' with the "show_custom_field" shortcode',
+                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '0',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                ),
-                'align' => array(
+                ],
+                'align' => [
                     'type'        => 'select',
                     'id'          => 'align',
                     'label'       => __( 'Alignment', $mf_domain ),
                     'name'        =>  'mf_field[option][align]',
                     'default'     => '',
-                    'options'     => array(
-                                        'aligncenter' => 'Center',
-                                        'alignright'  => 'Right',
-                                        'alignleft'   => 'Left',
-                                        'alignnone'   => 'None',
-                                    ),
-                    'add_empty'   => false,
-                    'description' => 'alignment is effective only if a caption is specified' .
-                                     ' - this value can be overridden by specifying an "align" parameter with the' .
-                                     ' "show_custom_field" shortcode' .
-                                     ' - the parameter values are "aligncenter", "alignright" and "alignleft"',
+                    'options'     => [
+                                        'aligncenter' => __( 'Center', $mf_domain ),
+                                        'alignright'  => __( 'Right',  $mf_domain ),
+                                        'alignleft'   => __( 'Left',   $mf_domain ),
+                                        'alignnone'   => __( 'None',   $mf_domain )
+                                     ],
+                    'add_empty'   => FALSE,
+                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the',
+                                         $mf_domain ) . " $show_custom_field_tag shortcode - " . __( 'the parameter values are', $mf_domain )
+                                         . ' &quot;aligncenter&quot;, &quot;alignright&quot;, &quot;alignleft&quot; ' . __( 'and', $mf_domain )
+                                         . ' &quot;alignnone&quot;',
                     'value'       => '',
                     'div_class'   => '',
                     'class'       => ''
-                ),
-                'class_name'  => array(
+                ],
+                'class_name'  => [
                     'type'        =>  'text',
                     'id'          =>  'class_name',
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  'This is the class option of the WordPress caption shortcode' .
-                                      ' and is set only if a caption is specified' .
-                                      ' - this value can be overridden by specifying a "class_name" parameter with the' .
-                                      ' "show_custom_field" shortcode ',
+                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a "class_name" parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
+        global $post;
         global $mf_domain;
         $opts = $field[ 'options' ];
         $null = NULL;
@@ -103,52 +99,59 @@ class alt_embed_field extends mf_custom_fields {
         $no_caption_border = 2;
         $no_caption_width = $width + 2 * ( $no_caption_padding + $no_caption_border );
         # generate and return the HTML
-        $output = <<<EOD
+        ob_start( );
+?>
 <div class="media_field_mf">
     <div class="mf2tk-field-input-main">
-        <h6>URL of the Page Containing the Embed Element</h6>
+        <h6><?php _e( 'URL of the Page Containing the Embed Element', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane">
-            <input type="text" name="$field[input_name]" class="mf2tk-alt_embed_admin-url" maxlength="2048"
-                placeholder="URL of the page containing the embed element" value="$field[input_value]" $field[input_validate]>
-            <button class="mf2tk-alt_embed_admin-refresh">Reload Embed</button>
-            <h6 style="display:inline;">This is the Embed element for the URL specified above.</h6>
-            <div class="mf2tk-alt_embed_admin-embed" style="width:{$width}px;padding-top:10px;margin:auto;">$embed</div>
+            <input type="text" name="<?php echo $field['input_name']; ?>" class="mf2tk-alt_embed_admin-url" maxlength="2048"
+                placeholder="<?php _e( 'URL of the page containing the embed element', $mf_domain ); ?>" value="<?php echo $field['input_value']; ?>"
+                <?php echo $field['input_validate']; ?>>
+            <button class="mf2tk-alt_embed_admin-refresh"><?php _e( 'Reload Embed', $mf_domain ); ?></button>
+            <h6 style="display:inline;"><?php _e( 'This is the Embed element for the URL specified above.', $mf_domain ); ?></h6>
+            <div class="mf2tk-alt_embed_admin-embed" style="width:<?php echo $width; ?>px;padding-top:10px;margin:auto;"><?php echo $embed; ?></div>
         </div>
     </div>
     <!-- optional caption field -->
     <div class="mf2tk-field-input-optional mf2tk-caption-field">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>Optional Caption for Embed</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'Optional Caption for Embed', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <input type="text" name="$caption_input_name" maxlength="256" placeholder="optional caption for embed"
-                value="$caption_input_value">
+            <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256" placeholder="<?php _e( 'optional caption for embed', $mf_domain ); ?>"
+                value="<?php echo $caption_input_value; ?>">
         </div>
     </div>
     <!-- usage instructions -->    
     <div class="mf2tk-field-input-optional mf2tk-usage-field">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6 style>How to Use</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6 style><?php _e( 'How to Use', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <ul>
-                <li class="mf2tk-how-to-use-with-caption" style="list-style:square inside;{$how_to_use_with_caption_style}">Use with the Toolkit's shortcode - (with caption):<br>
+                <li class="mf2tk-how-to-use-with-caption" style="<? echo $how_to_use_with_caption_style; ?>">
+                    <?php _e( 'Use with the Toolkit\'s shortcode - (with caption):', $mf_domain ); ?><br>
                     <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[show_custom_field field="$field[name]$index" filter="url_to_media"]'>
-                    - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in
-                        <strong>Text</strong> mode
-                <li class="mf2tk-how-to-use-no-caption" style="list-style:square inside;{$how_to_use_no_caption_style}">Use with the Toolkit's shortcode - (no caption):<br>
-                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:{$no_caption_width}px;border:{$no_caption_border}px solid black;background-color:gray;padding:{$no_caption_padding}px;margin:0 auto;"&gt;
-    [show_custom_field field="$field[name]$index" filter="url_to_media"]
+                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]'>
+                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+                <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
+                    <?php _e( 'Use with the Toolkit\'s shortcode - (no caption):', $mf_domain ); ?><br>
+                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:<?php echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0 auto;"&gt;
+    [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]
 &lt;/div&gt;</textarea><br>
-                    - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in
-                        <strong>Text</strong> mode
-                <li style="list-style:square inside">Call the PHP function:<br>
-                    alt_embed_field::get_embed( "$field[name]", $group_index, $field_index, \$post_id, \$width, \$height )
+                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+                <li><?php _e( 'Call the PHP function:', $mf_domain ); ?><br>
+                    alt_embed_field::get_embed( "<?php echo $field['name']; ?>", <?php echo "$group_index, $field_index, $post->ID, $width, $height"; ?> )
             </ul>
         </div>
     </div>
 </div>
 <br>
-EOD;
+<?php
+        $output = ob_get_contents( );
+        ob_end_clean( );
+        error_log( '##### alt_numeric_field::display_field():$output=' . $output );
         return $output;
     }
   
