@@ -1,0 +1,43 @@
+div#mf2tk-unreferenced-files-container{
+    clear:both;
+    padding:20px;
+    border:2px solid black;
+    margin:20px;
+}
+
+div#mf2tk-unreferenced-files-container h2{
+    text-align:center;
+    font-weight:bold;
+}
+
+div#mf2tk-unreferenced-files{
+    color:#070707;
+    background-color:#d7d7d7;
+}
+
+div#dir-files-mc, div#dir-unreferenced-mc, div id#dir-referenced-mc{
+    margin:10px 20px;
+    padding:5px;
+}
+
+table.mf2tk-unreferenced, table.mf2tk-unreferenced th, table.mf2tk-unreferenced td{
+    padding:5px 10px;
+    border:2px solid black;
+    border-collapse:collapse;
+}
+
+table.mf2tk-unreferenced{
+    margin:10px;
+}
+
+span.mf2tk-delete-mf-files{
+  font-weight:bold;
+}
+
+span.mf2tk-success{
+    color:green;
+}
+
+span.mf2tk-failure{
+    color:red;
+}

@@ -21,14 +21,6 @@
     actual values in the database when appropriate, e.g. post title is substituted for post id in related type custom fields.
  */
  
-if ( is_admin( ) ) {
-    add_action( 'admin_enqueue_scripts', function( $hook ) {
-        error_log( 'action:admin_enqueue_scripts():$hook=' . $hook );
-        wp_enqueue_script( 'jquery-ui-draggable' );
-        wp_enqueue_script( 'jquery-ui-droppable' );
-    } );
-}
-
 class Search_Using_Magic_Fields_Widget extends WP_Widget {
     const GET_FORM_FOR_POST_TYPE            = 'get_form_for_post_type';        # the AJAX action to get the form for post type selected by user
     const SQL_LIMIT                         = '25';                            # maximum number of items to show per custom field
@@ -130,7 +122,7 @@ EOD
 <?php _e( 'Show search results in alternate format', $mf_domain ); ?>:
 </div>
 <?php
-        }
+        }  # if ( $instance[ 'enable_table_view_option' ] === 'table view option enabled' ) {
 ?>
 </div>
 <div class="scpbcfw-search-fields-submit">
@@ -150,31 +142,24 @@ jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbc
             mf2tk_get_form_nonce:'<?php echo wp_create_nonce( Search_Using_Magic_Fields_Widget::GET_FORM_FOR_POST_TYPE ); ?>',
             post_type:postType,
             magic_fields_search_widget_option:
-                jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic_fields_search_widget_option")
-                    .val(),
+                jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic_fields_search_widget_option").val(),
             magic_fields_search_widget_number:
-                jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic_fields_search_widget_number")
-                    .val()
+                jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic_fields_search_widget_number").val()
         },
         function(response){
             jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> div#magic-fields-parameters").html(response);
-            jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic-fields-reset")
-                .prop("disabled",false);
-            jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic-fields-search")
-                .prop("disabled",false);
-            jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> div#magic-fields-submit-box")
-                .css("display","block");
+            jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic-fields-reset").prop("disabled",false);
+            jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> input#magic-fields-search").prop("disabled",false);
+            jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> div#magic-fields-submit-box").css("display","block");
         }
     );
 });
 jQuery(document).ready(function(){
-    if(jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type \
-        option.real_post_type").length===1){
-        jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type \
-            option.real_post_type").prop("selected",true);
+    if(jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type option.real_post_type").length===1){
+        jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type option.real_post_type")
+            .prop("selected",true);
         jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type").change();
-        jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type")
-            .parent("div").css("display","none");
+        jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type").parent("div").css("display","none");
     }
     jQuery("form#search-using-magic-fields-<?php echo $this->number; ?> select.scpbcfw-search-fields-post-type")
         .mousedown(function(){jQuery(this).val("no-selection");});
@@ -187,7 +172,7 @@ jQuery(document).ready(function(){
         if ( $new[ 'select_post_type' ] !== 'generic' ) {
             $new[ 'table_shortcode' ] = $old[ 'table_shortcode' ];
         }
-        unset( $new['select_post_type'] );
+        unset( $new[ 'select_post_type' ] );
         #return array_map( function( $values ) {
         #    return is_array( $values) ? array_map( strip_tags, $values ) : strip_tags( $values );
         #}, $new );
@@ -253,19 +238,20 @@ EOD
             $MF_TABLE_CUSTOM_FIELDS = MF_TABLE_CUSTOM_FIELDS;
             $SQL_LIMIT              = self::SQL_LIMIT;
             # Again the sql is tricky to avoid double counting posts with repeating fields
-            $fields = $wpdb->get_results( <<<EOD
+            $fields = $wpdb->get_results( $wpdb->prepare( <<<EOD
 SELECT name, type, label, COUNT(*) count
     FROM ( SELECT f.name, f.type, f.label, m.post_id FROM $MF_TABLE_CUSTOM_FIELDS f, $wpdb->postmeta m, $wpdb->posts p 
-        WHERE m.meta_key = f.name AND m.post_id = p.ID AND p.post_type = "$name" AND f.post_type = "$name" AND m.meta_value IS NOT NULL
+        WHERE m.meta_key = f.name AND m.post_id = p.ID AND p.post_type = "%s" AND f.post_type = "%s" AND m.meta_value IS NOT NULL
             AND m.meta_value != "" AND m.meta_key != "mf2tk_key" AND f.type != "alt_table" AND f.type != "alt_template" GROUP BY f.name, m.post_id ) d
     GROUP BY name ORDER BY count DESC LIMIT $SQL_LIMIT
 EOD
-                , OBJECT_K );
+                , $name, $name ), OBJECT_K );
             # add the post_content field giving it a special name since it requires special handling
-            $fields['pst-std-post_content'] = (object) [ 'label' => 'Post Content', 'type' => 'multiline', 'count' => $type->count ];
-            $sql = <<<EOD
-SELECT COUNT(*) FROM $wpdb->posts p WHERE p.post_type = "$name" AND p.post_status = "publish" AND p.post_author IS NOT NULL
-EOD;
+            $fields['pst-std-post_content']  = (object) [ 'label' => 'Post Content', 'type' => 'multiline', 'count' => $type->count ];
+            $sql = $wpdb->prepare( <<<EOD
+SELECT COUNT(*) FROM $wpdb->posts p WHERE p.post_type = "%s" AND p.post_status = "publish" AND p.post_author IS NOT NULL
+EOD
+                , $name );
             # add the post_author field giving it a special name since it requires special handling
             $fields[ 'pst-std-post_author' ] = (object) [ 'label' => 'Author', 'type' => 'author', 'count' => $wpdb->get_var( $sql ) ];
             # handle deleted fields and newly created fields
@@ -277,16 +263,16 @@ EOD;
             $previous = array_intersect( $previous, $current );
             $new      = array_diff( $current, $previous );
             $current  = array_merge( $previous, $new );
+
             foreach ( $current as $meta_key ) {
 ?>
 <div class="mf2tk-selectable-field">
 <?php
-                if ( ( ( $prefix = substr( $meta_key, 0, 8 ) ) === 'tax-cat-' || $prefix === 'tax-tag-' )
-                    && array_key_exists( $meta_key, $the_taxonomies ) ) {
+                if ( ( ( $prefix = substr( $meta_key, 0, 8 ) ) === 'tax-cat-' || $prefix === 'tax-tag-' ) && array_key_exists( $meta_key, $the_taxonomies ) ) {
                     $tax_name    = $meta_key;
                     $db_taxonomy = $the_taxonomies[ $tax_name ];
                     $wp_taxonomy = $wp_taxonomies[ $db_taxonomy->taxonomy ];
-                    $tax_type    = ( $wp_taxonomy->hierarchical ) ? 'tax-cat-' : 'tax-tag-';
+                    $tax_type    = ( $wp_taxonomy->hierarchical ) ? 'tax-cat-'    : 'tax-tag-';
                     $tax_label   = ( $wp_taxonomy->hierarchical ) ? ' (category)' : ' (tag)';
 ?>
     <input type="checkbox" class="mf2tk-selectable-field" id="<?php echo $this->get_field_id( $name ); ?>"
@@ -298,8 +284,7 @@ EOD;
         <?php if ( $instance && !isset( $instance['enable_table_view_option'] ) ) { echo 'disabled'; } ?>>
         <?php echo "{$wp_taxonomy->label}{$tax_label} ($db_taxonomy->count)"; ?>
 <?php
-                }   # if ( ( ( $prefix = substr( $meta_key, 0, 8 ) ) === 'tax-cat-' || $prefix === 'tax-tag-' )
-                else {
+                } else {   # if ( ( ( $prefix = substr( $meta_key, 0, 8 ) ) === 'tax-cat-' || $prefix === 'tax-tag-' ) && array_key_exists( $meta_key, $the_taxonomies ) ) {
                     $field = $fields[ $meta_key ];
                     if ( substr_compare( $meta_key, 'mf2tk_key', -9 ) === 0 ) {
                         continue;
@@ -315,7 +300,7 @@ EOD;
             echo 'disabled'; } ?>>
         <?php echo "$field->label (field) ($field->count)"; ?>
 <?php
-                }   # if ( true ) {
+                }   # } else {   # if ( ( ( $prefix = substr( $meta_key, 0, 8 ) ) === 'tax-cat-' || $prefix === 'tax-tag-' ) && array_key_exists( $meta_key, $the_taxonomies ) ) {
 ?>
     <!-- a drop point -->
     <div class="mf2tk-selectable-field-after"></div>
@@ -362,7 +347,6 @@ EOD;
 </div>
 <div class="scpbcfw-admin-search-fields-option">
 <?php _e( 'The content template to use to display the search results', $mf_domain ); ?>:<br>
-<button id="mf2tk-edit-search-result-template-button" style="float:right;visibility:hidden;" disabled>...</button>
 <?php _e( 'Post Type', $mf_domain ); ?>:
 <select id="mf2tk-select-search-result-post-type-select" name="<?php echo $this->get_field_name( 'select_post_type' ); ?>">
     <option value="generic" selected><?php _e( 'Generic', $mf_domain ); ?></option>
@@ -375,8 +359,8 @@ EOD;
 <textarea
     id="<?php echo $this->get_field_id( 'table_shortcode' ); ?>" name="<?php echo $this->get_field_name( 'table_shortcode' ); ?>"
     class="scpbcfw-admin-search-fields-option-textarea" rows="8"
-    <?php if ( $instance && !isset( $instance['enable_table_view_option'] ) ) { echo 'disabled'; } ?> placeholder="The default content macro will be used."
-    style="clear:both">
+    <?php if ( $instance && !isset( $instance['enable_table_view_option'] ) ) { echo 'disabled'; } ?>
+        placeholder="<?php _e( 'The default content macro will be used.', $mf_domain ); ?>" style="clear:both">
 <?php 
     if ( !empty( $instance['table_shortcode'] ) ) {
         $macro = $instance['table_shortcode'];
@@ -386,6 +370,7 @@ EOD;
     echo htmlspecialchars( $macro );
 ?>
 </textarea>
+<button id="mf2tk-edit-search-result-template-button" style="float:right;visibility:hidden;" disabled>...</button>
 <!-- start create/edit search result template -->
 <div id="mf2tk-edit-search-result-template-form" style="display:none;">
 <h3 id="mf2tk-edit-search-result-template-h3"><?php _e( 'Loading ... please wait ...', $mf_domain ); ?></h3>
@@ -423,8 +408,8 @@ jQuery("select#mf2tk-select-search-result-post-type-select").change(function(){
         textarea.val("Loading ... Please wait ...");
         jQuery.post(ajaxurl,{action:'mf2tk_get_search_result_template',post_type:postType},function(r){
             textarea.val(r).prop("readonly",true);
-            button.text(r==="<?php echo self::$TEMPLATE_NOT_FOUND; ?>"?"Create":"Re-Create").css("visibility","visible")
-                .prop("disabled",false);
+            button.text((r==="<?php echo self::$TEMPLATE_NOT_FOUND; ?>"?"<?php _e( 'Create', $mf_domain ); ?>":"<?php _e( 'Re-Create', $mf_domain ); ?>")
+                +" "+"<?php _e( 'the Content Template', $mf_domain); ?>").css("visibility","visible").prop("disabled",false);
         });
     }
 });
@@ -512,7 +497,7 @@ jQuery(document).ready(function(){
             }
             return $arr;
         }
-        $arr = false;
+        $arr = FALSE;
         return $arr;
     }
 }   # class Search_Using_Magic_Fields_Widget extends WP_Widget
@@ -522,9 +507,19 @@ add_action( 'widgets_init', function( ) {
 } );
 
 if ( is_admin( ) ) {
+    
+    # add admin actions
+    
     add_action( 'admin_enqueue_scripts', function( $hook ) {
+        error_log( 'action:admin_enqueue_scripts():$hook=' . $hook );
+        if ( $hook !== 'widgets.php' ) {
+            return;
+        }
+        wp_enqueue_script( 'jquery-ui-draggable' );
+        wp_enqueue_script( 'jquery-ui-droppable' );
         wp_enqueue_style( 'mf2tk_admin', plugins_url( 'css/mf2tk_admin.css', __FILE__ ) );
     } );
+    
     add_action('admin_head', function( ) {
 ?>
 <style>
@@ -533,6 +528,9 @@ div.mf2tk-selectable-field-after.mf2tk-hover{background-color:black;}
 </style>
 <?php
     } );
+    
+    # admin AJAX actions
+    
     # Use the no privilege version also in privileged mode
     add_action( 'wp_ajax_' . Search_Using_Magic_Fields_Widget::GET_FORM_FOR_POST_TYPE, function( ) {
         do_action( 'wp_ajax_nopriv_' . Search_Using_Magic_Fields_Widget::GET_FORM_FOR_POST_TYPE );
@@ -822,7 +820,7 @@ jQuery("div.scpbcfw-search-fields-submit input[type='button']#magic-fields-reset
 });
 </script>
 <?php
-        die();
+        die;
     } );   # add_action( 'wp_ajax_nopriv_' . Search_Using_Magic_Fields_Widget::GET_FORM_FOR_POST_TYPE,
     
     # administrator can create/edit the search result template for a post type
@@ -1014,12 +1012,12 @@ foreach ( $all_fields as $field => $is_checked ) {
             <fieldset class="mf2tk-configure mf2tk-styles" style="padding:10px;">
                 <legend><?php _e( 'Styles', $mf_domain ); ?>:</legend>
                 <div>
-                    <label class="mf2tk-configure">css width of table&nbsp;&nbsp;&nbsp;<input type="text" class="mf2tk-configure" id="mf2tk-table-width"
-                         style="width:10em;" value="<?php echo $width; ?>"></label>
+                    <label class="mf2tk-configure"><?php _e( 'css width of table', $mf_domain ); ?>&nbsp;&nbsp;&nbsp;
+                        <input type="text" class="mf2tk-configure" id="mf2tk-table-width" style="width:10em;" value="<?php echo $width; ?>"></label>
                 </div>
             </fieldset>
             <button id="mf2tk-search-result-template-refresh-button" style="float:right;">
-                <?php _e( 'Refresh the Content Template', $mf_domain ); ?></button>
+                <?php _e( 'Reconfigure the Content Template', $mf_domain ); ?></button>
         </div>
     </div>
     <input type="hidden" id="mf2tk-search-result-template-fields-filters-input" value="<?php echo $input_value; ?>">
@@ -1078,8 +1076,7 @@ foreach ( $all_fields as $field => $is_checked ) {
         text=text.replace(/field="([\w;]*)"/g,function(match,old){return 'field="'+fields+'"';});
         text=text.replace(/filter="([\w;]*)"/g,function(match,old){return 'filter="'+filters+'"';});
         textarea.val(text);
-        jQuery("input#mf2tk-search-result-template-fields-filters-input")
-            .val("field="+fields+"|filter="+filters+"|width="+width+";");
+        jQuery("input#mf2tk-search-result-template-fields-filters-input").val("field="+fields+"|filter="+filters+"|width="+width+";");
         e.preventDefault();
         return false;
     });
@@ -1122,8 +1119,7 @@ EOD
             die( Search_Using_Magic_Fields_Widget::$TEMPLATE_NOT_FOUND );
         }
     } );   # add_action( 'wp_ajax_mf2tk_get_search_result_template', function( ) {
-        
-        
+
     add_action( 'wp_ajax_mf2tk_update_search_result_template', function( ) {
         global $wpdb;
         $fields_filters = get_option( Search_Using_Magic_Fields_Widget::SEARCH_RESULTS_FIELDS_AND_FILTERS, [ ] );
@@ -1151,12 +1147,16 @@ EOD
             : "Error: Content template not created/updated." ) );
     } );   # add_action( 'wp_ajax_mf2tk_update_search_result_template', function( ) {
         
-} else {  # if ( is_admin() ) {
+} else {  # if ( is_admin( ) ) {
+    
+    # add non-admin actions and filters
 
     add_action( 'wp_enqueue_scripts', function( ) {
         wp_enqueue_style( 'mf2tk_search', plugins_url( 'css/mf2tk_search.css', __FILE__ ) );
         wp_enqueue_script( 'jquery' );
     } );
+    
+    # add actions and filters to modify the query
     
     add_action( 'parse_query', function( &$query ) {
         if ( !$query->is_main_query() || !array_key_exists( 'magic_fields_search_form', $_REQUEST ) ) {
@@ -1400,12 +1400,17 @@ EOD
     }, 10, 2 );   #	add_filter( 'posts_where', function( $where, $query ) {
         
     # add null 'query_string' filter to force parse_str() call in WP::build_query_string() - otherwise name gets set ? TODO: why?
-    add_filter( 'query_string', function( $arg ) { return $arg; } );
+    add_filter( 'query_string', function( $arg ) {
+        return $arg;
+    } );
     
-    # Optionally search results can be displayed using a user defined post content template
+    # If the search requests specifies it the search results can be displayed using a user defined post content template
     
     if ( isset( $_REQUEST[ 'magic-fields-show-using-macro' ] ) && $_REQUEST[ 'magic-fields-show-using-macro' ] === 'use macro' ) {
-        # for alternate output format do not page output
+        
+        # add filters and actions for alternate output format
+        
+        # for the alternate output format do not page output
         add_filter( 'post_limits', function( $limit, &$query ) {
             if ( !$query->is_main_query( ) ) {
                 return $limit;
@@ -1438,7 +1443,7 @@ EOD
                 get_header( );
                 echo __( 'Nothing found', $mf_domain );
                 get_footer( );
-                exit( );
+                die;
             }
             $posts = array_map( function( $post ) {
                 return $post->ID;
@@ -1513,9 +1518,11 @@ EOD;
             $content = do_shortcode( $content );
             echo $content;
             get_footer( );
-            exit();
-        } );
+            die;
+        } );  # add_action( 'template_redirect', function( ) {
+            
     }   # if ( isset( $_REQUEST[ 'magic-fields-show-using-macro' ] ) && $_REQUEST[ 'magic-fields-show-using-macro' ] === 'use macro' ) {
+        
 }   # } else {  # if ( is_admin() ) {
 
 ?>

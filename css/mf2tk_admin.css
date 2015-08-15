@@ -237,7 +237,7 @@ textarea#mf2tk-search-result-template-textarea{
     margin-right:auto;
 }
 
-button#mf2tk-save-search-result-template-button,button#mf2tk-search-result-template-refresh-button{
+button#mf2tk-edit-search-result-template-button,button#mf2tk-save-search-result-template-button,button#mf2tk-search-result-template-refresh-button{
     background-color:#f0f0f0;
     width:18em;
     float:right;
@@ -247,10 +247,10 @@ button#mf2tk-save-search-result-template-button,button#mf2tk-search-result-templ
     margin:0px;
 }
 
-button#mf2tk-save-search-result-template-button:hover,button#mf2tk-search-result-template-refresh-button:hover{
+button#mf2tk-edit-search-result-template-button:hover,button#mf2tk-save-search-result-template-button:hover,
+button#mf2tk-search-result-template-refresh-button:hover{
     background-color:white;
 }
-
 
 button#mf2tk-save-search-result-template-button{
     margin-top:5px;

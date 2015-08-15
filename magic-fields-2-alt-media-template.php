@@ -104,7 +104,7 @@
         <h6><?php _e( 'Main', $mf_domain ); echo " $ucfirst_media_type"; ?></h6>
         <div class="mf2tk-field_value_pane">
             <input type="text" name="<?php echo $field['input_name']; ?>" id="<?php echo $field_id; ?>" class="mf2tk-<?php echo $media_type; ?>"
-                maxlength="2048" placeholder="<?php _e( 'URL of the $media_type', $mf_domain ); ?>" value="<?php echo $input_value; ?>"
+                maxlength="2048" placeholder="<?php _e( 'URL of the', $mf_domain ); echo " $ucfirst_media_type"; ?>" value="<?php echo $input_value; ?>"
                 <?php echo $field['input_validate']; ?>>
             <button id="<?php echo $field_id; ?>.media-library-button" class="mf2tk-media-library-button"><?php _e( 'Get URL from Media Library', $mf_domain ); ?></button>
             <button id="<?php echo $field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh"><?php _e( 'Reload Media', $mf_domain ); ?></button>
