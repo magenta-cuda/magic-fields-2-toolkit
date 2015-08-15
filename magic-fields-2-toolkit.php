@@ -19,11 +19,11 @@
 namespace {
   
 class Magic_Fields_2_Toolkit_Init {
-    public function __construct() {
+    public function __construct( ) {
         global $wpdb;
-        add_action( 'admin_init', function() {
+        add_action( 'admin_init', function( ) {
             if ( !is_plugin_active( 'magic-fields-2/main.php' ) ) {
-                add_action( 'admin_notices', function() {
+                add_action( 'admin_notices', function( ) {
 ?>
 <div style="clear:both;font-weight:bold;border:2px solid red;padding:5px 10px;margin:10px;">Magic Templates requires that plugin <a href="https://wordpress.org/plugins/magic-fields-2/">Magic Fields 2</a> be installed
 and activated.</div> 
@@ -33,13 +33,25 @@ and activated.</div>
         } );
         add_action( 'admin_enqueue_scripts', function( $hook ) {
             global $wp_scripts;
-            if ( $hook !== 'post.php' && $hook !== 'post-new.php' ) { return; }
-            wp_enqueue_style( 'mf2tk_admin', plugins_url( 'css/mf2tk_admin.css', __FILE__ ) );
-            wp_enqueue_script( 'mf2tk_admin', plugins_url( 'js/mf2tk_admin.js', __FILE__ ), [ 'jquery' ] );
+            global $mf_domain;
+            
+            if ( $hook !== 'post.php' && $hook !== 'post-new.php' ) {
+                return;
+            }
+            wp_enqueue_style(  'mf2tk_admin',     plugins_url( 'css/mf2tk_admin.css',   __FILE__ ) );
+            wp_enqueue_script( 'mf2tk_admin',     plugins_url( 'js/mf2tk_admin.js',     __FILE__ ), [ 'jquery' ] );
             wp_enqueue_script( 'mf2tk_alt_media', plugins_url( 'js/mf2tk_alt_media.js', __FILE__ ), [ 'jquery' ] );
             $options = get_option( 'magic_fields_2_toolkit_enabled', [ ] );
             $mf2tkDisableHowToUse = array_key_exists( 'dumb_shortcodes', $options ) ? 'false' : 'true';
             $wp_scripts->add_data( 'mf2tk_admin', 'data', "var mf2tkDisableHowToUse=$mf2tkDisableHowToUse;" );
+            wp_localize_script( 'mf2tk_admin', 'mf2tk_admin_data', [
+                'open'              => __( 'Open',                                                           $mf_domain ),
+                'how_to_use'        => __( 'How to Use with the Toolkit\'s Shortcode',                       $mf_domain ),
+                'show_custom_field' => mf2tk\get_tags( )[ 'show_custom_field' ],
+                'select'            => __( 'select',                                                         $mf_domain ),
+                'copy_and_paste'    => __( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain )
+
+            ] );
         } );
         include( dirname(__FILE__) . '/magic-fields-2-toolkit-settings.php' );
         $options = get_option( 'magic_fields_2_toolkit_enabled', [ ] );
@@ -47,12 +59,10 @@ and activated.</div>
         #    . print_r( $options, TRUE ) );
         if ( is_array( $options ) ) {
             if ( array_key_exists( 'custom_post_copier', $options ) ) {
-                include( dirname(__FILE__)
-                    . '/magic-fields-2-custom-post-copier.php' );
+                include( dirname(__FILE__) . '/magic-fields-2-custom-post-copier.php' );
             }
             if ( array_key_exists( 'dumb_shortcodes', $options ) ) {
-                include_once( dirname(__FILE__)
-                    . '/magic-fields-2-dumb-shortcodes-kai.php' );
+                include_once( dirname(__FILE__) . '/magic-fields-2-dumb-shortcodes-kai.php' );
             }
             if ( array_key_exists( 'dumb_macros', $options ) ) {
                 include( dirname( __FILE__ ) . '/magic-fields-2-dumb-macros.php' );
@@ -486,6 +496,38 @@ function re_align( $option ) {
 
 function get( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL ) {
     return \get( $field_name, $group_index, $field_index, $post_id );
+}
+
+# get_how_to_use_html( ) returns the how to use HTML for all the alt_*_fields 
+
+function get_how_to_use_html( $field, $group_index, $field_index, $post, $parameters = '', $php_function = NULL ) {
+    global $mf_domain;
+    $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
+    if ( empty( $php_function ) ) {
+        $php_function = 'mf2tk\get_data2';
+    }
+    ob_start( );
+?>
+<!-- usage instructions -->
+<div class="mf2tk-field-input-optional">
+    <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+    <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
+    <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
+        <ul>
+            <li style="list-style:square inside"><?php _e( 'Use with the Toolkit\'s shortcode', $mf_domain ); ?>:<br>
+                <input type="text" class="mf2tk-how-to-use" size="50" readonly
+                    value='[<?php echo( get_tags( )[ 'show_custom_field' ] ); ?> field="<?php echo "{$field['name']}{$index}"; ?>"<?php echo $parameters; ?>]'>
+                <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
+                    <?php _e( 'copy and paste above into the editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+            <li style="list-style:square inside"><?php _e( 'Call the PHP function', $mf_domain ); ?>:<br>
+                <?php echo $php_function; ?>( "<?php echo $field['name']; ?>", <?php echo "{$group_index}, {$field_index}, {$post->ID}"; ?> )
+        </ul>
+    </div>
+</div>
+<?php
+    $output = ob_get_contents( );
+    ob_end_clean( );
+    return $output;
 }
 
 }

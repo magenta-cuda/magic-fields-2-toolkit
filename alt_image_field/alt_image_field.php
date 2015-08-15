@@ -22,8 +22,8 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a "width" parameter with the ', $mf_domain )
-                                          . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a "width" parameter with the', $mf_domain )
+                                          . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -34,8 +34,8 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Height', $mf_domain ),
                     'name'        =>  'mf_field[option][max_height]',
                     'default'     =>  '0',
-                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '0',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -53,9 +53,9 @@ class alt_image_field extends mf_custom_fields {
                                         'alignnone'   => __( 'None',   $mf_domain )
                                     ],
                     'add_empty'   => FALSE,
-                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the ',
-                                        $mf_domain ) . "$show_custom_field_tag shortcode" . __( ' - the parameter values are ', $mf_domain )
-                                        . '&quot;aligncenter&quot;, &quot;alignright&quot; ' . __( 'and', $mf_domain ) . ' &quot;alignleft&quot;',
+                    'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the',
+                                        $mf_domain ) . " $show_custom_field_tag shortcode - " . __( 'the parameter values are', $mf_domain )
+                                        . ' &quot;aligncenter&quot;, &quot;alignright&quot; ' . __( 'and', $mf_domain ) . ' &quot;alignleft&quot;',
                     'value'       => '',
                     'div_class'   => '',
                     'class'       => ''
@@ -66,11 +66,8 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  __( <<<EOD
-This is the class option of the WordPress caption shortcode and is set only if a caption is specified
-- this value can be overridden by specifying a "class_name" parameter with the "show_custom_field" shortcode
-EOD
-                                  , $mf_domain ),
+                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a &quot;class_name&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -81,8 +78,8 @@ EOD
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -93,8 +90,8 @@ EOD
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
                     'default'     =>  '240',
-                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '240',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -105,8 +102,8 @@ EOD
                     'label'       =>  __( 'Mouseover Popup Style', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_style]',
                     'default'     =>  'background-color:transparent;text-align:center;',
-                    'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
+                    'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
                                           . __( 'is good for text overlays', $mf_domain ),
                     'value'       =>  'background-color:transparent;text-align:center;',
                     'div_class'   =>  '',
@@ -118,8 +115,8 @@ EOD
                     'label'       =>  __( 'Mouseover Popup Classname', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_classname]',
                     'default'     =>  '',
-                    'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the ',
-                                          $mf_domain ) . "$show_custom_field_tag shortcode",
+                    'description' =>  __( 'mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the',
+                                          $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
                     'class'       =>  ''
@@ -211,35 +208,9 @@ EOD
                 $mf_domain ); ?>"><?php echo $hover_input_value; ?></textarea>
         </div>
     </div>
-    <!-- usage instructions -->    
-    <div class="mf2tk-field-input-optional mf2tk-usage-field">
-        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
-        <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
-        <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <ul>
-                <li class="mf2tk-how-to-use-with-caption" style="<?php echo $how_to_use_with_caption_style; ?>">
-                    <?php _e( 'Use with the Toolkit\'s shortcode - (with caption):', $mf_domain ); ?><br>
-                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]'>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?></li>
-                <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
-                    <?php _e( 'Use with the Toolkit\'s shortcode - (no caption)', $mf_domain ); ?>:<br>
-                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div
-                        style="width:<?php echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0 auto;"&gt;
-    [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?> filter="url_to_media"]
-&lt;/div&gt;</textarea><br>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?></li>
-                <li><?php _e( 'Call the PHP function', $mf_domain ); ?>:<br>
-                    alt_image_field::get_image( <?php echo "\"$field[name]\", $group_index, $field_index, $post->ID,"; ?> $atts = array() )</li>
-            </ul>
-        </div>
-    </div>
-</div>
-<br>
 <?php
-        $output = ob_get_contents( );
+        $output = ob_get_contents( )
+            . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"', 'alt_image_field::get_image' ) . '</div>';
         ob_end_clean( );
         error_log( '##### alt_image_field::display_field():$output=' . $output );
         return $output;

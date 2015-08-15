@@ -74,32 +74,24 @@ mf2tk_globals.test_load_link_click=function(e){
   window.open(jQuery(this.parentNode).find("input[type='url']").val(),'_blank');
 };
 
-jQuery(document).ready(function(){
-    // wire up media specific handlers
-    var mfField=jQuery("div.media_field_mf");
-    mfField.find('button.mf2tk-media-library-button').click(mf2tk_globals.mf2tk_media_library_button_click);
-    mfField.find("button.mf2tk-alt_media_admin-refresh").click(mf2tk_globals.mf2tk_alt_media_admin_refresh_click);
-    mfField.find("button.mf2tk-alt_embed_admin-refresh").click(mf2tk_globals.mf2tk_alt_embed_admin_refresh_click);
-    mfField.find("button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
-    mfField.find("div.mf2tk-field-input-optional.mf2tk-caption-field input").change(mf2tk_globals.caption_field_change);
-});
+// mf2tk_globals.template is a template for the HTML to be inserted for each Magic Field to implement the how to use feature
+// it is parameterized by $#parameter# placeholders which will be appropriately replaced
 
-function mf2tkInsertHowToUse(root){
+mf2tk_globals.template='\
+<div style="clear:both;"></div>\
+<div class="mf2tk-field-input-optional">\
+    <button class="mf2tk-field_value_pane_button">'+mf2tk_admin_data.open+'</button>\
+    <h6>'+mf2tk_admin_data.how_to_use+'</h6>\
+    <div class="mf2tk-field_value_pane" style="display:none;clear:both;">\
+        <input type="text" class="mf2tk-how-to-use" size="50" readonly\
+            value=\'['+mf2tk_admin_data.show_custom_field+' field="$#fieldName#$#index#"$#filter#$#separator#$#before#$#after#$#field_before#$#field_after#]\'><br>\
+        - <button class="mf2tk-how-to-use">'+mf2tk_admin_data.select+',</button> '+mf2tk_admin_data.copy_and_paste+'\
+    </div>\
+</div>';
+
+mf2tk_globals.InsertHowToUse=function(root){
     if(typeof mf2tkDisableHowToUse === "undefined"||!mf2tkDisableHowToUse){
-        // template is a template for the HTML to be inserted for each Magic Field to implement the how to use feature
-        // it is parameterized by $#parameter# placeholders which will be appropriately replaced
-        var template=
-       '<div style="clear:both;"></div>\
-        <div class="mf2tk-field-input-optional">\
-            <button class="mf2tk-field_value_pane_button">Open</button>\
-            <h6>How to Use with the Toolkit\'s Shortcode</h6>\
-            <div class="mf2tk-field_value_pane" style="display:none;clear:both;">\
-                <input type="text" class="mf2tk-how-to-use" size="50" readonly\
-                    value=\'[show_custom_field field="$#fieldName#$#index#"$#filter#$#separator#$#before#$#after#$#field_before#$#field_after#]\'><br>\
-                - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in\
-                    <strong>Text</strong> mode\
-            </div>\
-        </div>';
+        var template=mf2tk_globals.template;
         jQuery("div.mf-field-ui",root).each(function(){
             // check if field is a toolkit alt_* field
             if(jQuery(this).find("div.mf2tk-field-input-optional").length){return;}
@@ -414,24 +406,20 @@ function mf2tkInsertHowToUse(root){
         });
     }
 }
-
 jQuery(document).ready(function(){
-    mf2tkInsertHowToUse(document.body);
+    // wire up media specific handlers
+    var mfField=jQuery("div.media_field_mf");
+    mfField.find('button.mf2tk-media-library-button').click(mf2tk_globals.mf2tk_media_library_button_click);
+    mfField.find("button.mf2tk-alt_media_admin-refresh").click(mf2tk_globals.mf2tk_alt_media_admin_refresh_click);
+    mfField.find("button.mf2tk-alt_embed_admin-refresh").click(mf2tk_globals.mf2tk_alt_embed_admin_refresh_click);
+    mfField.find("button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
+    mfField.find("div.mf2tk-field-input-optional.mf2tk-caption-field input").change(mf2tk_globals.caption_field_change);
+    
+    mf2tk_globals.InsertHowToUse(document.body);
     if(typeof mf2tkDisableHowToUse==="undefined"||!mf2tkDisableHowToUse){
         // template is a template for the HTML to be inserted for each taxonomy field to implement the how to use feature
         // it is parameterized by $#parameter# placeholders which will be appropriately replaced
-        var template=
-       '<div style="clear:both;"></div>\
-        <div class="mf2tk-field-input-optional">\
-            <button class="mf2tk-field_value_pane_button">Open</button>\
-            <h6>How to Use with the Toolkit\'s Shortcode</h6>\
-            <div class="mf2tk-field_value_pane" style="display:none;clear:both;">\
-                <input type="text" class="mf2tk-how-to-use" size="50" readonly\
-                    value=\'[show_custom_field field="$#fieldName#$#index#"$#filter#$#separator#$#before#$#after#$#field_before#$#field_after#]\'><br>\
-                - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in\
-                    <strong>Text</strong> mode\
-            </div>\
-        </div>';
+        var template=mf2tk_globals.template;
         // taxonomy fields are in "div#postbox-container-1"
         var postboxContainer=jQuery("div#postbox-container-1");
         postboxContainer.find("div.postbox[id^='tagsdiv-']").each(function(){
@@ -548,7 +536,7 @@ jQuery(document).ready(function($) {
         if(duplicates.length>count){
             duplicate=$(duplicates[count]);
             if(!duplicate.find("div.mf2tk-field-input-main").length){
-                mf2tkInsertHowToUse(duplicate[0].parentNode);
+                mf2tk_globals.InsertHowToUse(duplicate[0].parentNode);
             }
             duplicate.find("button.mf2tk-field_value_pane_button").click(function(event){
                 if(jQuery(this).text()=="Open"){

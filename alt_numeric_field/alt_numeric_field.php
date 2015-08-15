@@ -126,33 +126,16 @@ class alt_numeric_field extends mf_custom_fields {
 <div class="text_field_mf">
     <div class="mf2tk-field-input-main">
         <div class="mf2tk-field_value_pane">
-            <div><span><?php echo $currency; ?></span><input type="number" name="<?php echo $field['input_name']; ?>" placeholder="<?php echo $field[label]; ?>"
-                value="<?php echo $value; ?>" <?php echo "$min$max$step"; ?> style="display:inline-block;text-align:right;width:16em;" />
-                <span><?php echo $unit; ?></span>
+            <div><span><?php echo $currency; ?></span><input type="number" name="<?php echo $field['input_name']; ?>"
+                placeholder="<?php echo $field['label']; ?>" value="<?php echo $value; ?>" <?php echo "$min$max$step"; ?>
+                style="display:inline-block;text-align:right;width:16em;" /><span><?php echo $unit; ?></span>
             </div>
         </div>
         <div style="font-size:75%;margin:5px 50px;"><?php _e( 'Value has', $mf_domain ); echo " $options[precision] ";
             _e( 'decimal places.', $mf_domain ); ?></div>
     </div>
-    <!-- usage instructions -->
-    <div class="mf2tk-field-input-optional">
-        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
-        <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
-        <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <ul>
-                <li style="list-style:square inside"><?php _e( 'Use with the Toolkit\'s shortcode:', $mf_domain ); ?><br>
-                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>"]'>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
-                <li style="list-style:square inside"><?php _e( 'Call the PHP function:', $mf_domain ); ?><br>
-                    alt_numeric_field::get_numeric( "<?php echo $field['name']; ?>", <?php echo "$group_index, $field_index, $post->ID"; ?> )
-            </ul>
-        </div>
-    </div>
-</div>
 <?php
-        $output = ob_get_contents( );
+        $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, '', 'alt_numeric_field::get_numeric' ) . '</div>';
         ob_end_clean( );
         error_log( '##### alt_numeric_field::display_field():$output=' . $output );
         return $output;
