@@ -142,12 +142,40 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
         }
         return $text;
     }
+    
     # show_custom_field() implements the [mt_field] shortcode
 
     public static function show_custom_field( $post_id, $the_names, $before, $after, $separator, $filter, $field_before, $field_after, $field_separator,
         $field_rename, $group_before, $group_after, $group_separator, $group_rename, $multi_before, $multi_after, $multi_separator, $finals, $path,
         $parent_ids = [ ], $atts = [ ] ) {
         global $wpdb;
+        # that argument list is much too long so alternatively pass as an associative array
+        if ( func_get_arg( ) === 1 && is_array( $args = func_get_arg( 0 ) ) ) {
+            # provide default values for arguments so the associative array need only specify non default values
+            extract( array_merge( [
+                'post_id'         => NULL,
+                'the_names'       => NULL,
+                'before'          => '',
+                'after'           => '',
+                'separator'       => '',
+                'filter'          => NULL,
+                'field_before'    => '',
+                'field_after'     => '',
+                'field_separator' => '',
+                'field_rename'    => NULL,
+                'group_before'    => '',
+                'group_after'     => '',
+                'group_separator' => '',
+                'group_rename'    => NULL,
+                'multi_before'    => '',
+                'multi_after'     => '',
+                'multi_separator' => '',
+                'finals'          => NULL,
+                'path'            => '',
+                'parent_ids'      => [ ],
+                'atts'            => [ ]
+            ], $args ) );
+        }
         $content = '';
         $the_fields = $the_names;
         if ( !substr_compare( $the_fields, '{', 0, 1 ) ) {

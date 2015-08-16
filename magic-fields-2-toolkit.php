@@ -500,27 +500,54 @@ function get( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL )
 
 # get_how_to_use_html( ) returns the how to use HTML for all the alt_*_fields 
 
-function get_how_to_use_html( $field, $group_index, $field_index, $post, $parameters = '', $php_function = NULL ) {
+function get_how_to_use_html( $field, $group_index, $field_index, $post, $parameters = '', $php_function = NULL, $has_caption = FALSE,
+    $caption_input_value = NULL, $width = NULL ) {
     global $mf_domain;
     $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
+    $show_custom_field_tag = get_tags( )[ 'show_custom_field' ];
     if ( empty( $php_function ) ) {
         $php_function = 'mf2tk\get_data2';
+    }
+    if ( $has_caption ) {
+        # choose how to use text depending on whether a caption is specified or not
+        $how_to_use_with_caption_style = 'display:' . ( $caption_input_value ? 'list-item;' : 'none;'      );
+        $how_to_use_no_caption_style   = 'display:' . ( $caption_input_value ? 'none;'      : 'list-item;' );
+        # setup geometry for no caption image
+        $no_caption_padding = 0;
+        $no_caption_border = 2;
+        $no_caption_width = $width + 2 * ( $no_caption_padding + $no_caption_border );
     }
     ob_start( );
 ?>
 <!-- usage instructions -->
-<div class="mf2tk-field-input-optional">
+<div class="mf2tk-field-input-optional mf2tk-usage-field">
     <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
     <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
     <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
         <ul>
-            <li style="list-style:square inside"><?php _e( 'Use with the Toolkit\'s shortcode', $mf_domain ); ?>:<br>
-                <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                    value='[<?php echo( get_tags( )[ 'show_custom_field' ] ); ?> field="<?php echo "{$field['name']}{$index}"; ?>"<?php echo $parameters; ?>]'>
-                <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
-                    <?php _e( 'copy and paste above into the editor above in &quot;Text&quot; mode', $mf_domain ); ?>
-            <li style="list-style:square inside"><?php _e( 'Call the PHP function', $mf_domain ); ?>:<br>
-                <?php echo $php_function; ?>( "<?php echo $field['name']; ?>", <?php echo "{$group_index}, {$field_index}, {$post->ID}"; ?> )
+<?php if ( $has_caption ) { ?>
+                <li class="mf2tk-how-to-use-with-caption" style="<? echo $how_to_use_with_caption_style; ?>">
+                    <?php _e( 'Use with the Toolkit\'s shortcode - (with caption):', $mf_domain ); ?><br>
+                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
+                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>"<?php echo $parameters; ?>]'>
+                    <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+                <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
+                    <?php _e( 'Use with the Toolkit\'s shortcode - (no caption):', $mf_domain ); ?><br>
+                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:<?php echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0px auto;"&gt;
+    [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>"<?php echo $parameters; ?>]
+&lt;/div&gt;</textarea><br>
+                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
+                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+<?php } else { ?>
+                <li><?php _e( 'Use with the Toolkit\'s shortcode', $mf_domain ); ?>:<br>
+                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
+                        value='[<?php echo( $show_custom_field_tag ); ?> field="<?php echo "{$field['name']}{$index}"; ?>"<?php echo $parameters; ?>]'>
+                    <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
+                        <?php _e( 'copy and paste above into the editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+<?php } ?>
+            <li><?php _e( 'Call the PHP function', $mf_domain ); ?>:<br>
+                <?php echo $php_function; ?>( "<?php echo $field[ 'name' ]; ?>", <?php echo "{$group_index}, {$field_index}, {$post->ID}"; ?> )
         </ul>
     </div>
 </div>

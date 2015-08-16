@@ -131,34 +131,26 @@ class alt_image_field extends mf_custom_fields {
         error_log( '##### alt_image_field::display_field():$post=' . print_r( $post, true ) );
         error_log( '##### alt_image_field::display_field():$field=' . print_r( $field, true ) );
         # setup main field
-        $field_id = "mf2tk-$field[name]-$group_index-$field_index";
-        $input_value = str_replace( '"', '&quot;', $field['input_value'] );
-        $opts = $field[ 'options' ];
-        $null = NULL;
-        $width  = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
-        $height = mf2tk\get_data_option( 'max_height', $null, $opts, 240 );
-        $attrWidth  = $width  ? " width=\"$width\""   : '';
-        $attrHeight = $height ? " height=\"$height\"" : '';
+        $field_id              = "mf2tk-$field[name]-$group_index-$field_index";
+        $input_value           = str_replace( '"', '&quot;', $field['input_value'] );
+        $opts                  = $field[ 'options' ];
+        $width                 = mf2tk\get_data_option( 'max_width',  NULL, $opts, 320 );
+        $height                = mf2tk\get_data_option( 'max_height', NULL, $opts, 240 );
+        $attrWidth             = $width  ? " width=\"$width\""   : '';
+        $attrHeight            = $height ? " height=\"$height\"" : '';
         #set up caption field
-        $caption_field_name = $field['name'] . self::$suffix_caption;
-        $caption_input_name = sprintf( 'magicfields[%s][%d][%d]', $caption_field_name, $group_index, $field_index );
-        $caption_input_value = mf2tk\get_mf_post_value( $caption_field_name, $group_index, $field_index, '' );
-        # choose how to use text depending on whether a caption is specified or not
-        $how_to_use_with_caption_style = 'display:' . ( $caption_input_value ? 'list-item;' : 'none;'      );
-        $how_to_use_no_caption_style   = 'display:' . ( $caption_input_value ? 'none;'      : 'list-item;' );
+        $caption_field_name    = $field['name'] . self::$suffix_caption;
+        $caption_input_name    = sprintf( 'magicfields[%s][%d][%d]', $caption_field_name, $group_index, $field_index );
+        $caption_input_value   = str_replace( '"', '&quot;', mf2tk\get_mf_post_value( $caption_field_name, $group_index, $field_index, '' ) );
         #set up link field
-        $link_field_name = $field['name'] . self::$suffix_link;
-        $link_input_name = sprintf( 'magicfields[%s][%d][%d]', $link_field_name, $group_index, $field_index );
-        $link_input_value = mf2tk\get_mf_post_value( $link_field_name, $group_index, $field_index, '' );
+        $link_field_name       = $field['name'] . self::$suffix_link;
+        $link_input_name       = sprintf( 'magicfields[%s][%d][%d]', $link_field_name, $group_index, $field_index );
+        $link_input_value      = mf2tk\get_mf_post_value( $link_field_name, $group_index, $field_index, '' );
         #set up hover field
-        $hover_field_name = $field['name'] . self::$suffix_hover;
-        $hover_input_name = sprintf( 'magicfields[%s][%d][%d]', $hover_field_name, $group_index, $field_index );
-        $hover_input_value = mf2tk\get_mf_post_value( $hover_field_name, $group_index, $field_index, '' );
-        $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
-        # setup geometry for no caption image
-        $no_caption_padding = 0;
-        $no_caption_border = 2;
-        $no_caption_width = $width + 2 * ( $no_caption_padding + $no_caption_border );
+        $hover_field_name      = $field['name'] . self::$suffix_hover;
+        $hover_input_name      = sprintf( 'magicfields[%s][%d][%d]', $hover_field_name, $group_index, $field_index );
+        $hover_input_value     = mf2tk\get_mf_post_value( $hover_field_name, $group_index, $field_index, '' );
+        $index                 = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
         # get the user defined shortcode
         $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];
         # generate and return the HTML
@@ -209,8 +201,8 @@ class alt_image_field extends mf_custom_fields {
         </div>
     </div>
 <?php
-        $output = ob_get_contents( )
-            . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"', 'alt_image_field::get_image' ) . '</div>';
+        $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
+            'alt_image_field::get_image', TRUE, $caption_input_value, $width ) . '</div>';
         ob_end_clean( );
         error_log( '##### alt_image_field::display_field():$output=' . $output );
         return $output;
@@ -221,16 +213,16 @@ class alt_image_field extends mf_custom_fields {
         if ( $post_id === NULL ) {
             $post_id = $post->ID;
         }
-        $data = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
-        $opts = $data[ 'options' ];
-        $width  = mf2tk\get_data_option( 'width',  $atts, $opts, 320, 'max_width'  );
-        $height = mf2tk\get_data_option( 'height', $atts, $opts, 240, 'max_height' );
+        $data       = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
+        $opts       = $data[ 'options' ];
+        $width      = mf2tk\get_data_option( 'width',  $atts, $opts, 320, 'max_width'  );
+        $height     = mf2tk\get_data_option( 'height', $atts, $opts, 240, 'max_height' );
         # get optional caption
-        $caption = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_caption );
+        $caption    = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_caption );
         # get optional link
-        $link    = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_link    );
+        $link       = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_link    );
         # get optional mouse-over popup
-        $hover   = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_hover   );
+        $hover      = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_hover   );
         $attrWidth  = $width  ? " width=\"$width\""   : '';
         $attrHeight = $height ? " height=\"$height\"" : '';
         # if an optional mouse-over popup has been specified let the containing div handle the mouse-over event 
@@ -240,17 +232,17 @@ class alt_image_field extends mf_custom_fields {
             $popup_style     = mf2tk\get_data_option( 'popup_style',     $atts, $opts      );
             $popup_classname = mf2tk\get_data_option( 'popup_classname', $atts, $opts      );
             $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
-            $hover = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
-            $hover_class = 'mf2tk-hover';
-            $overlay = <<<EOD
+            $hover           = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
+            $hover_class     = 'mf2tk-hover';
+            $overlay         = <<<EOD
 <div class="$popup_classname"
     style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width}px;height:{$popup_height}px;{$popup_style}">
     $hover
 </div>
 EOD;
         } else {
-            $hover_class = '';
-            $overlay = '';
+            $hover_class     = '';
+            $overlay         = '';
         }
         $html = <<<EOD
 <div class="$hover_class" style="display:inline-block;width:{$width}px;padding:0px;">
@@ -266,8 +258,7 @@ EOD;
             if ( !$width ) { $width = 160; }
             if ( !$class_name ) { $class_name = "mf2tk-{$data['type']}-{$field_name}"; }
             $class_name .= ' mf2tk-alt-image';
-            $html = img_caption_shortcode( array( 'width' => $width, 'align' => $align,
-                'class' => $class_name, 'caption' => $caption ), $html );
+            $html = img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
             $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
                 return str_replace( $matches[1], "width:{$width}px;max-width:100%", $matches[0] );  
             }, $html, 1 );

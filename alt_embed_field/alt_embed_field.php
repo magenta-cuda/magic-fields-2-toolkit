@@ -78,26 +78,21 @@ class alt_embed_field extends mf_custom_fields {
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
         global $post;
         global $mf_domain;
-        $opts = $field[ 'options' ];
-        $null = NULL;
-        $width  = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
-        $height = mf2tk\get_data_option( 'max_height', $null, $opts, 240 );
+        $opts   = $field[ 'options' ];
+        $width  = mf2tk\get_data_option( 'max_width',  NULL, $opts, 320 );
+        $height = mf2tk\get_data_option( 'max_height', NULL, $opts, 240 );
         $args = [];
-        if ( $width  ) { $args['width']  = $width;  }
-        if ( $height ) { $args['height'] = $height; }
-        $caption_field_name = $field['name'] . self::$suffix_caption;
-        $caption_input_name = sprintf( 'magicfields[%s][%d][%d]', $caption_field_name, $group_index, $field_index );
-        $caption_input_value = mf2tk\get_mf_post_value( $caption_field_name, $group_index, $field_index, '' );
-        $caption_input_value = str_replace( '"', '&quot;', $caption_input_value );
-        # choose how to use text depending on whether a caption is specified or not
-        $how_to_use_with_caption_style = 'display:' . ( $caption_input_value ? 'list-item;' : 'none;'      );
-        $how_to_use_no_caption_style   = 'display:' . ( $caption_input_value ? 'none;'      : 'list-item;' );
-        $embed = wp_oembed_get( $field['input_value'], $args );
-        $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
-        # setup geometry for no caption image
-        $no_caption_padding = 0;
-        $no_caption_border = 2;
-        $no_caption_width = $width + 2 * ( $no_caption_padding + $no_caption_border );
+        if ( $width ) {
+            $args[ 'width' ]  = $width;
+        }
+        if ( $height ) {
+            $args[ 'height' ] = $height;
+        }
+        $caption_field_name  = $field[ 'name' ] . self::$suffix_caption;
+        $caption_input_name  = sprintf( 'magicfields[%s][%d][%d]', $caption_field_name, $group_index, $field_index );
+        $caption_input_value = str_replace( '"', '&quot;', mf2tk\get_mf_post_value( $caption_field_name, $group_index, $field_index, '' ) );
+        $embed               = wp_oembed_get( $field['input_value'], $args );
+        $index               = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
         # generate and return the HTML
         ob_start( );
 ?>
@@ -122,72 +117,54 @@ class alt_embed_field extends mf_custom_fields {
                 value="<?php echo $caption_input_value; ?>">
         </div>
     </div>
-    <!-- usage instructions -->    
-    <div class="mf2tk-field-input-optional mf2tk-usage-field">
-        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
-        <h6 style><?php _e( 'How to Use', $mf_domain ); ?></h6>
-        <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <ul>
-                <li class="mf2tk-how-to-use-with-caption" style="<? echo $how_to_use_with_caption_style; ?>">
-                    <?php _e( 'Use with the Toolkit\'s shortcode - (with caption):', $mf_domain ); ?><br>
-                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]'>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
-                <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
-                    <?php _e( 'Use with the Toolkit\'s shortcode - (no caption):', $mf_domain ); ?><br>
-                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:<?php echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0 auto;"&gt;
-    [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]
-&lt;/div&gt;</textarea><br>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
-                <li><?php _e( 'Call the PHP function:', $mf_domain ); ?><br>
-                    alt_embed_field::get_embed( "<?php echo $field['name']; ?>", <?php echo "$group_index, $field_index, $post->ID, $width, $height"; ?> )
-            </ul>
-        </div>
-    </div>
-</div>
-<br>
 <?php
-        $output = ob_get_contents( );
+        $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
+            'alt_embed_field::get_embed', TRUE, $caption_input_value, $width ) . '</div>';
         ob_end_clean( );
-        error_log( '##### alt_numeric_field::display_field():$output=' . $output );
+        error_log( '##### alt_embed_field::display_field():$output=' . $output );
         return $output;
     }
   
     static function get_embed( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL, $atts = [ ] ) {
         global $wpdb, $post;
-        if ( !$post_id ) { $post_id = $post->ID; }
-        $data = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
-        $opts = $data[ 'options' ];
+        if ( !$post_id ) {
+            $post_id = $post->ID;
+        }
+        $data       = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
+        $opts       = $data[ 'options' ];
         # get width and height
         $max_width  = mf2tk\get_data_option( 'width',  $atts, $opts, 320, 'max_width'  );
         $max_height = mf2tk\get_data_option( 'height', $atts, $opts, 240, 'max_height' );
         # get optional caption
-        $caption = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_caption );
+        $caption    = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_caption );
         # If value is not an URL
-        if ( substr_compare( $data['meta_value'], 'http:', 0, 5 ) !== 0
-            && substr_compare( $data['meta_value'], 'https:', 0, 6 ) !== 0 ) {
+        if ( substr_compare( $data[ 'meta_value' ], 'http:', 0, 5 ) !== 0 && substr_compare( $data[ 'meta_value' ], 'https:', 0, 6 ) !== 0 ) {
             # Then it should be the HTML to be embedded
-            return $data['meta_value'];
+            return $data[ 'meta_value' ];
         } else {
             // Else use oEmbed to get the HTML
-            $args = array();
-            if ( $max_width  ) { $args['width']  = $max_width;  }
-            if ( $max_height ) { $args['height'] = $max_height; }
+            $args = [ ];
+            if ( $max_width  ) {
+                $args[ 'width' ]  = $max_width;
+            }
+            if ( $max_height ) {
+                $args[ 'height' ] = $max_height;
+            }
             $html = wp_oembed_get( $data['meta_value'], $args );
             if ( $caption ) {
                 $class_name = mf2tk\get_data_option( 'class_name', $atts, $opts );
                 $align      = mf2tk\get_data_option( 'align',      $atts, $opts, 'aligncenter' );
                 $align      = mf2tk\re_align( $align );
-                if ( !$max_width  ) { $max_width = 240;                                    }
-                if ( !$class_name ) { $class_name = "mf2tk-{$data['type']}-{$field_name}"; }
+                if ( !$max_width  ) {
+                    $max_width = 240;
+                }
+                if ( !$class_name ) {
+                    $class_name = "mf2tk-{$data['type']}-{$field_name}";
+                }
                 $class_name .= ' mf2tk-alt-embed';
-                $html = img_caption_shortcode( array( 'width' => $max_width, 'align' => $align,
-                    'class' => $class_name, 'caption' => $caption ),
+                $html = img_caption_shortcode( [ 'width' => $max_width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ],
                     "<div style=\"width:{$max_width}px;display:inline-block;padding:0px;margin:0px;\">$html</div>" );
-                $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches )
-                    use ( $max_width ) {
+                $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $max_width ) {
                     return str_replace( $matches[1], "width:{$max_width}px;max-width:100%", $matches[0] );
                 }, $html, 1 );
             }
