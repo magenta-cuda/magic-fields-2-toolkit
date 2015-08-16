@@ -3,39 +3,43 @@
     # alt_video_field/alt_video_field.php to implement common funtionality
 
     $media_title = [ 'audio' => __( 'Audio', $mf_domain ), 'video' => __( 'Video', $mf_domain ) ];
-
-    $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
-    $opts = $field[ 'options' ];
-    $null = NULL;
-    $width  = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
-    $height = mf2tk\get_data_option( 'max_height', $null, $opts, 240 );
-    $dimensions = [];
+    $opts        = $field[ 'options' ];
+    $null        = NULL;
+    $width       = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
+    $height      = mf2tk\get_data_option( 'max_height', $null, $opts, 240 );
+    $dimensions  = [];
+  
     if ( $media_type === 'video' ) {
-        if ( $width  ) { $dimensions['width']  = $width;  }
-        if ( $height ) { $dimensions['height'] = $height; }
+        if ( $width  ) {
+            $dimensions[ 'width'  ] = $width;
+        }
+        if ( $height ) {
+            $dimensions[ 'height' ] = $height;
+        }
     }
+
     $dimensions['preload'] = 'metadata';
-    $attrWidth  = $width  ? " width=\"$width\""   : '';
-    $attrHeight = $height ? " height=\"$height\"" : '';
+    $attrWidth             = $width  ? " width=\"$width\""   : '';
+    $attrHeight            = $height ? " height=\"$height\"" : '';
     
     # setup main field
-    $field_id = "mf2tk-$field[name]-$group_index-$field_index";
+    $field_id    = "mf2tk-$field[name]-$group_index-$field_index";
     $input_value = str_replace( '"', '&quot;', $field['input_value'] );
     if ( !empty( $field['input_value'] ) ) {
-        $media_shortcode = call_user_func( $wp_media_shortcode,
-            array_merge( array( 'src' => $field['input_value'] ), $dimensions ) );
+        $media_shortcode = call_user_func( $wp_media_shortcode, array_merge( [ 'src' => $field['input_value'] ], $dimensions ) );
     } else {
         $media_shortcode = '';
     }
     
+    $index = "[{$group_index}][{$field_index}]";
+    
     # setup fallback field
-    $fallback_field_name = $field['name'] . self::$suffix_fallback;
-    $fallback_field_id = "mf2tk-$fallback_field_name-$group_index-$field_index";
-    $fallback_input_name = "magicfields[$fallback_field_name][$group_index][$field_index]";
+    $fallback_field_name  = $field[ 'name' ] . self::$suffix_fallback;
+    $fallback_field_id    = "mf2tk-{$fallback_field_name}-{$group_index}-{$field_index}";
+    $fallback_input_name  = "magicfields[{$fallback_field_name}]{$index}";
     $fallback_input_value = mf2tk\get_mf_post_value( $fallback_field_name, $group_index, $field_index, '' );
     if ( $fallback_input_value ) {
-        $fallback_media_shortcode = call_user_func( $wp_media_shortcode,
-            array_merge( array( 'src' => $fallback_input_value ), $dimensions ) );
+        $fallback_media_shortcode = call_user_func( $wp_media_shortcode, array_merge( [ 'src' => $fallback_input_value ], $dimensions ) );
         $fallback_media_button    = __( 'Hide', $mf_domain );
         $fallback_media_display   = 'block';
     } else {
@@ -45,13 +49,12 @@
     }
     
     # setup alternate fallback field
-    $alternate_fallback_field_name = $field['name'] . self::$suffix_alternate_fallback;
-    $alternate_fallback_field_id = "mf2tk-$alternate_fallback_field_name-$group_index-$field_index";
-    $alternate_fallback_input_name = "magicfields[$alternate_fallback_field_name][$group_index][$field_index]";
+    $alternate_fallback_field_name  = $field[ 'name' ] . self::$suffix_alternate_fallback;
+    $alternate_fallback_field_id    = "mf2tk-{$alternate_fallback_field_name}-{$group_index}-{$field_index}";
+    $alternate_fallback_input_name  = "magicfields[{$alternate_fallback_field_name}]{$index}";
     $alternate_fallback_input_value = mf2tk\get_mf_post_value( $alternate_fallback_field_name, $group_index, $field_index, '' );
     if ( $alternate_fallback_input_value ) {
-        $alternate_fallback_media_shortcode = call_user_func( $wp_media_shortcode,
-            array_merge( array( 'src' => $alternate_fallback_input_value ), $dimensions ) );
+        $alternate_fallback_media_shortcode = call_user_func( $wp_media_shortcode, array_merge( [ 'src' => $alternate_fallback_input_value ], $dimensions ) );
         $alternate_fallback_media_button    = __( 'Hide', $mf_domain );
         $alternate_fallback_media_display   = 'block';
     } else {
@@ -60,41 +63,29 @@
         $alternate_fallback_media_display   = 'none';
     }
     #set up caption field
-    $caption_field_name = $field['name'] . self::$suffix_caption;
-    $caption_input_name = sprintf( 'magicfields[%s][%d][%d]', $caption_field_name, $group_index, $field_index );
-    $caption_input_value = mf2tk\get_mf_post_value( $caption_field_name, $group_index, $field_index, '' );
-    $caption_input_value = str_replace( '"', '&quot;', $caption_input_value );
-    
-    # choose how to use text depending on whether a caption is specified or not
-    $how_to_use_with_caption_style = 'display:' . ( $caption_input_value ? 'list-item;' : 'none;' );
-    $how_to_use_no_caption_style   = 'display:' . ( $caption_input_value ? 'none;'      : 'list-item;' );
+    $caption_field_name  = $field[ 'name' ] . self::$suffix_caption;
+    $caption_input_name  = "magicfields[{$caption_field_name}]{$index}";
+    $caption_input_value = str_replace( '"', '&quot;', mf2tk\get_mf_post_value( $caption_field_name, $group_index, $field_index, '' ) );
     
     # setup optional poster image field
-    $poster_field_name = $field['name'] . self::$suffix_poster;
-    $poster_field_id = "mf2tk-$poster_field_name-$group_index-$field_index";
-    $poster_input_name = "magicfields[$poster_field_name][$group_index][$field_index]";
-    $poster_input_value = mf2tk\get_mf_post_value( $poster_field_name, $group_index, $field_index, '' );
-    $poster_input_value = str_replace( '"', '&quot;', $poster_input_value );
+    $poster_field_name  = $field[ 'name' ] . self::$suffix_poster;
+    $poster_field_id    = "mf2tk-{$poster_field_name}-{$group_index}-{$field_index}";
+    $poster_input_name  = "magicfields[{$poster_field_name}]{$index}";
+    $poster_input_value = str_replace( '"', '&quot;', mf2tk\get_mf_post_value( $poster_field_name, $group_index, $field_index, '' ) );
     $ucfirst_media_type = $media_title[ $media_type ];
 
     if ( $media_type === 'audio' ) {
         #set up the link field; video cannot have a link field since clicks play/stop the video
-        $link_field_name = $field['name'] . self::$suffix_link;
-        $link_input_name = sprintf( 'magicfields[%s][%d][%d]', $link_field_name, $group_index, $field_index );
+        $link_field_name  = $field[ 'name' ] . self::$suffix_link;
+        $link_input_name  = "magicfields[{$link_field_name}]{$index}";
         $link_input_value = mf2tk\get_mf_post_value( $link_field_name, $group_index, $field_index, '' );
     }
 
     #set up hover field
-    $hover_field_name = $field['name'] . self::$suffix_hover;
-    $hover_input_name = sprintf( 'magicfields[%s][%d][%d]', $hover_field_name, $group_index, $field_index );
+    $hover_field_name  = $field[ 'name' ] . self::$suffix_hover;
+    $hover_input_name  = "magicfields[{$hover_field_name}]{$index}";
     $hover_input_value = mf2tk\get_mf_post_value( $hover_field_name, $group_index, $field_index, '' );
-    $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
 
-    # setup geometry for no caption image
-    $no_caption_padding = 0;
-    $no_caption_border = 2;
-    $no_caption_width = $width + 2 * ( $no_caption_padding + $no_caption_border );
-    
     # generate and return the HTML
     ob_start( );
 ?>
@@ -157,7 +148,7 @@
         <h6><?php _e( 'Optional Caption for', $mf_domain ); echo " $ucfirst_media_type"; ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256"
-                placeholder="<?php _e( 'optional caption for', $mf_domain ); echo " $ucfirst_media_type"; ?>" value="<?php echo " $caption_input_value"; ?>">
+                placeholder="<?php _e( 'optional caption for', $mf_domain ); echo " $ucfirst_media_type"; ?>" value="<?php echo $caption_input_value; ?>">
         </div>
     </div>
     <!-- optional poster image field -->
@@ -205,35 +196,9 @@
                     $mf_domain ); ?>"><?php echo $hover_input_value; ?></textarea>
         </div>
     </div>
-    <!-- usage instructions -->
-    <div class="mf2tk-field-input-optional mf2tk-usage-field">
-        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
-        <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
-        <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <ul>
-                <li class="mf2tk-how-to-use-with-caption" style="<?php echo $how_to_use_with_caption_style; ?>">
-                    <?php _e( 'Use with the Toolkit\'s shortcode - (with caption):', $mf_domain ); ?><br>
-                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]'>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
-                <li class="mf2tk-how-to-use-no-caption" style="<?php echo $how_to_use_no_caption_style; ?>">
-                    <?php _e( 'Use with the Toolkit\'s shortcode - (no caption):', $mf_domain ); ?><br>
-                    <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:<?echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0 auto;"&gt;
-    [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>" filter="url_to_media"]
-&lt;/div&gt;</textarea><br>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
-                <li style="list-style:square inside"><?php _e( 'Call the PHP function:', $mf_domain ); ?><br>
-                    alt_<?php echo $media_type; ?>_field::get_<?php echo $media_type; ?>( "<?php echo $field['name']; ?>", <?php echo $group_index; ?>,
-                        <?php echo $field_index; ?>, <?php echo $post->ID; ?>, $atts = array() )
-            </ul>
-        </div>
-    </div>
-</div>
-<br>
 <?php
-    $html = ob_get_contents( );
+    $html = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
+        "alt_{$media_type}_field::get_{$media_type}", TRUE, $caption_input_value, $width ) . '</div>';
     ob_end_clean( );
     if ( $media_type === 'video' && ( !$height || !$width )
         && preg_match_all( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches, PREG_PATTERN_ORDER ) ) {
