@@ -21,26 +21,23 @@ class alt_table_field extends mf_custom_fields {
         return $properties;
     }
 
-    public function _update_description() {
-        global $mf_domain;
-        $this->description = __( 'Table of Magic Fields'
-            . ' - This is a psuedo field for automatically generating shortcodes to display all/some Magic Fields in a table',
+    public function _update_description( ) {
+        global $mf_domain; 
+        $this->description = __( 'Table of Magic Fields - This is a psuedo field for automatically generating shortcodes to display all/some Magic Fields in a table',
             $mf_domain );
     }
     
-    public function _options() {
-        global $mf_domain;
-        return [ 'option'  => [] ];
+    public function _options( ) {
+        return [ 'option'  => [ ] ];
     }
     
     public function display_field( $table_field, $group_index = 1, $field_index = 1 ) {
+        global $post, $wpdb;
         global $mf_domain;
-        global $post;
-        global $wpdb;
         $input_value = '';
         $matches = [ ];
         if ( array_key_exists( 'input_value', $table_field ) ) {
-            $input_value = $table_field['input_value'];
+            $input_value = $table_field[ 'input_value' ];
             preg_match( '/field=([\w;]+)\|filter=([\w;]+)/', $input_value, $matches );
         }
         $fields   = array_key_exists( 1, $matches ) ? $matches[1] : '';
@@ -56,21 +53,20 @@ class alt_table_field extends mf_custom_fields {
                 }
             }
         }
-        $default_height = 50;
-        $post_type = $post->post_type;
+        $default_height         = 50;
+        $post_type              = $post->post_type;
         $MF_TABLE_CUSTOM_FIELDS = MF_TABLE_CUSTOM_FIELDS;
-        $results = $wpdb->get_col( <<<EOD
-SELECT name FROM $MF_TABLE_CUSTOM_FIELDS WHERE post_type = '$post_type' AND type != 'alt_table' AND type != 'alt_template'
+        $results = $wpdb->get_col( $wpdb->prepare( <<<EOD
+SELECT name FROM $MF_TABLE_CUSTOM_FIELDS WHERE post_type = %s AND type != 'alt_table' AND type != 'alt_template'
 EOD
-        );
-        $checked_fields = array_intersect( $fields0, $results );
+        , $post_type ) );
+        $checked_fields   = array_intersect( $fields0, $results );
         $unchecked_fields = array_diff( $results, $checked_fields );
-        $all_fields = array_merge(
-            array_map( function( $v ) { return true;  }, array_flip( $checked_fields   ) ),
-            array_map( function( $v ) { return false; }, array_flip( $unchecked_fields ) )
+        $all_fields       = array_merge(
+            array_map( function( $v ) { return TRUE;  }, array_flip( $checked_fields   ) ),
+            array_map( function( $v ) { return FALSE; }, array_flip( $unchecked_fields ) )
         );
-        foreach ( [ 'tk_value_as_color', 'tk_value_as_checkbox', 'tk_value_as_audio', 'tk_value_as_image',
-            'tk_value_as_video', 'url_to_link2' ] as $filter ) {
+        foreach ( [ 'tk_value_as_color', 'tk_value_as_checkbox', 'tk_value_as_audio', 'tk_value_as_image', 'tk_value_as_video', 'url_to_link2' ] as $filter ) {
             $filter_checked = $filter . '_checked';
             $$filter_checked = array_key_exists( $filter, $filters0 ) ? ' checked' : '';
         }
@@ -100,9 +96,10 @@ EOD
             }
             $tk_value_as_video_size = $filters0['tk_value_as_video'][1];
         }
-        $output = <<<EOD
+        ob_start( );
+?>
     <div class="mf2tk-field-input-optional">
-        <h6>How to Use</h6>
+        <h6><?php _e( 'How to Use', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="clear:both;">
             <textarea class="mf2tk-how-to-use mf2tk-table-shortcode" rows="10" cols="80" readonly><!-- Edit below to your liking -->
 &lt;div&gt;
@@ -113,30 +110,32 @@ table.mf2tk-alt_table td{padding:7px 10px 3px 10px;}
 &lt;/style&gt;
 &lt;table class="mf2tk-alt_table"&gt;
 [show_custom_field
-&nbsp;&nbsp;&nbsp;&nbsp;field="$fields"
-&nbsp;&nbsp;&nbsp;&nbsp;filter="$filters"
+&nbsp;&nbsp;&nbsp;&nbsp;field="<?php echo $fields; ?>"
+&nbsp;&nbsp;&nbsp;&nbsp;filter="<?php echo $filters; ?>"
 &nbsp;&nbsp;&nbsp;&nbsp;separator=", "
-&nbsp;&nbsp;&nbsp;&nbsp;field_before="&lt;tr&gt;&lt;td&gt;&lt;!--\$Field--&gt;&lt;/td&gt;&lt;td&gt;"
+&nbsp;&nbsp;&nbsp;&nbsp;field_before="&lt;tr&gt;&lt;td&gt;&lt;!--$Field--&gt;&lt;/td&gt;&lt;td&gt;"
 &nbsp;&nbsp;&nbsp;&nbsp;field_after="&lt;/td&gt;&lt;/tr&gt;"
 ]
 &lt/table&gt;
 &lt/div&gt;
 <!-- Edit above to your liking -->
 </textarea>
-- To display a table of all Magic Fields <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor
-above in <strong>Text</strong> mode
+- <?php _e( 'To display a table of all Magic Fields', $mf_domain ); ?> <button class="mf2tk-how-to-use"><?php _e( 'select', $mf_domain ); ?>,</button>
+<?php _e( 'copy and paste above into the editor above in &quot;Text&quot; mode', $mf_domain ); ?>
         </div>
     </div>
     <!-- optional configuration field -->
     <div class="mf2tk-field-input-optional">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>Re-Configure Table</h6>
+        <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
+        <h6><?php _e( 'Re-Configure Table', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <fieldset class="mf2tk-configure mf2tk-fields">
-                <legend>Fields:</legend>
+                <legend><?php _e( 'Fields', $mf_domain ); ?>:</legend>
                 <!-- before drop point -->
                 <div><div class="mf2tk-dragable-field-after"></div></div>
-EOD;
+<?php
+        $output = ob_get_contents( );
+        ob_end_clean( );
         foreach ( $all_fields as $field => $is_checked ) {
         $checked = $is_checked ? ' checked' : '';
         $output .= <<<EOD
@@ -150,76 +149,79 @@ EOD;
                 </div>
 EOD;
         }
-        $output .= <<<EOD
-                <span>Use drag and drop to change field order</span>
+        ob_start( );
+?>
+                <span><?php _e( 'Use drag and drop to change field order', $mf_domain ); ?></span>
             </fieldset>
             <fieldset class="mf2tk-configure mf2tk-filters">
-                <legend>Filters:</legend>
+                <legend><?php _e( 'Filters', $mf_domain ); ?>:</legend>
                 <div>
                     <label class="mf2tk-configure">
                         <input type="checkbox" class="mf2tk-configure"
-                            value="tk_value_as_color"$tk_value_as_color_checked>tk_value_as_color
+                            value="tk_value_as_color"<?php echo $tk_value_as_color_checked; ?>>tk_value_as_color
                     </label>
                 </div>
                 <div>
                     <label class="mf2tk-configure">
                         <input type="checkbox" class="mf2tk-configure"
-                            value="tk_value_as_checkbox"$tk_value_as_checkbox_checked>tk_value_as_checkbox
+                            value="tk_value_as_checkbox"<?php echo $tk_value_as_checkbox_checked; ?>>tk_value_as_checkbox
                     </label>
                 </div>
                 <div>
                     <label class="mf2tk-configure">
                         <input type="checkbox" class="mf2tk-configure"
-                            value="tk_value_as_audio"$tk_value_as_audio_checked>tk_value_as_audio
+                            value="tk_value_as_audio"<?php echo $tk_value_as_audio_checked; ?>>tk_value_as_audio
                     </label>
                 </div>
                 <div>
                     <label class="mf2tk-configure">
                         <input type="checkbox" class="mf2tk-configure"
-                            value="tk_value_as_image__"$tk_value_as_image_checked>tk_value_as_image__
+                            value="tk_value_as_image__"<?php echo $tk_value_as_image_checked; ?>>tk_value_as_image__
                     </label>
                     <label class="mf2tk-configure">
-                        <input type="radio" class="mf2tk-configure" name="tk_value_as_image_{$post_type}"
-                            value="width"$tk_value_as_image_width_checked>Width
+                        <input type="radio" class="mf2tk-configure" name="tk_value_as_image_<?php echo $post_type; ?>"
+                            value="width"<?php echo $tk_value_as_image_width_checked; ?>>Width
                     </label>
                     <label class="mf2tk-configure">
-                        <input type="radio" class="mf2tk-configure" name="tk_value_as_image_{$post_type}"
-                            value="height"$tk_value_as_image_height_checked>Height
+                        <input type="radio" class="mf2tk-configure" name="tk_value_as_image_<?php echo $post_type; ?>"
+                            value="height"<?php echo $tk_value_as_image_height_checked; ?>>Height
                     </label>
                     <label class="mf2tk-configure">
-                        <input type="number" class="mf2tk-configure" max="9999" value="$tk_value_as_image_size">
+                        <input type="number" class="mf2tk-configure" max="9999" value="<?php echo $tk_value_as_image_size; ?>">
                      </label>
                 </div>
                 <div>
                     <label class="mf2tk-configure">
                         <input type="checkbox" class="mf2tk-configure"
-                            value="tk_value_as_video__"$tk_value_as_video_checked>tk_value_as_video__
+                            value="tk_value_as_video__"<?php echo $tk_value_as_video_checked; ?>>tk_value_as_video__
                     </label>
                     <label class="mf2tk-configure">
-                        <input type="radio" class="mf2tk-configure" name="tk_value_as_video_{$post_type}"
-                            value="width"$tk_value_as_video_width_checked>Width
+                        <input type="radio" class="mf2tk-configure" name="tk_value_as_video_<?php echo $post_type; ?>"
+                            value="width"<?php echo $tk_value_as_video_width_checked; ?>>Width
                     </label>
                     <label class="mf2tk-configure">
-                        <input type="radio" class="mf2tk-configure" name="tk_value_as_video_{$post_type}"
-                            value="height"$tk_value_as_video_height_checked>Height
+                        <input type="radio" class="mf2tk-configure" name="tk_value_as_video_<?php echo $post_type; ?>"
+                            value="height"<?php echo $tk_value_as_video_height_checked; ?>>Height
                     </label>
                     <label class="mf2tk-configure">
-                        <input type="number" class="mf2tk-configure" max="9999" value="$tk_value_as_video_size">
+                        <input type="number" class="mf2tk-configure" max="9999" value="<?php echo $tk_value_as_video_size; ?>">
                      </label>
                 </div>
                 <div>
                     <label class="mf2tk-configure">
-                        <input type="checkbox" class="mf2tk-configure" value="url_to_link2"$url_to_link2_checked>url_to_link2
+                        <input type="checkbox" class="mf2tk-configure" value="url_to_link2"<?php echo $url_to_link2_checked; ?>>url_to_link2
                     </label>
                 </div>
             </fieldset>
-            <button class="mf2tk-refresh-table-shortcode" id="button-$table_field[name]-$group_index-$field_index">Refresh Table Shortcode</button>
+            <button class="mf2tk-refresh-table-shortcode" id="button-<?php echo "{$table_field['name']}-{$group_index}-{$field_index}"; ?>">
+                <?php _e( 'Refresh Table Shortcode', $mf_domain ); ?></button>
         </div>
     </div>
-    <input type="hidden" id="input-$table_field[name]-$group_index-$field_index" name="$table_field[input_name]"
-        value="$input_value">
-EOD;
+    <input type="hidden" id="input-<?php echo "{$table_field['name']}-{$group_index}-{$field_index}"; ?>" name="<?php echo $table_field['input_name']; ?>"
+        value="<?php echo $input_value; ?>">
+<?php
+        $output .= ob_get_contents( );
+        ob_end_clean( );
         return $output;
     }
-
 }

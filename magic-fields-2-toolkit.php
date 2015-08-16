@@ -537,8 +537,8 @@ function get_how_to_use_html( $field, $group_index, $field_index, $post, $parame
                     <textarea class="mf2tk-how-to-use" rows="4" cols="80" readonly>&lt;div style="width:<?php echo $no_caption_width; ?>px;border:<?php echo $no_caption_border; ?>px solid black;background-color:gray;padding:<?php echo $no_caption_padding; ?>px;margin:0px auto;"&gt;
     [<?php echo $show_custom_field_tag; ?> field="<?php echo "$field[name]$index"; ?>"<?php echo $parameters; ?>]
 &lt;/div&gt;</textarea><br>
-                    - <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
-                        <?php _e( 'copy and paste this into editor above in &quot;Text&quot; mode', $mf_domain ); ?>
+                    <button class="mf2tk-how-to-use"><?php _e( 'select,', $mf_domain ); ?></button>
+                        <?php _e( 'copy and paste above into the editor above in &quot;Text&quot; mode', $mf_domain ); ?>
 <?php } else { ?>
                 <li><?php _e( 'Use with the Toolkit\'s shortcode', $mf_domain ); ?>:<br>
                     <input type="text" class="mf2tk-how-to-use" size="50" readonly
