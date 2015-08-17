@@ -414,7 +414,9 @@ jQuery(document).ready(function(){
     mfField.find("button.mf2tk-alt_embed_admin-refresh").click(mf2tk_globals.mf2tk_alt_embed_admin_refresh_click);
     mfField.find("button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
     mfField.find("div.mf2tk-field-input-optional.mf2tk-caption-field input").change(mf2tk_globals.caption_field_change);
-    
+
+    jQuery("div.url_field_mf button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
+
     mf2tk_globals.InsertHowToUse(document.body);
     if(typeof mf2tkDisableHowToUse==="undefined"||!mf2tkDisableHowToUse){
         // template is a template for the HTML to be inserted for each taxonomy field to implement the how to use feature
