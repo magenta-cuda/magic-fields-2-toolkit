@@ -5,163 +5,111 @@
  */
 
  // initialisation
-global $mf_domain;
-
 
 // class with static properties encapsulating functions for the field type
 
 class alt_dropdown_field extends mf_custom_fields {
 
-  public $allow_multiple = TRUE;
-  public $has_properties = TRUE;
+    public $allow_multiple = TRUE;
+    public $has_properties = TRUE;
   
-  public function _update_description(){
-    global $mf_domain;
-    $this->description = __("Dropdown with optional textbox",$mf_domain);
-  }
+    public function _update_description( ) {
+        global $mf_domain;
+        $this->description = __( 'Dropdown with optional textbox', $mf_domain );
+    }
   
-  public function _options(){
-    global $mf_domain;
+    public function _options( ) {
+        global $mf_domain;
     
-    $data = array(
-      'option'  => array(
-        'options'  => array(
-          'type'        =>  'textarea',
-          'id'          =>  'dropdown_options',
-          'label'       =>  __('Options',$mf_domain),
-          'name'        =>  'mf_field[option][options]',
-          'default'     =>  '',
-          'description' =>  __( 'Separate each option with a newline.', $mf_domain ),
-          'value'       =>  '',
-          'div_class'   => '',
-          'class'       => ''
-        ),
-        'multiple' =>  array(
-          'type'        =>  'checkbox',
-          'id'          =>  'multiple_dropdown_options',
-          'label'       =>  __('The dropdown can have multiple values', $mf_domain ),
-          'name'        =>  'mf_field[option][multiple]',
-          'default'     =>  '',
-          'description' =>  '',
-          'value'       =>  '',
-          'div_class'   =>  '',
-          'class'       =>  ''
-        ),
-        'default_value'  => array(
-          'type'        =>  'text',
-          'id'          =>  'dropdown_default_value',
-          'label'       =>  __('Default value',$mf_domain),
-          'name'        =>  'mf_field[option][default_value]',
-          'default'     =>  '',
-          'description' =>  __( 'Separate each value with a newline.', $mf_domain ),
-          'value'       =>  '',
-          'div_class'    => '',
-          'class'       => ''
-        )
-      )
-    );
-    
-    return $data;
-  }
+        return [
+            'option' => [
+                'options' => [
+                    'type'        =>  'textarea',
+                    'id'          =>  'dropdown_options',
+                    'label'       =>  __( 'Options', $mf_domain ),
+                    'name'        =>  'mf_field[option][options]',
+                    'default'     =>  '',
+                    'description' =>  __( 'Separate each option with a newline.', $mf_domain ),
+                    'value'       =>  '',
+                    'div_class'   =>  '',
+                    'class'       =>  ''
+                ],
+                'multiple' => [
+                    'type'        =>  'checkbox',
+                    'id'          =>  'multiple_dropdown_options',
+                    'label'       =>  __( 'The dropdown can have multiple values', $mf_domain ),
+                    'name'        =>  'mf_field[option][multiple]',
+                    'default'     =>  '',
+                    'description' =>  '',
+                    'value'       =>  '',
+                    'div_class'   =>  '',
+                    'class'       =>  ''
+                ],
+                'default_value' => [
+                    'type'        =>  'text',
+                    'id'          =>  'dropdown_default_value',
+                    'label'       =>  __( 'Default values', $mf_domain ),
+                    'name'        =>  'mf_field[option][default_value]',
+                    'default'     =>  '',
+                    'description' =>  __( 'Separate each value with a newline.', $mf_domain ),
+                    'value'       =>  '',
+                    'div_class'   =>  '',
+                    'class'       =>  ''
+                ]
+            ]
+        ];
+    }
   
-  public function display_field( $field, $group_index = 1, $field_index = 1 ) {
-    $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
-    $output = '';
-    $output .= '<div class="mf2tk-field-input-main">';
-    $div_id = sprintf( 'div-alt-dropdown-%d-%d-%d', $field['id'], $group_index, $field_index );
-    $output .= '<div id="' . $div_id . '" class="mf2tk-field_value_pane">';
-    $is_multiple = ($field['options']['multiple']) ? true : false;
+    public function display_field( $field, $group_index = 1, $field_index = 1 ) {
+        global $post;
+        global $mf_domain;
+        
+        $output = '<div class="mf2tk-field-input-main">'
+            . "<div id=\"div-alt-dropdown-{$field['id']}-{$group_index}-{$field_index}\" class=\"mf2tk-field_value_pane\">";
 
-    $check_post_id = null;
-    if(!empty($_REQUEST['post'])) {
-      $check_post_id = $_REQUEST['post'];
-    }
+        $check_post_id = NULL;
+        if ( !empty( $_REQUEST[ 'post' ] ) ) {
+            $check_post_id = $_REQUEST[ 'post' ];
+        }
 
-    $values = array();
-    
-    if($check_post_id) {
-      $values = ($field['input_value']) ? (is_serialized($field['input_value']))? unserialize($field['input_value']): (array)$field['input_value'] : array() ;
-    }else{
-      $values[] = $field['options']['default_value'];
-    }
- 
-    foreach($values as &$val){
-      $val = trim($val);
-    }
+        $values = [ ];
+        if ( $check_post_id ) {
+            $values = ( $field[ 'input_value' ] ) ? ( is_serialized( $field[ 'input_value' ] ) ) ? unserialize( $field[ 'input_value' ] )
+                : (array) $field[ 'input_value' ] : [ ];
+        } else {
+            $values[ ] = $field[ 'options' ][ 'default_value' ];
+        }
+        foreach ( $values as &$val ) {
+            $val = trim( $val );
+        }
 
-    $options = preg_split("/\\n/", $field['options']['options']);
-    #error_log( '##### alt_dropdown_field.php:$options=' . print_r( $options, TRUE ) );
-    $output .= '<div class="mf-dropdown-box">';
+        $options     = preg_split( "/\\n/", $field[ 'options' ][ 'options' ] );
+        $is_multiple = ( $field[ 'options' ][ 'multiple' ] ) ? TRUE : FALSE;
+        $multiple    = ( $is_multiple ) ? 'multiple="multiple"' : '';
+        $separator   = ( $is_multiple ) ? ' separator=", "'     : '';
+        
+        # output select box
+        
+        $output .= "<div class=\"mf-dropdown-box\"><select class=\"dropdown_mf\" id=\"{$field['input_id']}\" name=\"{$field['input_name']}[]\" {$multiple}>";
+        foreach ( $options as $option ) {
+            $option = trim( $option );
+            if ( !$option ) {
+                continue;
+            }
+            $check = in_array( $option, $values ) ? 'selected="selected"' : '';
+            $output .= sprintf( '<option value="%s" %s >%s</option>', esc_attr( $option ), $check, esc_attr( $option ) );
+        }
+        $output .= '<option value="add-new">' . __( '--Enter New Value--', $mf_domain ) . '</option>';
+        $output .= '</select></div>';
 
-    $multiple = ($is_multiple) ? 'multiple="multiple"' : '';
-    $separator = ($is_multiple) ? ' separator=", "' : '';
-    $output .= sprintf('<select class="dropdown_mf" id="%s" name="%s[]" %s >',$field['input_id'],$field['input_name'],$multiple);
-    foreach($options as $option) {
-      $option = trim($option);
-      if ( !$option ) { continue; }
-      $check = in_array($option,$values) ? 'selected="selected"' : '';
-
-      $output .= sprintf('<option value="%s" %s >%s</option>',
-        esc_attr($option),
-        $check,
-        esc_attr($option)
-      );
+        # output input box
+        
+        $output .= "<div class=\"text_field_mf\"><input type=\"text\" placeholder=\"{$field['label']}\" style=\"display:none;\" /></div>";
+        
+        # output how to use box
+        
+        $output .= '</div></div>' . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, $separator );
+        error_log( "##### alt_dropdown_field::display_field():return=" . $output );
+        return $output;
     }
-    $output .= '<option value="add-new">--Enter New Value--</option>';
-    $output .= '</select>';
-    $output .= '</div>';
-    $output .= '<div class="text_field_mf" >';
-    $output .= sprintf('<input type="text" placeholder="%s" style="display:none;" />', $field['label'] );
-    $output .= '</div></div></div>';
-    $output .= <<<EOD
-    <div class="mf2tk-field-input-optional">
-        <button class="mf2tk-field_value_pane_button">Open</button>
-        <h6>How to Use</h6>
-        <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <ul>
-                <li style="list-style:square inside">Use with the Toolkit's shortcode:<br>
-                    <input type="text" class="mf2tk-how-to-use" size="50" readonly
-                        value='[show_custom_field field="$field[name]$index"$separator]'>
-                    - <button class="mf2tk-how-to-use">select,</button> copy and paste this into editor above in
-                        <strong>Text</strong> mode
-                <li style="list-style:square inside">Call the PHP function:<br>
-                    get_data( "$field[name]", $group_index, $field_index, \$post_id )
-            </ul>
-        </div>
-    </div>
-EOD;
-    $output .= '<script type="text/javascript">';
-    $output .= 'jQuery("div#' . $div_id . ' select").change(function(){';
-    $output .= <<<'EOD'
-    if(jQuery("option:selected:last",this).text()=="--Enter New Value--"){
-        jQuery(this).css("display","none");
-        var input=jQuery("input",this.parentNode.parentNode).css("display","inline").val("").get(0);
-        input.focus();
-        input.select();
-    }
-});
-EOD;
-    $output .= 'jQuery("div#' . $div_id . ' input").change(function(){';
-    $output .= <<<'EOD'
-    var value=jQuery(this).val();
-    var select=jQuery("select",this.parentNode.parentNode);
-    jQuery("option:last",select).prop("selected",false);
-    if(value){select.prepend('<option value="'+value+'" selected>'+value+'</option>');}
-    select.css("display","inline");
-    jQuery(this).val("").css("display","none");
-});
-EOD;
-    $output .= 'jQuery("div#' . $div_id . ' input").keydown(function(e){';
-    $output .= <<<'EOD'
-    if(e.keyCode==13){
-        jQuery(this).blur();
-        return false;
-    }
-});
-EOD;
-    $output .= 'jQuery("div#' . $div_id . ' input").blur(function(){jQuery(this).change();});';
-#//jQuery("form#search-using-magic-fields").on('keypress',function(e){if(e.which==13){e.preventDefault();return false;}});
-    $output .= '</script>';
-    return $output;
-  }
 }

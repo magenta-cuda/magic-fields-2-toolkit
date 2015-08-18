@@ -69,13 +69,43 @@ mf2tk_globals.caption_field_change=function(){
     }
 };
 
-mf2tk_globals.test_load_link_click=function(e){
-  e.preventDefault();
+mf2tk_globals.test_load_link_click=function(){
   window.open(jQuery(this.parentNode).find("input[type='url']").val(),'_blank');
+  return false;
 };
 
 // mf2tk_globals.template is a template for the HTML to be inserted for each Magic Field to implement the how to use feature
 // it is parameterized by $#parameter# placeholders which will be appropriately replaced
+
+mf2tk_globals.installAltDropdownHandlers=function(fieldDiv){
+  var div=fieldDiv.find("div[id^='div-alt-dropdown-']");
+  if(!div.length){return;}
+  div.find("select").change(function(){
+    if(jQuery("option:selected:last",this).text()=="--Enter New Value--"){
+        jQuery(this).css("display","none");
+        var input=jQuery("input",this.parentNode.parentNode).css("display","inline").val("").get(0);
+        input.focus();
+        input.select();
+    }
+  });
+  div.find("input").change(function(){
+    var value=jQuery(this).val();
+    var select=jQuery("select",this.parentNode.parentNode);
+    jQuery("option:last",select).prop("selected",false);
+    if(value){select.prepend('<option value="'+value+'" selected>'+value+'</option>');}
+    select.css("display","inline");
+    jQuery(this).val("").css("display","none");
+  });
+  div.find("input").keydown(function(e){
+    if(e.keyCode==13){
+        jQuery(this).blur();
+        return false;
+    }
+  });
+  div.find("input").blur(function(){
+    jQuery(this).change();
+  });
+};
 
 mf2tk_globals.template='\
 <div style="clear:both;"></div>\
@@ -406,6 +436,7 @@ mf2tk_globals.InsertHowToUse=function(root){
         });
     }
 }
+
 jQuery(document).ready(function(){
     // wire up media specific handlers
     var mfField=jQuery("div.media_field_mf");
@@ -515,12 +546,12 @@ jQuery(document).ready(function(){
         hoverClass:"mf2tk-hover",drop:function(e,u){
             jQuery(this.parentNode).after(u.draggable);
     }});
-
+    mf2tk_globals.installAltDropdownHandlers(mfField);
 });
 
 // adapted from magic-fields-2/js/mf_field_base.js
 
-jQuery(document).ready(function($) {    
+jQuery(document).ready(function($){    
   $(document).on("click",'a.duplicate-field',function(){
     id = jQuery(this).attr("id");
     pattern =  /mf\_field\_repeat\-(([0-9]+)\_([0-9]+)\_([0-9]+)\_([0-9]+))/i;
@@ -559,7 +590,8 @@ jQuery(document).ready(function($) {
             duplicate.find('button.mf2tk-alt_embed_admin-refresh').click(mf2tk_globals.mf2tk_alt_embed_admin_refresh_click);
             duplicate.find("button.mf2tk-test-load-button").click(mf2tk_globals.test_load_link_click);
             duplicate.find("div.mf2tk-field-input-optional.mf2tk-caption-field input").change(mf2tk_globals.caption_field_change);
-            return false;
+            mf2tk_globals.installAltDropdownHandlers(duplicate);
+            return;
         }
         window.setTimeout(check,1000);
     };
