@@ -150,7 +150,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
         $parent_ids = [ ], $atts = [ ] ) {
         global $wpdb;
         # that argument list is much too long so alternatively pass as an associative array
-        if ( func_get_arg( ) === 1 && is_array( $args = func_get_arg( 0 ) ) ) {
+        if ( func_num_args( ) === 1 && is_array( $args = func_get_arg( 0 ) ) ) {
             # provide default values for arguments so the associative array need only specify non default values
             extract( array_merge( [
                 'post_id'         => NULL,
