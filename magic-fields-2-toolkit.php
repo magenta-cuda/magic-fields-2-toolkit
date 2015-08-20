@@ -356,9 +356,11 @@ EOD
                 include( dirname(__FILE__)
                     . '/magic-fields-2-utility-functions.php' );
             }
+            # the AJAX admin refresh request is sent from the post editor to reload a media ( embed, audio or video ) element 
             if ( is_admin() && array_key_exists( 'alt_embed_field', $options ) ) {
-                add_action( 'wp_ajax_' . 'mf2tk_alt_embed_admin_refresh', function() {
-                    include dirname(__FILE__) . '/mf2tk_alt_embed_admin_refresh.php';
+                add_action( 'wp_ajax_' . 'mf2tk_alt_embed_admin_refresh', function( ) {
+                    include dirname( __FILE__ ) . '/alt_embed_field/alt_embed_field.php';
+                    alt_embed_field::admin_refresh( );
                 } );
             }
             if ( is_admin( ) && ( array_key_exists( 'alt_video_field', $options ) || array_key_exists( 'alt_audio_field', $options ) ) ) {

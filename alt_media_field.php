@@ -9,11 +9,10 @@ abstract class alt_media_field extends mf_custom_fields {
     public static $suffix_link               = '_mf2tk_link';
     public static $suffix_hover              = '_mf2tk_hover';
 
+    # template( ) is called by display_field() of alt_audio_field and display_field() of alt_video_field to implement common funtionality
+
     public function template( $field, $group_index, $field_index, $media_type, $wp_media_shortcode ) {
         global $mf_domain, $post;
-
-        # included by display_field() of alt_audio_field/alt_audio_field.php and display_field() of 
-        # alt_video_field/alt_video_field.php to implement common funtionality
 
         $media_title = [ 'audio' => __( 'Audio', $mf_domain ), 'video' => __( 'Video', $mf_domain ) ];
         $opts        = $field[ 'options' ];
@@ -292,9 +291,9 @@ EOD;
         $html = call_user_func( $wp_media_shortcode, $atts );
     }
 
+    # admin_refresh( ) is invoked by an AJAX request to reload the media element in the post editor
+
     public static function admin_refresh( ) {
-        # TODO: make alt_audio_field and alt_video_field a child class of an abstract class alt_media_field
-        # and put the contents of this file as a method in alt_media_field
 
         global $wpdb;
         preg_match( '/magicfields\[(\w+)\]\[\d+\]\[\d+\]/', $_REQUEST[ 'field' ], $matches );

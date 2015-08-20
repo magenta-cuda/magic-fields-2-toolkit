@@ -9,7 +9,7 @@ class alt_embed_field extends mf_custom_fields {
         $this->description = __( 'This is a Magic Fields 2 field for WordPress\'s embed shortcode facility.', $mf_domain );
     }
   
-    public function _options() {
+    public function _options( ) {
         global $mf_domain;
         $show_custom_field_tag = mf2tk\get_tags( )[ 'show_custom_field' ];            
         return [
@@ -81,7 +81,7 @@ class alt_embed_field extends mf_custom_fields {
         $opts   = $field[ 'options' ];
         $width  = mf2tk\get_data_option( 'max_width',  NULL, $opts, 320 );
         $height = mf2tk\get_data_option( 'max_height', NULL, $opts, 240 );
-        $args = [];
+        $args   = [ ];
         if ( $width ) {
             $args[ 'width' ]  = $width;
         }
@@ -171,5 +171,23 @@ class alt_embed_field extends mf_custom_fields {
             return $html;
         }
     }
-  
+    
+    # admin_refresh( ) is invoked by an AJAX request to reload the media element in the post editor
+    
+    public static function admin_refresh( ) {
+        global $wpdb;
+        preg_match( '/magicfields\[(\w+)\]\[\d+\]\[\d+\]/', $_REQUEST[ 'field' ], $matches );
+        $options = unserialize( $wpdb->get_var( $wpdb->prepare( 'SELECT options FROM ' . MF_TABLE_CUSTOM_FIELDS . ' WHERE name = %s', $matches[1] ) ) );
+        $width   = $options[ 'max_width' ];
+        $height  = $options[ 'max_height' ];
+        $args    = [ ];
+        if ( $width  ) {
+            $args['width']  = $width;
+        }
+        if ( $height ) {
+            $args['height'] = $height;
+        }
+        echo wp_oembed_get( $_REQUEST[ 'url' ], $args );
+        die;
+    }
 }
