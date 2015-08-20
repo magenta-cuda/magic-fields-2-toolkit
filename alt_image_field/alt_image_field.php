@@ -127,9 +127,6 @@ class alt_image_field extends mf_custom_fields {
 
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
         global $mf_domain, $post;
-        error_log( '##### alt_image_field::display_field():backtrace=' . print_r( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), true ) );
-        error_log( '##### alt_image_field::display_field():$post=' . print_r( $post, true ) );
-        error_log( '##### alt_image_field::display_field():$field=' . print_r( $field, true ) );
         # setup main field
         $field_id              = "mf2tk-$field[name]-$group_index-$field_index";
         $input_value           = str_replace( '"', '&quot;', $field['input_value'] );
@@ -204,7 +201,6 @@ class alt_image_field extends mf_custom_fields {
         $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
             'alt_image_field::get_image', TRUE, $caption_input_value, $width ) . '</div>';
         ob_end_clean( );
-        error_log( '##### alt_image_field::display_field():$output=' . $output );
         return $output;
     }
   

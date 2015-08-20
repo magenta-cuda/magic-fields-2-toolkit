@@ -227,16 +227,14 @@ abstract class alt_media_field extends mf_custom_fields {
 EOD;
             }
         }
-        error_log( '##### alt_image_field::display_field():$html=' . $html );
         return $html;
     }
 
+    # called by get_audio() of alt_audio_field and get_video() of alt_video_field to implement common funtionality
+    # N.B. $height, $width, $hover, $caption, $poster and $html are passed by reference to return values to the caller
+
     public static function get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, $media_type, $wp_media_shortcode, $classname,
         &$height, &$width, &$hover, &$caption, &$poster, &$html ) {
-        # included by get_audio() of alt_audio_field/alt_audio_field.php and get_video() of alt_video_field/alt_video_field.php
-        # to implement common funtionality
-        # TODO: make alt_audio_field and alt_video_field a child class of an abstract class alt_media_field
-        # and put the contents of this file as a method in alt_media_field
 
         $srcs = mf2tk\get_media_srcs( $field_name, $group_index, $field_index, $post_id, $classname );
         if ( count( $srcs ) === 1 ) {
@@ -278,17 +276,11 @@ EOD;
                 $atts[ $var ] = $$var;
             }
         }
-        /*
-        if ( $width    ) { $atts['width']    = $width;    }
-        if ( $height   ) { $atts['height']   = $height;   }
-        if ( $loop     ) { $atts['loop']     = $loop;     }
-        if ( $autoplay ) { $atts['autoplay'] = $autoplay; }
-        if ( $preload  ) { $atts['preload']  = $preload;  }
-        if ( $poster   ) { $atts['poster']   = $poster;   }
-        */
         $atts = array_diff_key( $atts, $invalid_atts );
-        $atts = array_filter( $atts, function( $v ) { return $v !== 'off'; } );
-        $html = call_user_func( $wp_media_shortcode, $atts );
+        $atts = array_filter( $atts, function( $v ) {
+            return $v !== 'off';
+        } );
+        $html = call_user_func( $wp_media_shortcode, $atts );   # html returned by reference
     }
 
     # admin_refresh( ) is invoked by an AJAX request to reload the media element in the post editor

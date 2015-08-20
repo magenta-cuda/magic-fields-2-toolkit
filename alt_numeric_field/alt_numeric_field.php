@@ -137,7 +137,6 @@ class alt_numeric_field extends mf_custom_fields {
 <?php
         $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, '', 'alt_numeric_field::get_numeric' ) . '</div>';
         ob_end_clean( );
-        error_log( '##### alt_numeric_field::display_field():$output=' . $output );
         return $output;
     }
     

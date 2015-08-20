@@ -121,7 +121,6 @@ class alt_embed_field extends mf_custom_fields {
         $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
             'alt_embed_field::get_embed', TRUE, $caption_input_value, $width ) . '</div>';
         ob_end_clean( );
-        error_log( '##### alt_embed_field::display_field():$output=' . $output );
         return $output;
     }
   
