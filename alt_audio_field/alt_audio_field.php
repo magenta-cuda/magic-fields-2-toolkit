@@ -1,13 +1,8 @@
 <?php
 
-class alt_audio_field extends mf_custom_fields {
+require_once( WP_PLUGIN_DIR . '/magic-fields-2-toolkit/alt_media_field.php' );
 
-    public static $suffix_fallback           = '_mf2tk_fallback';
-    public static $suffix_alternate_fallback = '_mf2tk_alternate_fallback';
-    public static $suffix_caption            = '_mf2tk_caption';
-    public static $suffix_poster             = '_mf2tk_poster';
-    public static $suffix_link               = '_mf2tk_link';
-    public static $suffix_hover              = '_mf2tk_hover';
+class alt_audio_field extends alt_media_field {
 
     public function _update_description( ) {
         global $mf_domain;
@@ -176,28 +171,22 @@ class alt_audio_field extends mf_custom_fields {
     }
 
     public function display_field( $field, $group_index = 1, $field_index = 1 ) {
-        global $mf_domain, $post;
-        $media_type = 'audio';
-        $wp_media_shortcode = 'wp_audio_shortcode';
-        $output = include WP_PLUGIN_DIR . '/magic-fields-2-toolkit/magic-fields-2-alt-media-template.php';
-        return $output;
+        return parent::template( $field, $group_index, $field_index, 'audio', 'wp_audio_shortcode' );
     }
   
-    static function get_audio( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL, $atts = array() ) {
+    public static function get_audio( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL, $atts = [ ] ) {
         global $post;
-        $media_type = 'audio';
         if ( !$post_id ) {
             $post_id = $post->ID;
         }
-        $wp_media_shortcode = 'wp_audio_shortcode';
         $original_atts = $atts;   # save $atts since magic-fields-2-alt-media-get-template.php will modify $atts
-        # since magic-fields-2-alt-media-get-template.php is shared with audio some entries are media specific
-        $invalid_atts = array( 'width' => true, 'height' => true, 'poster' => true );
-        include WP_PLUGIN_DIR . '/magic-fields-2-toolkit/magic-fields-2-alt-media-get-template.php';
-        $data = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
-        $opts = $data[ 'options' ];
-        $width  = mf2tk\get_data_option( 'width',  $original_atts, $opts, 320, 'max_width'  );
-        $height = mf2tk\get_data_option( 'height', $original_atts, $opts, 240, 'max_height' );
+        $invalid_atts  = [ 'width' => true, 'height' => true, 'poster' => true ]; # since parent::get_template( ) is shared with video and some entries are media specific
+        parent::get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, 'audio', 'wp_audio_shortcode', 'alt_audio_field',
+            $height, $width, $hover, $caption, $poster, $html );
+        $data       = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
+        $opts       = $data[ 'options' ];
+        $width      = mf2tk\get_data_option( 'width',  $original_atts, $opts, 320, 'max_width'  );
+        $height     = mf2tk\get_data_option( 'height', $original_atts, $opts, 240, 'max_height' );
         $attrWidth  = $width  ? " width=\"$width\""   : '';
         $attrHeight = $height ? " height=\"$height\"" : '';
         # attach optional poster image

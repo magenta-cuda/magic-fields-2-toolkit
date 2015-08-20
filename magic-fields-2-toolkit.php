@@ -39,7 +39,7 @@ and activated.</div>
                 return;
             }
             wp_enqueue_style(  'mf2tk_admin',     plugins_url( 'css/mf2tk_admin.css',   __FILE__ ) );
-            wp_enqueue_script( 'mf2tk_admin',     plugins_url( 'js/mf2tk_admin.js',     __FILE__ ), [ 'jquery' ] );
+            wp_enqueue_script( 'mf2tk_admin',     plugins_url( 'js/mf2tk_admin.js',     __FILE__ ), [ 'jquery', 'media-models' ] );
             wp_enqueue_script( 'mf2tk_alt_media', plugins_url( 'js/mf2tk_alt_media.js', __FILE__ ), [ 'jquery' ] );
             $options = get_option( 'magic_fields_2_toolkit_enabled', [ ] );
             $mf2tkDisableHowToUse = array_key_exists( 'dumb_shortcodes', $options ) ? 'false' : 'true';
@@ -361,10 +361,10 @@ EOD
                     include dirname(__FILE__) . '/mf2tk_alt_embed_admin_refresh.php';
                 } );
             }
-            if ( is_admin()
-                && ( array_key_exists( 'alt_video_field', $options ) || array_key_exists( 'alt_audio_field', $options ) ) ) {
-                add_action( 'wp_ajax_' . 'mf2tk_alt_media_admin_refresh', function() {
-                    include dirname(__FILE__) . '/mf2tk_alt_media_admin_refresh.php';
+            if ( is_admin( ) && ( array_key_exists( 'alt_video_field', $options ) || array_key_exists( 'alt_audio_field', $options ) ) ) {
+                add_action( 'wp_ajax_' . 'mf2tk_alt_media_admin_refresh', function( ) {
+                    require_once( dirname( __FILE__ ) . '/alt_media_field.php' );
+                    alt_media_field::admin_refresh( );
                 } );
             }
             if ( array_key_exists( 'alt_video_field', $options ) || array_key_exists( 'alt_audio_field', $options )
