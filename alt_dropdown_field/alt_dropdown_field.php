@@ -109,7 +109,6 @@ class alt_dropdown_field extends mf_custom_fields {
         # output how to use box
         
         $output .= '</div></div>' . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, $separator );
-        error_log( "##### alt_dropdown_field::display_field():return=" . $output );
         return $output;
     }
 }

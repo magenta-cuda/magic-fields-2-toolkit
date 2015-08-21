@@ -539,6 +539,7 @@ jQuery(document).ready(function(){
         });
         textarea[0].textContent=text;
         jQuery("input#"+inputId).val("field="+fields+"|filter="+filters);
+        window.alert("Table shortcode re-calculated.");
         return false;
     });
     mfField.find("div.mf2tk-dragable-field").draggable({cursor:"crosshair",revert:true});
