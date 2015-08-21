@@ -182,7 +182,7 @@ class alt_audio_field extends alt_media_field {
         $original_atts = $atts;   # save $atts since magic-fields-2-alt-media-get-template.php will modify $atts
         $invalid_atts  = [ 'width' => true, 'height' => true, 'poster' => true ]; # since parent::get_template( ) is shared with video and some entries are media specific
         parent::get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, 'audio', 'wp_audio_shortcode', 'alt_audio_field',
-            $height, $width, $hover, $caption, $poster, $html );
+            $height, $width, $hover, $caption, $poster, $link, $html );
         $data       = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
         $opts       = $data[ 'options' ];
         $width      = mf2tk\get_data_option( 'width',  $original_atts, $opts, 320, 'max_width'  );

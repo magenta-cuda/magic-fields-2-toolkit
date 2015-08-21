@@ -196,7 +196,7 @@ class alt_video_field extends alt_media_field {
         $original_atts = $atts;
         $invalid_atts  = [ ];   # since parent::get_template() is shared with audio some entries are media specific
         parent::get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, 'video', 'wp_video_shortcode', 'alt_video_field',
-            $height, $width, $hover, $caption, $poster, $html );
+            $height, $width, $hover, $caption, $poster, $link, $html );
         if ( ( !$height || !$width ) && preg_match( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches ) ) {
             # height or width not specified so emit javascript patch to resize mediaelement.js elements according to aspect ratio
             $id = $matches[1];

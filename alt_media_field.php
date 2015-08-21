@@ -234,7 +234,7 @@ EOD;
     # N.B. $height, $width, $hover, $caption, $poster and $html are passed by reference to return values to the caller
 
     public static function get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, $media_type, $wp_media_shortcode, $classname,
-        &$height, &$width, &$hover, &$caption, &$poster, &$html ) {
+        &$height, &$width, &$hover, &$caption, &$poster, &$link, &$html ) {
 
         $srcs = mf2tk\get_media_srcs( $field_name, $group_index, $field_index, $post_id, $classname );
         if ( count( $srcs ) === 1 ) {
