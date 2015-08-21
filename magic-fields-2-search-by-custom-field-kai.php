@@ -328,7 +328,7 @@ EOD
 <div class="scpbcfw-admin-search-fields-option">
 <input type="checkbox" id="<?php echo $this->get_field_id( 'set_is_search' ); ?>" name="<?php echo $this->get_field_name( 'set_is_search' ); ?>"
     class="scpbcfw-admin-search-fields-option-checkbox" value="is search" <?php if ( isset( $instance['set_is_search'] ) ) { echo 'checked'; } ?>>
-<?php _e( 'Display search results using the same template as the default WordPress search', $mf_domain ); ?>:
+<?php _e( 'Display search results using excerpts (if it is supported by your theme)', $mf_domain ); ?>:
 <div style="clear:both;"></div>
 </div>
 <div class="scpbcfw-admin-search-fields-option">
@@ -576,20 +576,21 @@ div.mf2tk-selectable-field-after.mf2tk-hover{background-color:black;}
                 $tax_type = ( $taxonomy->hierarchical ) ? 'tax-cat-' : 'tax-tag-';
                 $results = $wpdb->get_results( $wpdb->prepare( <<<EOD
 SELECT x.term_taxonomy_id, t.name, COUNT(*) count FROM $wpdb->term_relationships r, $wpdb->term_taxonomy x, $wpdb->terms t, $wpdb->posts p
-    WHERE r.term_taxonomy_id = x.term_taxonomy_id AND x.term_id = t.term_id AND r.object_id = p.ID AND x.taxonomy = "$taxonomy->name" AND p.post_type = %s
+    WHERE r.term_taxonomy_id = x.term_taxonomy_id AND x.term_id = t.term_id AND r.object_id = p.ID AND x.taxonomy = %s AND p.post_type = %s
+        AND p.post_status = 'publish'
     GROUP BY x.term_taxonomy_id ORDER BY count DESC LIMIT $SQL_LIMIT
 EOD
-                    , $_REQUEST[ 'post_type' ] ), OBJECT );
+                    , $taxonomy->name, $_REQUEST[ 'post_type' ] ), OBJECT );
 ?>
 <div class="scpbcfw-search-fields">
-<span class="scpbcfw-search-fields-field-label"><?php echo $taxonomy->name ?>:</span>
+<span class="scpbcfw-search-fields-field-label"><?php echo $taxonomy->label ?>:</span>
 <div class="scpbcfw-display-button"><?php _e( 'Open', $mf_domain ); ?></div>
 <div style="clear:both;"></div>
 <div class="scpbcfw-search-field-values" style="display:none;">
 <?php
                 foreach ( $results as $result ) {
 ?>
-<input type="checkbox" id="<?php echo $meta_key; ?>" name="<?php echo $tax_type . $taxonomy->name; ?>[]" class="scpbcfw-search-fields-checkbox"
+<input type="checkbox" id="<?php echo $result->term_taxonomy_id; ?>" name="<?php echo $tax_type . $taxonomy->name; ?>[]" class="scpbcfw-search-fields-checkbox"
     value="<?php echo $result->term_taxonomy_id; ?>"><?php echo "$result->name ($result->count)"; ?><br>
 <?php
                 }   # foreach ( $results as $result ) {
@@ -658,10 +659,13 @@ EOD
 <?php
                     continue;
                 }   # if ( $meta_key === 'pst-std-post_author' ) {
+                # do Magic Fields
+                $MF_TABLE_POST_META = MF_TABLE_POST_META;
                 $results = $wpdb->get_results( $wpdb->prepare( <<<EOD
 SELECT meta_value, COUNT(*) count FROM
-    ( SELECT distinct m.meta_value, m.post_id FROM $wpdb->postmeta m, $wpdb->posts p
-        WHERE m.post_id = p.ID AND m.meta_key = %s AND p.post_type = %s AND m.meta_value IS NOT NULL AND m.meta_value != '' ) d
+    ( SELECT distinct m.meta_value, m.post_id FROM $wpdb->postmeta m, $wpdb->posts p, $MF_TABLE_POST_META mm
+        WHERE m.post_id = p.ID AND m.meta_key = %s AND p.post_type = %s AND p.post_status = 'publish' AND m.meta_value IS NOT NULL AND m.meta_value != '' 
+            AND m.meta_id = mm.meta_id ) d
     GROUP BY meta_value ORDER BY count DESC LIMIT $SQL_LIMIT
 EOD
                     , $meta_key, $_REQUEST[ 'post_type' ] ), OBJECT_K );
