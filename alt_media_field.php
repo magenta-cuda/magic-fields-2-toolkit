@@ -160,7 +160,7 @@ abstract class alt_media_field extends mf_custom_fields {
             <h6><?php _e( 'Optional Caption for', $mf_domain ); echo " $ucfirst_media_type"; ?></h6>
             <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
                 <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256"
-                    placeholder="<?php _e( 'optional caption for', $mf_domain ); echo " $ucfirst_media_type"; ?>" value="<?php echo $caption_input_value; ?>">
+                    placeholder="<?php _e( 'Optional Caption for', $mf_domain ); echo " $ucfirst_media_type"; ?>" value="<?php echo $caption_input_value; ?>">
             </div>
         </div>
         <!-- optional poster image field -->
@@ -169,7 +169,7 @@ abstract class alt_media_field extends mf_custom_fields {
             <h6><?php _e( 'Optional Poster Image for', $mf_domain ); echo " $ucfirst_media_type"; ?></h6>
             <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
                 <input type="text" name="<?php echo $poster_input_name; ?>" id="<?php echo $poster_field_id; ?>" class="mf2tk-img" maxlength="2048"
-                    placeholder="<?php _e( 'URL of optional poster image', $mf_domain ); ?>" value="<?php echo $poster_input_value; ?>">
+                    placeholder="<?php _e( 'URL of the Optional Poster Image', $mf_domain ); ?>" value="<?php echo $poster_input_value; ?>">
                 <button id="<?php echo $poster_field_id; ?>.media-library-button" class="mf2tk-media-library-button">
                     <?php _e( 'Get URL from Media Library', $mf_domain ); ?></button>
                 <button id="<?php echo $poster_field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh">
@@ -186,9 +186,10 @@ abstract class alt_media_field extends mf_custom_fields {
         <!-- optional link field -->
         <div class="mf2tk-field-input-optional">
             <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
-            <h6><?php _e( 'Optional Link for Poster Image', $mf_domain ); ?></h6>
+            <h6><?php _e( 'Optional Link for the Poster Image', $mf_domain ); ?></h6>
             <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-                <input type="url" name="<?php echo $link_input_name; ?>" maxlength="2048" placeholder="<?php _e( 'optional link for image', $mf_domain ); ?>"
+                <input type="url" name="<?php echo $link_input_name; ?>" maxlength="2048"
+                    placeholder="<?php _e( 'URL of the Optional Link for the Poster Image', $mf_domain ); ?>"
                     value="<?php echo $link_input_value; ?>">
                 <button class="mf2tk-test-load-button" style="float:right;"><?php _e( 'Test Load', $mf_domain ); ?></button>
             </div>

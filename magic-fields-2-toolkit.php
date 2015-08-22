@@ -391,9 +391,9 @@ EOD
             }
 			return $actions;
 		}, 10, 4 );
-        add_action( 'plugins_loaded', function() {
-            load_plugin_textdomain( 'magic-fields-2-toolkit', FALSE,
-                dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+        add_action( 'plugins_loaded', function( ) {
+            global $mf_domain;
+            load_plugin_textdomain( $mf_domain, FALSE, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
         } );
     }
 }

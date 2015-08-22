@@ -22,7 +22,7 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a "width" parameter with the', $mf_domain )
+                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
                                           . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
@@ -154,12 +154,12 @@ class alt_image_field extends mf_custom_fields {
         ob_start( );
 ?>
 <div class="media_field_mf">
-    <!-- main audio field -->
+    <!-- url of image field -->
     <div class="mf2tk-field-input-main">
-        <h6><?php _e( 'URL of Image', $mf_domain ); ?></h6>
+        <h6><?php _e( 'URL of the Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane">
             <input type="text" name="<?php echo $field['input_name']; ?>" id="<?php echo $field_id; ?>" class="mf2tk-img" maxlength="2048"
-                placeholder="<?php _e( 'URL of the image', $mf_domain ); ?>" value="<?php echo $input_value; ?>" <?php echo $field['input_validate']; ?>>
+                placeholder="<?php _e( 'URL of the Image', $mf_domain ); ?>" value="<?php echo $input_value; ?>" <?php echo $field['input_validate']; ?>>
             <button id="<?php echo $field_id; ?>.media-library-button" class="mf2tk-media-library-button"><?php _e( 'Get URL from Media Library', $mf_domain ); ?></button>
             <button id="<?php echo $field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh"><?php _e( 'Reload Media', $mf_domain ); ?></button>
             <br>
@@ -174,7 +174,7 @@ class alt_image_field extends mf_custom_fields {
         <h6><?php _e( 'Optional Caption for Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256"
-                placeholder="<?php _e( 'optional caption for image', $mf_domain ); ?>" value="<?php echo $caption_input_value; ?>">
+                placeholder="<?php _e( 'Optional Caption for Image', $mf_domain ); ?>" value="<?php echo $caption_input_value; ?>">
         </div>
     </div>
     <!-- optional link field -->
@@ -183,7 +183,7 @@ class alt_image_field extends mf_custom_fields {
         <h6><?php _e( 'Optional Link for Image', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
             <input type="url" name="<?php echo $link_input_name; ?>" maxlength="2048"
-                placeholder="<?php _e( 'optional link for image', $mf_domain ); ?>" value="<?php echo $link_input_value; ?>">
+                placeholder="<?php _e( 'Optional Link for Image', $mf_domain ); ?>" value="<?php echo $link_input_value; ?>">
             <button class="mf2tk-test-load-button" style="float:right;"><?php _e( 'Test Load', $mf_domain ); ?></button>
         </div>
     </div>

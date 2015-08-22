@@ -58,7 +58,7 @@ class alt_video_field extends alt_media_field {
                     'name'        => 'mf_field[option][autoplay]',
                     'default'     =>  '',
                     'description' =>  __( 'this value can be overridden by specifying an "autoplay" parameter with the', $mf_domain )
-                                      . " $show_custom_field_tag shortcode - " . __( 'the parameter value is ', $mf_domain ) . ' "on" '
+                                      . " $show_custom_field_tag shortcode - " . __( 'the parameter value is', $mf_domain ) . ' "on" '
                                       . __( 'or', $mf_domain ) . ' "off"',
                     'value'       =>  '',
                     'div_class'   =>  '',
@@ -111,7 +111,7 @@ class alt_video_field extends alt_media_field {
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a "class_name" parameter with the',
+                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a &quot;class_name&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',

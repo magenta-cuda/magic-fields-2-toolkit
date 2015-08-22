@@ -1,0 +1,1038 @@
+# Copyright (C) 2015 Magic Fields 2 Toolkit
+# This file is distributed under the same license as the Magic Fields 2 Toolkit package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Magic Fields 2 Toolkit 1.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/magic-fields-2-toolkitz\n"
+"POT-Creation-Date: 2015-08-22 09:25:19+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: alt_audio_field/alt_audio_field.php:9
+msgid "This is a Magic Fields 2 field for WordPress's audio shortcode facility."
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:21
+#: alt_embed_field/alt_embed_field.php:20
+#: alt_image_field/alt_image_field.php:22
+#: alt_video_field/alt_video_field.php:20
+#: magic-fields-2-search-by-custom-field-kai.php:995
+#: magic-fields-2-search-by-custom-field-kai.php:1005
+msgid "Width"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:24
+msgid "width in pixels for optional caption and/or optional image - this value can be overridden by specifying a &quot;width&quot; parameter with the "
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:33
+#: alt_embed_field/alt_embed_field.php:32
+#: alt_image_field/alt_image_field.php:34
+#: alt_video_field/alt_video_field.php:32
+#: magic-fields-2-search-by-custom-field-kai.php:997
+#: magic-fields-2-search-by-custom-field-kai.php:1007
+msgid "Height"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:36
+msgid "height in pixels for the optional image - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the "
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:45
+#: alt_video_field/alt_video_field.php:44
+msgid "Loop to beginning when finished and continue playing"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:48
+#: alt_video_field/alt_video_field.php:47
+msgid "this value can be overridden by specifying an \"loop\" parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:49
+#: alt_audio_field/alt_audio_field.php:62
+#: alt_audio_field/alt_audio_field.php:81
+#: alt_video_field/alt_video_field.php:48
+#: alt_video_field/alt_video_field.php:61
+#: alt_video_field/alt_video_field.php:80
+#: alt_video_field/alt_video_field.php:101
+msgid "the parameter value is"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:50
+#: alt_audio_field/alt_audio_field.php:63
+#: alt_audio_field/alt_audio_field.php:82
+#: alt_video_field/alt_video_field.php:49
+#: alt_video_field/alt_video_field.php:62
+#: alt_video_field/alt_video_field.php:81
+#: alt_video_field/alt_video_field.php:102
+msgid "or"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:58
+#: alt_video_field/alt_video_field.php:57
+msgid "Automatically play as soon as the media file is ready"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:61
+#: alt_video_field/alt_video_field.php:60
+msgid "this value can be overridden by specifying an \"autoplay\" parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:71
+#: alt_video_field/alt_video_field.php:70
+msgid "When the page loads"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:75
+#: alt_video_field/alt_video_field.php:74
+msgid "load only the metadata"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:76
+msgid "Do not load the audio"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:77
+msgid "Load the entire audio"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:80
+#: alt_video_field/alt_video_field.php:79
+msgid "this value can be overridden by specifying a &quot;preload&quot; parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:83
+msgid "loads the entire audio"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:91
+#: alt_embed_field/alt_embed_field.php:44
+#: alt_image_field/alt_image_field.php:46
+#: alt_video_field/alt_video_field.php:90
+msgid "Alignment"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:95
+#: alt_embed_field/alt_embed_field.php:48
+#: alt_image_field/alt_image_field.php:50
+#: alt_video_field/alt_video_field.php:94
+msgid "Center"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:96
+#: alt_embed_field/alt_embed_field.php:49
+#: alt_image_field/alt_image_field.php:51
+#: alt_video_field/alt_video_field.php:95
+msgid "Right"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:97
+#: alt_embed_field/alt_embed_field.php:50
+#: alt_image_field/alt_image_field.php:52
+#: alt_video_field/alt_video_field.php:96
+msgid "Left"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:98
+#: alt_embed_field/alt_embed_field.php:51
+#: alt_image_field/alt_image_field.php:53
+#: alt_video_field/alt_video_field.php:97
+msgid "None"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:101
+#: alt_embed_field/alt_embed_field.php:54
+#: alt_image_field/alt_image_field.php:56
+#: alt_video_field/alt_video_field.php:100
+msgid "alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:102
+#: alt_embed_field/alt_embed_field.php:55
+#: alt_image_field/alt_image_field.php:57
+msgid "the parameter values are"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:103
+#: alt_embed_field/alt_embed_field.php:56
+#: alt_image_field/alt_image_field.php:58
+msgid "and"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:111
+#: alt_embed_field/alt_embed_field.php:65
+#: alt_image_field/alt_image_field.php:66
+#: alt_video_field/alt_video_field.php:111
+msgid "Class Name"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:114
+#: alt_embed_field/alt_embed_field.php:68
+#: alt_image_field/alt_image_field.php:69
+#: alt_video_field/alt_video_field.php:114
+msgid "This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a &quot;class_name&quot; parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:123
+#: alt_image_field/alt_image_field.php:78
+#: alt_video_field/alt_video_field.php:135
+msgid "Mouseover Popup Width"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:126
+#: alt_image_field/alt_image_field.php:81
+#: alt_video_field/alt_video_field.php:138
+msgid "mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:135
+#: alt_image_field/alt_image_field.php:90
+#: alt_video_field/alt_video_field.php:147
+msgid "Mouseover Popup Height"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:138
+#: alt_image_field/alt_image_field.php:93
+#: alt_video_field/alt_video_field.php:150
+msgid "mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:147
+#: alt_image_field/alt_image_field.php:102
+#: alt_video_field/alt_video_field.php:159
+msgid "Mouseover Popup Style"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:150
+#: alt_image_field/alt_image_field.php:105
+#: alt_video_field/alt_video_field.php:162
+msgid "mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:152
+#: alt_image_field/alt_image_field.php:107
+#: alt_video_field/alt_video_field.php:164
+msgid "is good for text overlays"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:160
+#: alt_image_field/alt_image_field.php:115
+#: alt_video_field/alt_video_field.php:172
+msgid "Mouseover Popup Classname"
+msgstr ""
+
+#: alt_audio_field/alt_audio_field.php:163
+#: alt_image_field/alt_image_field.php:118
+#: alt_video_field/alt_video_field.php:175
+msgid "mouseover popup classname - this value can be overridden by specifying a &quot;popup_classname&quot; parameter with the"
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:18
+msgid "Dropdown with optional textbox"
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:29
+msgid "Options"
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:32
+msgid "Separate each option with a newline."
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:40
+msgid "The dropdown can have multiple values"
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:51
+msgid "Default values"
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:54
+msgid "Separate each value with a newline."
+msgstr ""
+
+#: alt_dropdown_field/alt_dropdown_field.php:102
+msgid "--Enter New Value--"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:9
+msgid "This is a Magic Fields 2 field for WordPress's embed shortcode facility."
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:23
+#: alt_image_field/alt_image_field.php:25
+#: alt_video_field/alt_video_field.php:23
+msgid "width in pixels - this value can be overridden by specifying a &quot;width&quot; parameter with the"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:35
+#: alt_image_field/alt_image_field.php:37
+msgid "height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:101
+msgid "URL of the Page Containing the Embed Element"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:104
+msgid "URL of the page containing the embed element"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:106
+msgid "Reload Embed"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:107
+msgid "This is the Embed element for the URL specified above."
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:113
+#: alt_image_field/alt_image_field.php:173
+#: alt_image_field/alt_image_field.php:182
+#: alt_image_field/alt_image_field.php:192 alt_media_field.php:59
+#: alt_media_field.php:74 alt_media_field.php:159 alt_media_field.php:168
+#: alt_media_field.php:188 alt_media_field.php:204
+#: alt_table_field/alt_table_field.php:129
+#: magic-fields-2-search-by-custom-field-kai.php:221
+#: magic-fields-2-search-by-custom-field-kai.php:587
+#: magic-fields-2-search-by-custom-field-kai.php:617
+#: magic-fields-2-toolkit.php:49 magic-fields-2-toolkit.php:527
+msgid "Open"
+msgstr ""
+
+#: alt_embed_field/alt_embed_field.php:114
+#: alt_embed_field/alt_embed_field.php:116
+msgid "Optional Caption for Embed"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:11
+msgid "This is an alternate Magic Fields 2 field for images."
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:159
+#: alt_image_field/alt_image_field.php:162
+msgid "URL of the Image"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:163 alt_media_field.php:112
+#: alt_media_field.php:129 alt_media_field.php:148 alt_media_field.php:174
+msgid "Get URL from Media Library"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:164 alt_media_field.php:113
+#: alt_media_field.php:131 alt_media_field.php:150 alt_media_field.php:176
+msgid "Reload Media"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:174
+#: alt_image_field/alt_image_field.php:177
+msgid "Optional Caption for Image"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:183
+#: alt_image_field/alt_image_field.php:186
+msgid "Optional Link for Image"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:187 alt_media_field.php:194
+#: alt_url_field/alt_url_field.php:54
+msgid "Test Load"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:193
+msgid "Optional Mouseover Popup for Image"
+msgstr ""
+
+#: alt_image_field/alt_image_field.php:196 alt_media_field.php:208
+msgid "Enter post content fragment with show_custom_field and/or show_macro shortcodes. This will be displayed as a popup when the mouse is over the image. Although this could be plain HTML, using a reusable content template is probably more convenient."
+msgstr ""
+
+#: alt_media_field.php:17
+msgid "Audio"
+msgstr ""
+
+#: alt_media_field.php:17 alt_media_field.php:200
+msgid "Video"
+msgstr ""
+
+#: alt_media_field.php:55 alt_media_field.php:70
+msgid "Hide"
+msgstr ""
+
+#: alt_media_field.php:107
+msgid "Main"
+msgstr ""
+
+#: alt_media_field.php:110
+msgid "URL of the"
+msgstr ""
+
+#: alt_media_field.php:123
+msgid "Optional Fallback"
+msgstr ""
+
+#: alt_media_field.php:126
+msgid "URL of fallback"
+msgstr ""
+
+#: alt_media_field.php:141
+msgid "Optional Alternate Fallback"
+msgstr ""
+
+#: alt_media_field.php:145
+msgid "URL of alternate fallback"
+msgstr ""
+
+#: alt_media_field.php:160 alt_media_field.php:163
+msgid "Optional Caption for"
+msgstr ""
+
+#: alt_media_field.php:169
+msgid "Optional Poster Image for"
+msgstr ""
+
+#: alt_media_field.php:172
+msgid "URL of the Optional Poster Image"
+msgstr ""
+
+#: alt_media_field.php:189
+msgid "Optional Link for the Poster Image"
+msgstr ""
+
+#: alt_media_field.php:192
+msgid "URL of the Optional Link for the Poster Image"
+msgstr ""
+
+#: alt_media_field.php:200
+msgid "Poster Image"
+msgstr ""
+
+#: alt_media_field.php:205
+msgid "Optional Mouseover Popup for"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:7
+msgid "Numeric field with currency prefix and/or unit suffix"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:18
+msgid "Precision"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:20
+msgid "number of decimal places; 0 for integers - second parameter to PHP's number_format() - this value can be overridden by specifying a &quot;precision&quot; parameter with the"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:29
+msgid "Unit of Measurement"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:31
+msgid "unit of measurement, e.g. &quot;in&quot;, &quot;sq mi&quot;, &quot; fl oz&quot;, ... or &quot;%&quot; or counter e.g. &quot;item:items&quot;, &quot; man: men&quot; given as singular:plural pair - really just a suffix to append to the value - this value can be overridden by specifying a &quot;unit&quot; parameter with the"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:40
+msgid "Currency"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:42
+msgid "currency code e.g. &quot;$&quot;, &quot;&amp;euro;&quot;, &quot;&amp;#128;&quot;,  &quot;&amp;#x80;&quot; ... - really just a prefix to prepend to the value - this value can be overridden by specifying a &quot;currency&quot; parameter with the"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:51
+msgid "Minimum"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:53
+msgid "minimum"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:61
+msgid "Maximum"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:63
+msgid "maximum"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:71
+msgid "Step Size"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:73
+msgid "step size"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:81
+msgid "Decimal Point"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:83
+msgid "The separator for the decimal point - third parameter to PHP's number_format() - this value can be overridden by specifying a &quot;decimal_point&quot; parameter with the"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:92
+msgid "Thousands Separator"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:94
+msgid "The thousands separator - fourth parameter to PHP's number_format() - this value can be overridden by specifying a &quot;thousands_separator&quot; parameter with the"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:134
+msgid "Value has"
+msgstr ""
+
+#: alt_numeric_field/alt_numeric_field.php:135
+msgid "decimal places."
+msgstr ""
+
+#: alt_related_type_field/alt_related_type_field.php:16
+msgid "Checkbox list that lets a user select ONE or MORE related posts of a given post type."
+msgstr ""
+
+#: alt_related_type_field/alt_related_type_field.php:37
+msgid "Related Type Panel (Post type)"
+msgstr ""
+
+#: alt_related_type_field/alt_related_type_field.php:50
+msgid "Field for order of Related type"
+msgstr ""
+
+#: alt_related_type_field/alt_related_type_field.php:63
+msgid "Order of Related type"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:26
+msgid "Table of Magic Fields - This is a psuedo field for automatically generating shortcodes to display all/some Magic Fields in a table"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:102 magic-fields-2-toolkit.php:528
+msgid "How to Use"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:123
+msgid "To display a table of all Magic Fields"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:123 magic-fields-2-toolkit.php:52
+#: magic-fields-2-toolkit.php:549
+msgid "select"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:124 magic-fields-2-toolkit.php:544
+#: magic-fields-2-toolkit.php:550
+msgid "copy and paste above into the editor above in &quot;Text&quot; mode"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:130
+msgid "Re-Configure Table"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:133
+#: magic-fields-2-search-by-custom-field-kai.php:959
+msgid "Fields"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:154
+#: magic-fields-2-search-by-custom-field-kai.php:975
+msgid "Use drag and drop to change field order"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:157
+#: magic-fields-2-search-by-custom-field-kai.php:978
+msgid "Filters"
+msgstr ""
+
+#: alt_table_field/alt_table_field.php:217
+msgid "Refresh Table Shortcode"
+msgstr ""
+
+#: alt_textbox_field/alt_textbox_field.php:32
+msgid "Textbox with Dropdown - useful for text fields where the same value is used in multiple posts"
+msgstr ""
+
+#: alt_textbox_field/alt_textbox_field.php:44
+msgid "Evaluate Max Length"
+msgstr ""
+
+#: alt_textbox_field/alt_textbox_field.php:55
+msgid "Max Length"
+msgstr ""
+
+#: alt_url_field/alt_url_field.php:9
+msgid "URL field"
+msgstr ""
+
+#: alt_url_field/alt_url_field.php:29
+msgid "where to open the linked document - this value can be overridden by specifying a &quot;target&quot; parameter with the"
+msgstr ""
+
+#: alt_url_field/alt_url_field.php:53
+msgid "URL"
+msgstr ""
+
+#: alt_url_field/alt_url_field.php:58
+msgid "label: e.g."
+msgstr ""
+
+#: alt_url_field/alt_url_field.php:59
+msgid "the label is displayed here"
+msgstr ""
+
+#: alt_url_field/alt_url_field.php:60
+msgid "display label for"
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:9
+msgid "This is a Magic Fields 2 field for WordPress's video shortcode facility."
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:35
+msgid "height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended but you must at least load the meta data on page load - 0 does not work for Flash videos - this value can be overridden by specifying a &quot;height&quot; parameter with the"
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:75
+msgid "Do not load the video"
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:76
+msgid "Load the entire video"
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:82
+msgid "loads the entire video"
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:123
+msgid "Default Aspect Ratio - width:height, e.g. 16:9"
+msgstr ""
+
+#: alt_video_field/alt_video_field.php:126
+msgid "If the browser determines the height then use this as the aspect ratio when the browser is unable to determine the aspect ratio - i.e. for Flash videos - this value can be overridden by specifying a &quot;aspect_ratio&quot; parameter with the"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:41
+msgid "Unreferenced Files in Folder"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:42
+msgid "Files of Folder"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:43
+msgid "Referenced by Published or Draft Posts"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:44
+msgid "Unreferenced by Published or Draft Posts"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:68
+msgid "Friendly Name"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:68 magic-fields-2-clean-files_mf.php:87
+msgid "Real File Name"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:69
+msgid "Time Stamp"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:87
+msgid "Referenced by"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:114
+msgid "Select All"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:115
+msgid "Clear All"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:123
+msgid "Delete Checked"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:147
+msgid "Status of File Delete Requests"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:155 magic-fields-2-clean-files_mf.php:163
+msgid "deleted"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:158 magic-fields-2-clean-files_mf.php:164
+msgid "failed"
+msgstr ""
+
+#: magic-fields-2-clean-files_mf.php:163 magic-fields-2-clean-files_mf.php:164
+msgid "files"
+msgstr ""
+
+#: magic-fields-2-custom-post-copier.php:34
+msgid "Create Copy"
+msgstr ""
+
+#: magic-fields-2-custom-post-copier.php:49
+msgid "Copy of"
+msgstr ""
+
+#: magic-fields-2-custom-post-copier.php:98
+msgid "copy of ... failed"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:63
+#: magic-fields-2-toolkit-settings.php:106
+msgid "Search using Magic Fields"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:64
+msgid "Search for Custom Posts using Magic Fields"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:66
+msgid "no template found - the generic will be used"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:84
+msgid "Search"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:86
+msgid "Select post type"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:88
+msgid "select post type"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:111
+msgid "Results should satisfy"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:112
+msgid "All"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:113
+msgid "Any"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:114
+msgid "of the search conditions"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:122
+msgid "Show search results in alternate format"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:190
+msgid "help"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:192
+msgid "Select Search Fields and Content Macro Display Fields for"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:325
+msgid "Maximum number of items to display per custom field"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:331
+msgid "Display search results using excerpts (if it is supported by your theme)"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:338
+msgid "Enable option to display search results using a content template"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:345
+msgid "Width in pixels of the container used to display the search results"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:349
+msgid "The content template to use to display the search results"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:350
+msgid "Post Type"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:352
+msgid "Generic"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:363
+msgid "The default content macro will be used."
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:376
+msgid "Loading ... please wait ..."
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:411
+msgid "Create"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:411
+msgid "Re-Create"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:412
+msgid "the Content Template"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:553
+msgid "Specify search conditions"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:602
+#: magic-fields-2-search-by-custom-field-kai.php:625
+#: magic-fields-2-search-by-custom-field-kai.php:653
+#: magic-fields-2-search-by-custom-field-kai.php:739
+msgid "Enter Search Value"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:745
+msgid "Range Search"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:748
+msgid "Enter Minimum Value"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:751
+msgid "Enter Maximum Value"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:841
+msgid "Create Search Result Template for Post Type"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:951
+msgid "Save the Content Template"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:956
+msgid "Re-Configure the Content Template"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:1017
+msgid "Styles"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:1019
+msgid "css width of table"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:1024
+msgid "Reconfigure the Content Template"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:1140
+msgid "Search Result Template for"
+msgstr ""
+
+#: magic-fields-2-search-by-custom-field-kai.php:1448
+msgid "Nothing found"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:85
+msgid "Features"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:88
+msgid "Use this form to enable specific features."
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:93
+msgid "Dumb Shortcodes"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:94
+msgid "Content Templates"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:95
+msgid "Alt Template Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:96
+msgid "Alt Table Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:97
+msgid "Alt Numeric Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:98
+msgid "Alt URL Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:99
+msgid "Alt Related Type Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:100
+msgid "Alt Embed Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:101
+msgid "Alt Video Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:102
+msgid "Alt Audio Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:103
+msgid "Alt Image Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:104
+msgid "Alt Textbox Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:105
+msgid "Alt Dropdown Field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:107
+msgid "Custom Post Copier"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:108
+msgid "Clean Folder files_mf"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:109
+msgid "Alt Get Audio"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:110
+msgid "Utility Functions"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:127
+msgid "Labels"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:130
+msgid "The original labels that the toolkit used are inconsistent. Use this form to rename them to your liking, e.g., you can use short labels to reduce typing. Aliases are supported so that you can use the old label and new label simultaneously until the old label is completely replaced. N.B. this does not change existing labels in the post content of existing posts. My current convention is to use a &quot;mt_&quot; prefix but you are free to use your own convention."
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:136
+msgid "shortcode to show a custom field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:137
+msgid "alias shortcode to show a custom field"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:138
+msgid "shortcode to show a content template"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:139
+msgid "alias shortcode to show a content template"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:140
+msgid "shortcode to show a gallery"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:141
+msgid "alias shortcode to show a gallery"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:142
+msgid "shortcode to show tabs"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:143
+msgid "alias shortcode to tabs"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:157
+msgid "Sync the Toolkit's Fields with the Fields of Magic Fields 2"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:162
+msgid "The latest version of the toolkit's fields ( alt_*_field ) must be copied to the &quot;fields_types&quot; folder of the &quot;Magic Fields 2&quot; plugin. The toolkit should handle this automatically. However, this can fail to happen if you update the Magic Fields 2 plugin (Since the toolkit needs to be installed after &quot;Magic Fields 2&quot;.) or you upgrade the toolkit by manually copying the files (The activation code will not run in  this case.). You can force the toolkit to synchronize its fields with those in the &quot;fields_types&quot; folder of &quot;Magic Fields 2&quot; plugin at anytime by clicking the &quot;Sync Fields&quot; button to the right."
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:214
+#: magic-fields-2-toolkit-settings.php:219
+msgid "Magic Fields 2 Toolkit"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:226
+msgid "For usage instructions please visit "
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:227
+msgid "the online documentation"
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:240
+msgid "The fields: "
+msgstr ""
+
+#: magic-fields-2-toolkit-settings.php:241
+msgid "have been synchronized."
+msgstr ""
+
+#: magic-fields-2-toolkit.php:50
+msgid "How to Use with the Toolkit's Shortcode"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:53 magic-fields-2-toolkit.php:537
+msgid "copy and paste this into editor above in &quot;Text&quot; mode"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:390
+msgid "Settings"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:533
+msgid "Use with the Toolkit's shortcode - (with caption):"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:536 magic-fields-2-toolkit.php:543
+msgid "select,"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:539
+msgid "Use with the Toolkit's shortcode - (no caption):"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:546
+msgid "Use with the Toolkit's shortcode"
+msgstr ""
+
+#: magic-fields-2-toolkit.php:552
+msgid "Call the PHP function"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "post content template interpreter, custom fields shortcode, media shortcodes, custom post copier, ..."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Magenta Cuda"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://magentacuda.wordpress.com"
+msgstr ""

@@ -65,7 +65,7 @@ class alt_embed_field extends mf_custom_fields {
                     'label'       =>  __( 'Class Name', $mf_domain ),
                     'name'        =>  'mf_field[option][class_name]',
                     'default'     =>  '',
-                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a "class_name" parameter with the',
+                    'description' =>  __( 'This is the class option of the WordPress caption shortcode and is set only if a caption is specified - this value can be overridden by specifying a &quot;class_name&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '',
                     'div_class'   =>  '',
@@ -113,7 +113,7 @@ class alt_embed_field extends mf_custom_fields {
         <button class="mf2tk-field_value_pane_button"><?php _e( 'Open', $mf_domain ); ?></button>
         <h6><?php _e( 'Optional Caption for Embed', $mf_domain ); ?></h6>
         <div class="mf2tk-field_value_pane" style="display:none;clear:both;">
-            <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256" placeholder="<?php _e( 'optional caption for embed', $mf_domain ); ?>"
+            <input type="text" name="<?php echo $caption_input_name; ?>" maxlength="256" placeholder="<?php _e( 'Optional Caption for Embed', $mf_domain ); ?>"
                 value="<?php echo $caption_input_value; ?>">
         </div>
     </div>
