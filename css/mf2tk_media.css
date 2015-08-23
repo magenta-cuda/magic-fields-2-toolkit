@@ -24,7 +24,7 @@ figure.wp-caption.mf2tk-alt-image figcaption.wp-caption-text,figure.wp-caption.m
     margin:0px;
 }
 
-div.wp-caption.mf2tk-image-inline-block{
+div.wp-caption.mf2tk-image-inline-block,figure.wp-caption.mf2tk-image-inline-block{
     display:inline-block;
     vertical-align:middle;
 }
