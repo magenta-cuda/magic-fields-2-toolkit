@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Magic Fields 2 Toolkit 1.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/magic-fields-2-toolkitz\n"
-"POT-Creation-Date: 2015-08-22 09:25:19+00:00\n"
+"POT-Creation-Date: 2015-08-23 09:37:52+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -298,9 +298,13 @@ msgstr ""
 #: alt_media_field.php:188 alt_media_field.php:204
 #: alt_table_field/alt_table_field.php:129
 #: magic-fields-2-search-by-custom-field-kai.php:221
+#: magic-fields-2-search-by-custom-field-kai.php:385
+#: magic-fields-2-search-by-custom-field-kai.php:389
 #: magic-fields-2-search-by-custom-field-kai.php:587
 #: magic-fields-2-search-by-custom-field-kai.php:617
-#: magic-fields-2-toolkit.php:49 magic-fields-2-toolkit.php:527
+#: magic-fields-2-search-by-custom-field-kai.php:796
+#: magic-fields-2-search-by-custom-field-kai.php:800
+#: magic-fields-2-toolkit.php:49 magic-fields-2-toolkit.php:528
 msgid "Open"
 msgstr ""
 
@@ -359,7 +363,7 @@ msgstr ""
 msgid "Video"
 msgstr ""
 
-#: alt_media_field.php:55 alt_media_field.php:70
+#: alt_media_field.php:55 alt_media_field.php:70 magic-fields-2-toolkit.php:50
 msgid "Hide"
 msgstr ""
 
@@ -511,7 +515,7 @@ msgstr ""
 msgid "Table of Magic Fields - This is a psuedo field for automatically generating shortcodes to display all/some Magic Fields in a table"
 msgstr ""
 
-#: alt_table_field/alt_table_field.php:102 magic-fields-2-toolkit.php:528
+#: alt_table_field/alt_table_field.php:102 magic-fields-2-toolkit.php:529
 msgid "How to Use"
 msgstr ""
 
@@ -519,13 +523,13 @@ msgstr ""
 msgid "To display a table of all Magic Fields"
 msgstr ""
 
-#: alt_table_field/alt_table_field.php:123 magic-fields-2-toolkit.php:52
-#: magic-fields-2-toolkit.php:549
+#: alt_table_field/alt_table_field.php:123 magic-fields-2-toolkit.php:53
+#: magic-fields-2-toolkit.php:550
 msgid "select"
 msgstr ""
 
-#: alt_table_field/alt_table_field.php:124 magic-fields-2-toolkit.php:544
-#: magic-fields-2-toolkit.php:550
+#: alt_table_field/alt_table_field.php:124 magic-fields-2-toolkit.php:545
+#: magic-fields-2-toolkit.php:551
 msgid "copy and paste above into the editor above in &quot;Text&quot; mode"
 msgstr ""
 
@@ -777,6 +781,11 @@ msgstr ""
 msgid "Loading ... please wait ..."
 msgstr ""
 
+#: magic-fields-2-search-by-custom-field-kai.php:386
+#: magic-fields-2-search-by-custom-field-kai.php:797
+msgid "Close"
+msgstr ""
+
 #: magic-fields-2-search-by-custom-field-kai.php:411
 msgid "Create"
 msgstr ""
@@ -989,35 +998,35 @@ msgstr ""
 msgid "have been synchronized."
 msgstr ""
 
-#: magic-fields-2-toolkit.php:50
+#: magic-fields-2-toolkit.php:51
 msgid "How to Use with the Toolkit's Shortcode"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:53 magic-fields-2-toolkit.php:537
+#: magic-fields-2-toolkit.php:54 magic-fields-2-toolkit.php:538
 msgid "copy and paste this into editor above in &quot;Text&quot; mode"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:390
+#: magic-fields-2-toolkit.php:391
 msgid "Settings"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:533
+#: magic-fields-2-toolkit.php:534
 msgid "Use with the Toolkit's shortcode - (with caption):"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:536 magic-fields-2-toolkit.php:543
+#: magic-fields-2-toolkit.php:537 magic-fields-2-toolkit.php:544
 msgid "select,"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:539
+#: magic-fields-2-toolkit.php:540
 msgid "Use with the Toolkit's shortcode - (no caption):"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:546
+#: magic-fields-2-toolkit.php:547
 msgid "Use with the Toolkit's shortcode"
 msgstr ""
 
-#: magic-fields-2-toolkit.php:552
+#: magic-fields-2-toolkit.php:553
 msgid "Call the PHP function"
 msgstr ""
 
