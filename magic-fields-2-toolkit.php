@@ -47,6 +47,7 @@ and activated.</div>
             $wp_scripts->add_data( 'mf2tk_admin', 'data', "var mf2tkDisableHowToUse=$mf2tkDisableHowToUse;" );
             wp_localize_script( 'mf2tk_admin', 'mf2tk_admin_data', [
                 'open'              => __( 'Open',                                                           $mf_domain ),
+                'hide'              => __( 'Hide',                                                           $mf_domain ),
                 'how_to_use'        => __( 'How to Use with the Toolkit\'s Shortcode',                       $mf_domain ),
                 'show_custom_field' => mf2tk\get_tags( )[ 'show_custom_field' ],
                 'select'            => __( 'select',                                                         $mf_domain ),

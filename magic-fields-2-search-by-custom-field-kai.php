@@ -382,11 +382,11 @@ EOD
 <script type="text/javascript">
 var mf2tkGenericSearchTemplate="<?php echo str_replace( "\n", "\\n\\\n", str_replace( "\r\n", "\n", str_replace( '"', '\"', $macro ) ) ); ?>";
 jQuery("div.scpbcfw-admin-search-fields-display-button").click(function(e){
-    if(jQuery(this).text()=="Open"){
-        jQuery(this).text("Close");
+    if(jQuery(this).text()==="<?php _e( 'Open', $mf_domain ); ?>"){
+        jQuery(this).text("<?php _e( 'Close', $mf_domain ); ?>");
         jQuery("div.scpbcfw-search-field-values",this.parentNode).css("display","block");
     }else{
-        jQuery(this).text("Open");
+        jQuery(this).text("<?php _e( 'Open', $mf_domain ); ?>");
         jQuery("div.scpbcfw-search-field-values",this.parentNode).css("display","none");
     }
     e.preventDefault();
@@ -793,11 +793,11 @@ jQuery("form#search-using-magic-fields-<?php echo $number; ?> div.magic-field-pa
 */
 
 jQuery("div.scpbcfw-display-button").click(function(event){
-    if(jQuery(this).text()=="Open"){
-        jQuery(this).text("Close");
+    if(jQuery(this).text()==="<?php _e( 'Open', $mf_domain ); ?>"){
+        jQuery(this).text("<?php _e( 'Close', $mf_domain ); ?>");
         jQuery("div.scpbcfw-search-field-values",this.parentNode).css("display","block");
     }else{
-        jQuery(this).text("Open");
+        jQuery(this).text("<?php _e( 'Open', $mf_domain ); ?>");
         jQuery("div.scpbcfw-search-field-values",this.parentNode).css("display","none");
     }
     return false;

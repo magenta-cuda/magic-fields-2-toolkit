@@ -486,11 +486,11 @@ jQuery(document).ready(function(){
     // wire up Magic Fields and taxonomy fields to their handlers
     // Show/Hide panes
     mfField.find("button.mf2tk-field_value_pane_button").click(function(){
-        if(jQuery(this).text()=="Open"){
-            jQuery(this).text("Hide");
+        if(jQuery(this).text()===mf2tk_admin_data.open){
+            jQuery(this).text(mf2tk_admin_data.hide);
             jQuery("div.mf2tk-field_value_pane",this.parentNode).css("display","block");
         }else{
-            jQuery(this).text("Open");
+            jQuery(this).text(mf2tk_admin_data.open);
             jQuery("div.mf2tk-field_value_pane",this.parentNode).css("display","none");
         }
         return false;
@@ -573,11 +573,11 @@ jQuery(document).ready(function($){
                 mf2tk_globals.InsertHowToUse(duplicate[0].parentNode);
             }
             duplicate.find("button.mf2tk-field_value_pane_button").click(function(event){
-                if(jQuery(this).text()=="Open"){
-                    jQuery(this).text("Hide");
+                if(jQuery(this).text()===mf2tk_admin_data.open){
+                    jQuery(this).text(mf2tk_admin_data.hide);
                     jQuery("div.mf2tk-field_value_pane",this.parentNode).css("display","block");
                 }else{
-                    jQuery(this).text("Open");
+                    jQuery(this).text(mf2tk_admin_data.open);
                     jQuery("div.mf2tk-field_value_pane",this.parentNode).css("display","none");
                 }
                 return false;
