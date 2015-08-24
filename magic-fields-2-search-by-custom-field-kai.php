@@ -767,30 +767,6 @@ jQuery("form#search-using-magic-fields-<?php echo $number; ?> div.magic-field-pa
     }
 });
 
-/*
-jQuery("form#search-using-magic-fields-<?php echo $number; ?> div.magic-field-parameter input.for-select").change(function(){
-    var value=jQuery(this).val();
-    var select=jQuery("select",this.parentNode);
-    jQuery("option:last",select).prop("selected",false);
-    if(value){
-        var first=jQuery("option:first",select).detach();
-        select.prepend('<option value="'+value+'" selected>'+value+'</option>');
-        select.prepend(first);
-        jQuery(this).val("");
-    }
-    select.css("display","inline");
-    jQuery(this).css("display","none");
-});
-jQuery("form#search-using-magic-fields-<?php echo $number; ?> div.magic-field-parameter input.for-select")
-    .blur(function(){
-    jQuery(this).change();
-});
-jQuery("form#search-using-magic-fields-<?php echo $number; ?> div.magic-field-parameter input.for-select")
-    .keydown(function(e){
-    if(e.keyCode==13){jQuery(this).blur();return false;}
-});
-*/
-
 jQuery("div.scpbcfw-display-button").click(function(event){
     if(jQuery(this).text()==="<?php _e( 'Open', $mf_domain ); ?>"){
         jQuery(this).text("<?php _e( 'Close', $mf_domain ); ?>");
@@ -862,11 +838,18 @@ jQuery("div.scpbcfw-search-fields-submit input[type='button']#magic-fields-reset
             }
         }
         $default_height = 50;
-        $MF_TABLE_CUSTOM_FIELDS = MF_TABLE_CUSTOM_FIELDS;
-        $results = $wpdb->get_col( <<<EOD
-SELECT name FROM $MF_TABLE_CUSTOM_FIELDS WHERE post_type = '$post_type' AND type != 'alt_table' AND type != 'alt_template'
+        $taxonomies = $wpdb->get_col( $wpdb->prepare( <<<EOD
+SELECT DISTINCT x.taxonomy FROM $wpdb->term_relationships r, $wpdb->term_taxonomy x, $wpdb->posts p
+    WHERE r.term_taxonomy_id = x.term_taxonomy_id AND r.object_id = p.ID AND p.post_type = %s
 EOD
-        );
+            , $post_type ) );
+
+        $MF_TABLE_CUSTOM_FIELDS = MF_TABLE_CUSTOM_FIELDS;
+        $mf_fields = $wpdb->get_col( $wpdb->prepare( <<<EOD
+SELECT name FROM $MF_TABLE_CUSTOM_FIELDS WHERE post_type = %s AND type != 'alt_table' AND type != 'alt_template'
+EOD
+            , $post_type ) );
+        $results = array_merge( $taxonomies, $mf_fields );
         array_unshift( $results, '__post_title', '__post_author' );
         $checked_fields = array_intersect( $fields0, $results );
         $unchecked_fields = array_diff( $results, $checked_fields );
@@ -1081,6 +1064,7 @@ foreach ( $all_fields as $field => $is_checked ) {
         textarea.val(text);
         jQuery("input#mf2tk-search-result-template-fields-filters-input").val("field="+fields+"|filter="+filters+"|width="+width+";");
         e.preventDefault();
+        window.alert("<?php _e( 'The content template has been re-calculated.', $mf_domain ); ?>");
         return false;
     });
     div.find("div.mf2tk-dragable-field").draggable({cursor:"crosshair",revert:true});
@@ -1125,6 +1109,7 @@ EOD
 
     add_action( 'wp_ajax_mf2tk_update_search_result_template', function( ) {
         global $wpdb;
+        global $mf_domain;
         $fields_filters = get_option( Search_Using_Magic_Fields_Widget::SEARCH_RESULTS_FIELDS_AND_FILTERS, [ ] );
         $fields_filters[ $_POST[ 'post_type' ] ] = $_POST[ 'fields_filters' ];
         update_option( Search_Using_Magic_Fields_Widget::SEARCH_RESULTS_FIELDS_AND_FILTERS, $fields_filters );

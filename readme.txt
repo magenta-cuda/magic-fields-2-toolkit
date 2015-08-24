@@ -73,7 +73,7 @@ Version 0.4.6 has a new default content macro for sortable tables. However, the 
 
 == Changelog ==
 = 1.1.1 =
-* code rewritten to improve security, software quality and support localization
+* code rewritten to fix bugs, improve security, improve software quality and support localization
 = 1.1 =
 * Fixes for WordPress 4.3
 * Added a mt_show_tabs shortcode for displaying a list of [show_macro] shortcodes in jQuery UI tabs
@@ -385,4 +385,5 @@ added fields for embed, audio and video
 * Code for shortcode [mt_field] rewritten to improve software quality
 
 = 1.1.1 =
-* code rewritten to improve security, software quality and support localization
+* code rewritten to fix bugs, improve security, improve software quality and support localization
+
