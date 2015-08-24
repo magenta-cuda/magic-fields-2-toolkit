@@ -80,7 +80,7 @@ EOD;
 <input id="magic_fields_search_form"          name="magic_fields_search_form"          type="hidden" value="magic-fields-search">
 <input id="magic_fields_search_widget_option" name="magic_fields_search_widget_option" type="hidden" value="<?php echo $this->option_name; ?>">
 <input id="magic_fields_search_widget_number" name="magic_fields_search_widget_number" type="hidden" value="<?php echo $this->number; ?>">
-<div id="scpbcfw-search-fields-help"><a href="http://magicfields17.wordpress.com/magic-fields-2-search-0-4-1/#user" target="_blank">help</a></div>
+<div id="scpbcfw-search-fields-help"><a href="http://magicfields17.wordpress.com/magic-fields-2-search-0-4-1/#user" target="_blank"><?php _e( 'help', $mf_domain ); ?></a></div>
 <h2 class="scpbcfw-search-fields-title"><?php _e( 'Search', $mf_domain ); ?>:</h2>
 <div class="magic-field-parameter">
 <h4 class="scpbcfw-search-fields-post-type-title"><?php _e( 'Select post type', $mf_domain ); ?>:</h4>
