@@ -21,7 +21,9 @@
  */
  
 add_action( 'admin_enqueue_scripts', function( $hook ) {
-    error_log( 'magic-fields-2-clean-files_mf.php:action:admin_enqueue_scripts():$hook=' . $hook );
+    if ( $hook !== 'settings_page_magic-fields-2-toolkit-page' ) {
+        return;
+    }
     wp_enqueue_style(  'mf2tk_clean_files_mf', plugins_url( 'css/mf2tk_clean_mf_files.css', __FILE__ ) );
     wp_enqueue_style(  'mf2tk-jquery-ui',      plugins_url( 'css/mf2tk-jquery-ui.min.css',  __FILE__ ) );
     wp_enqueue_script( 'jquery-ui-tabs' );

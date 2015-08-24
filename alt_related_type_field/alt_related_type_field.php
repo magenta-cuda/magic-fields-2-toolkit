@@ -111,11 +111,9 @@ EOD
 EOD;
             $output .= esc_attr( $option->post_title ) . '</label>';
         }
-        
+
         $output .= '<div style="clear:both;"></div></div></div>'
             . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_link2" separator=", "' ) . '</div>';
-        
-        #error_log( "##### alt_related_type_field::display_field() returns $output\n" );
         return $output;
     }
 }

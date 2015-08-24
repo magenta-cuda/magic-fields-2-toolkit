@@ -511,7 +511,6 @@ if ( is_admin( ) ) {
     # add admin actions
     
     add_action( 'admin_enqueue_scripts', function( $hook ) {
-        error_log( 'action:admin_enqueue_scripts():$hook=' . $hook );
         if ( $hook !== 'widgets.php' ) {
             return;
         }

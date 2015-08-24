@@ -41,7 +41,7 @@ and activated.</div>
             wp_enqueue_style(  'mf2tk_admin',     plugins_url( 'css/mf2tk_admin.css',   __FILE__ ) );
             wp_enqueue_script( 'mf2tk_admin',     plugins_url( 'js/mf2tk_admin.js',     __FILE__ ),
                 [ 'jquery', 'media-models', 'jquery-ui-draggable', 'jquery-ui-droppable' ] );
-            wp_enqueue_script( 'mf2tk_alt_media', plugins_url( 'js/mf2tk_alt_media.js', __FILE__ ), [ 'jquery' ] );
+            wp_enqueue_script( 'mf2tk_alt_media', plugins_url( 'js/mf2tk_alt_media.js', __FILE__ ), [ 'jquery', 'jquery-ui-tabs' ] );
             $options = get_option( 'magic_fields_2_toolkit_enabled', [ ] );
             $mf2tkDisableHowToUse = array_key_exists( 'dumb_shortcodes', $options ) ? 'false' : 'true';
             $wp_scripts->add_data( 'mf2tk_admin', 'data', "var mf2tkDisableHowToUse=$mf2tkDisableHowToUse;" );

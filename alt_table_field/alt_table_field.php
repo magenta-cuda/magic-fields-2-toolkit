@@ -1,6 +1,9 @@
 <?php
 
-add_action( 'admin_enqueue_scripts', function( ) {
+add_action( 'admin_enqueue_scripts', function( $hook ) {
+    if ( $hook !== 'post.php' && $hook !== 'post-new.php' ) {
+        return;
+    }
     wp_enqueue_script( 'jquery-ui-draggable' );
     wp_enqueue_script( 'jquery-ui-droppable' );
 } );

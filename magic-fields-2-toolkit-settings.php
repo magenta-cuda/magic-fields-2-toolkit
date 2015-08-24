@@ -66,10 +66,12 @@ class Magic_Fields_2_Toolkit_Settings {
     public function __construct( ) {
         global $mf_domain;
 
-        add_action( 'admin_enqueue_scripts', function( ) {
+        add_action( 'admin_enqueue_scripts', function( $hook ) {
+            if ( $hook !== 'settings_page_magic-fields-2-toolkit-page' ) {
+                return;
+            }
             wp_enqueue_style( 'mf2tk_admin', plugins_url( 'css/mf2tk_admin.css', __FILE__ ) );
             wp_enqueue_style( 'dashicons' );
-            wp_enqueue_script( 'mf2tk_clean_mf_files', plugins_url( 'js/mf2tk_clean_mf_files.js', __FILE__ ), [ 'jquery' ] );
         } );
         
         add_action( 'admin_init', function( ) {
