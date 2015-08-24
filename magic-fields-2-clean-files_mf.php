@@ -143,9 +143,10 @@ if ( is_admin( ) ) {
     if ( strpos( $_SERVER[ 'REQUEST_URI' ], 'wp-admin/options-general.php?page=get_unreferenced_files_mc' ) !== FALSE ) {
         add_action( 'admin_menu', function( ) {
             global $_registered_pages;
-            $MF_FILES_DIR = MF_FILES_DIR;
             $hookname = get_plugin_page_hookname( 'get_unreferenced_files_mc', 'options-general.php' );
             add_action( $hookname, function( ) {
+                global $mf_domain;
+                $MF_FILES_DIR = MF_FILES_DIR;
                 $deleted = '<h3>' . __( 'Status of File Delete Requests', $mf_domain ) . '</h3><ul>';
                 $unlinked = 0;
                 $not_unlinked = 0;
