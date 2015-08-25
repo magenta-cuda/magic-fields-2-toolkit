@@ -4,7 +4,7 @@ Donate link:
 Tags: shortcodes, templates, custom fields, post copier
 Requires at least: 3.6
 Tested up to: 4.2
-Stable tag: 1.1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 A toolkit for the Magic Fields 2 plugin for media oriented CMS web design by non programmers.
@@ -72,6 +72,9 @@ Version 0.4.6 has a new default content macro for sortable tables. However, the 
 == Screenshots ==
 
 == Changelog ==
+= 1.2 =
+* alt_image, alt_video, alt_embed and alt_audio fields now accept width in percentage (not just pixels) which is more appropriate for responsive design
+* more code re-written to fix bugs, improve security and improve software quality
 = 1.1.1 =
 * code rewritten to fix bugs, improve security, improve software quality and support localization
 = 1.1 =
@@ -387,3 +390,6 @@ added fields for embed, audio and video
 = 1.1.1 =
 * code rewritten to fix bugs, improve security, improve software quality and support localization
 
+= 1.2 =
+* alt_image, alt_video, alt_embed and alt_audio fields now accept width in percentage (not just pixels) which is more appropriate for responsive design
+* more code re-written to fix bugs, improve security and improve software quality

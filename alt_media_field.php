@@ -333,6 +333,25 @@ EOD;
         die;
     }
 
+    public static function img_caption_shortcode( $attr, $content = null ) {
+        error_log( 'img_caption_shortcode():$attr=' . print_r( $attr, true ) );
+        $width        = $attr[ 'width' ];
+        $percent_mode = !is_numeric( $width );
+        if ( $percent_mode ) {
+            $attr[ 'width' ] = 333;
+        } else {
+            $width           = "{$width}px";
+        }
+        $content      = img_caption_shortcode( $attr, $content );
+        error_log( 'img_caption_shortcode():content=' . $content );
+        $html5 = strpos( $content, '<figure ' ) !== FALSE;
+        $content = preg_replace_callback( '/<(div|figure)\s(.*?)style="(.*?)width:\s*\d+px/', function( $matches ) use ( $width ) {
+            return "<{$matches[1]} {$matches[2]}style=\"{$matches[3]}width:{$width};max-width:100%";  
+        }, $content, 1 );
+        error_log( 'img_caption_shortcode():returns=' . $content );
+        return $content;
+    } 
+
 }
 
 ?>

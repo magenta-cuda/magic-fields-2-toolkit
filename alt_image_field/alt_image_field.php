@@ -1,5 +1,7 @@
 <?php
 
+require_once( WP_PLUGIN_DIR . '/magic-fields-2-toolkit/alt_media_field.php' );
+
 class alt_image_field extends mf_custom_fields {
 
     private static $suffix_caption = '_mf2tk_caption';
@@ -209,18 +211,18 @@ class alt_image_field extends mf_custom_fields {
         if ( $post_id === NULL ) {
             $post_id = $post->ID;
         }
-        $data       = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
-        $opts       = $data[ 'options' ];
-        $width      = mf2tk\get_data_option( 'width',  $atts, $opts, 320, 'max_width'  );
-        $height     = mf2tk\get_data_option( 'height', $atts, $opts, 240, 'max_height' );
+        $data         = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id );
+        $opts         = $data[ 'options' ];
+        $width        = mf2tk\get_data_option( 'width',  $atts, $opts, 320, 'max_width'  );
+        $height       = mf2tk\get_data_option( 'height', $atts, $opts, 240, 'max_height' );
         # get optional caption
-        $caption    = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_caption );
+        $caption      = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_caption );
         # get optional link
-        $link       = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_link    );
+        $link         = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_link    );
         # get optional mouse-over popup
-        $hover      = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_hover   );
-        $attrWidth  = $width  ? " width=\"$width\""   : '';
-        $attrHeight = $height ? " height=\"$height\"" : '';
+        $hover        = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_hover   );
+        $percent_mode = !is_numeric( $width );
+        $attrSize     = $percent_mode ? '' : ( $width  ? " width=\"$width\""   : '' ) . ( $height ? " height=\"$height\"" : '' );
         # if an optional mouse-over popup has been specified let the containing div handle the mouse-over event 
         if ( $hover ) {
             $popup_width     = mf2tk\get_data_option( 'popup_width',     $atts, $opts, 320 );
@@ -242,7 +244,7 @@ EOD;
         }
         $html = <<<EOD
 <div class="$hover_class" style="display:inline-block;width:{$width}px;padding:0px;">
-    <a href="$link" target="_blank"><img src="$data[meta_value]"{$attrWidth}{$attrHeight}></a>
+    <a href="$link" target="_blank"><img src="$data[meta_value]"{$attrSize}></a>
     $overlay
 </div>
 EOD;
@@ -251,13 +253,17 @@ EOD;
             $align      = mf2tk\get_data_option( 'align',      $atts, $opts, 'aligncenter' );
             $align      = mf2tk\re_align( $align );
             $class_name = mf2tk\get_data_option( 'class_name', $atts, $opts                );
-            if ( !$width ) { $width = 160; }
-            if ( !$class_name ) { $class_name = "mf2tk-{$data['type']}-{$field_name}"; }
+            if ( !$width ) {
+                $width = 160;
+            }
+            if ( !$class_name ) {
+                $class_name = "mf2tk-{$data['type']}-{$field_name}";
+            }
             $class_name .= ' mf2tk-alt-image';
-            $html = img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
-            $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
-                return str_replace( $matches[1], "width:{$width}px;max-width:100%", $matches[0] );  
-            }, $html, 1 );
+            $html = alt_media_field::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
+            #$html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
+            #    return str_replace( $matches[1], "width:{$width}px;max-width:100%", $matches[0] );  
+            #}, $html, 1 );
             $html = preg_replace_callback( '/(<img\s.*?)>/', function( $matches ) {
                 return $matches[1] . ' style="margin:0;max-width:100%">';  
             }, $html, 1 );
