@@ -61,27 +61,17 @@ function mf2tkResizeVideo(id,aspectRatio,doWidth){
 jQuery(document).ready(function(){
     // this is the mouse-over alt_image_field popup handler 
     jQuery("div.mf2tk-hover").hover(
-        function(e){
+        function(){
             // center the overlay element over the mouse-overed element and show it
             var jqThis=jQuery(this);
             var overlay=jqThis.find("div.mf2tk-overlay");
-            var parent=jqThis.offsetParent();
-            var position=jqThis.position();
             var overlayWidth=overlay.outerWidth();
-            var parentWidth=parent.outerWidth();
-            if(overlayWidth<parentWidth){
-                var x=position.left+(jqThis.outerWidth()-overlayWidth)/2;
-                if(x<0){
-                    x=0;
-                }else{
-                    var overflow=(x+overlayWidth)-parentWidth;
-                    if(overflow>0){x-=overflow;}
-                }
-            }else{
-            }
-            overlay[0].style.left=x+"px";
-            overlay[0].style.top=(position.top+20)+"px";
-            overlay.show();
+            var overlayHeight=overlay.outerHeight();
+            var parentWidth=jqThis.outerWidth();
+            var parentHeight=(jqThis.hasClass("mf2tk-top-80")?1.25:1)*jqThis.outerHeight();
+            var x=overlayWidth<parentWidth?(parentWidth-overlayWidth)/2:0;
+            var y=overlayHeight<parentHeight?(parentHeight-overlayHeight)/2:0;
+            overlay.css({left:x+"px",top:y+"px"}).show();
         },
         function(){
             jQuery(this).find("div.mf2tk-overlay").hide();

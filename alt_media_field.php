@@ -336,7 +336,7 @@ EOD;
     public static function img_caption_shortcode( $attr, $content = null ) {
         error_log( 'img_caption_shortcode():$attr=' . print_r( $attr, true ) );
         $width        = $attr[ 'width' ];
-        $percent_mode = !is_numeric( $width );
+        $percent_mode = substr_compare( $width, "%", -1 ) === 0;
         if ( $percent_mode ) {
             $attr[ 'width' ] = 333;
         } else {

@@ -229,9 +229,9 @@ EOD;
 </div>
 EOD;
             $html = <<<EOD
-<div class="hover_classxxx" style="position:relative;z-index:0;display:inline-block;width:{$width}px;padding:0px;">
+<div style="position:relative;z-index:0;display:inline-block;width:{$width}px;padding:0px;">
     $html
-    <div class="$hover_class" style="position:absolute;left:0px;top:0px;z-index:10;display:block;width:{$width}px;height:80%;">
+    <div class="$hover_class mf2tk-top-80" style="position:absolute;left:0px;top:0px;z-index:10;display:block;width:{$width}px;height:80%;">
         $overlay
     </div>
 </div>

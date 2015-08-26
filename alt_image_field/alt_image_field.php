@@ -24,7 +24,7 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
+                    'description' =>  __( 'width in pixels or percentage - e.g. &quot;240&quot;, &quot;240px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
                                           . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
@@ -80,7 +80,7 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
+                    'description' =>  __( 'mouseover popup width in pixels or percentage - e.g. &quot;240&quot;, &quot;240px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
@@ -92,7 +92,7 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
                     'default'     =>  '240',
-                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
+                    'description' =>  __( 'mouseover popup height in pixels or percentage - e.g. &quot;180&quot;, &quot;180px&quot;, &quot;80%&quot;- this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '240',
                     'div_class'   =>  '',
@@ -221,10 +221,13 @@ class alt_image_field extends mf_custom_fields {
         $link         = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_link    );
         # get optional mouse-over popup
         $hover        = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_hover   );
-        $percent_mode = !is_numeric( $width );
+        $percent_mode = substr_compare( $width, "%", -1 ) === 0;
+        if ( substr_compare( $width, "px", -2 ) === 0 ) {
+            $width = substr( $width, 0, -2 );
+        }
         if ( $percent_mode ) {
             $attrSize    = ' style="width:100%;height:auto;"';
-            $hover_width = $width;
+            $hover_width = $caption ? '100%' : $width;
         } else {
             $attrSize    = ( $width  ? " width=\"$width\""   : '' ) . ( $height ? " height=\"$height\"" : '' );
             $hover_width = "{$width}px";
@@ -232,15 +235,16 @@ class alt_image_field extends mf_custom_fields {
         # if an optional mouse-over popup has been specified let the containing div handle the mouse-over event 
         if ( $hover ) {
             $popup_width     = mf2tk\get_data_option( 'popup_width',     $atts, $opts, 320 );
+            $popup_width     = is_numeric( $popup_width )  ? "{$popup_width}px"  : $popup_width;
             $popup_height    = mf2tk\get_data_option( 'popup_height',    $atts, $opts, 240 );
+            $popup_height    = is_numeric( $popup_height ) ? "{$popup_height}px" : $popup_height;
             $popup_style     = mf2tk\get_data_option( 'popup_style',     $atts, $opts      );
             $popup_classname = mf2tk\get_data_option( 'popup_classname', $atts, $opts      );
             $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
             $hover           = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
             $hover_class     = 'mf2tk-hover';
             $overlay         = <<<EOD
-<div class="$popup_classname"
-    style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width}px;height:{$popup_height}px;{$popup_style}">
+<div class="$popup_classname" style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width};height:{$popup_height};{$popup_style}">
     $hover
 </div>
 EOD;
@@ -249,7 +253,7 @@ EOD;
             $overlay         = '';
         }
         $html = <<<EOD
-<div class="$hover_class" style="display:inline-block;width:{$hover_width};padding:0px;">
+<div class="$hover_class" style="position:relative;display:inline-block;width:{$hover_width};padding:0px;">
     <a href="$link" target="_blank"><img src="$data[meta_value]"{$attrSize}></a>
     $overlay
 </div>
@@ -267,9 +271,6 @@ EOD;
             }
             $class_name .= ' mf2tk-alt-image';
             $html = alt_media_field::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
-            #$html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
-            #    return str_replace( $matches[1], "width:{$width}px;max-width:100%", $matches[0] );  
-            #}, $html, 1 );
             $html = preg_replace_callback( '/(<img\s.*?)>/', function( $matches ) {
                 return $matches[1] . ' style="margin:0;max-width:100%">';  
             }, $html, 1 );
