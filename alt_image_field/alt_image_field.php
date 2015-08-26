@@ -222,7 +222,13 @@ class alt_image_field extends mf_custom_fields {
         # get optional mouse-over popup
         $hover        = mf2tk\get_optional_field( $field_name, $group_index, $field_index, $post_id, self::$suffix_hover   );
         $percent_mode = !is_numeric( $width );
-        $attrSize     = $percent_mode ? '' : ( $width  ? " width=\"$width\""   : '' ) . ( $height ? " height=\"$height\"" : '' );
+        if ( $percent_mode ) {
+            $attrSize    = ' style="width:100%;height:auto;"';
+            $hover_width = $width;
+        } else {
+            $attrSize    = ( $width  ? " width=\"$width\""   : '' ) . ( $height ? " height=\"$height\"" : '' );
+            $hover_width = "{$width}px";
+        }
         # if an optional mouse-over popup has been specified let the containing div handle the mouse-over event 
         if ( $hover ) {
             $popup_width     = mf2tk\get_data_option( 'popup_width',     $atts, $opts, 320 );
@@ -243,7 +249,7 @@ EOD;
             $overlay         = '';
         }
         $html = <<<EOD
-<div class="$hover_class" style="display:inline-block;width:{$width}px;padding:0px;">
+<div class="$hover_class" style="display:inline-block;width:{$hover_width};padding:0px;">
     <a href="$link" target="_blank"><img src="$data[meta_value]"{$attrSize}></a>
     $overlay
 </div>
