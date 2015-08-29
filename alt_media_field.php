@@ -236,7 +236,6 @@ EOD;
 
     public static function get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, $media_type, $wp_media_shortcode, $classname,
         &$height, &$width, &$hover, &$caption, &$poster, &$link, &$html ) {
-
         $srcs = mf2tk\get_media_srcs( $field_name, $group_index, $field_index, $post_id, $classname );
         if ( count( $srcs ) === 1 ) {
             $srcs = [ 'src' => reset( $srcs ) ];
@@ -262,11 +261,20 @@ EOD;
         # merge shortcode parameters with magic field attributes
         $options = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id )['options'];
 
-        $width    = mf2tk\get_data_option( 'width',    $atts, $options, 320,        'max_width'  );
-        $height   = mf2tk\get_data_option( 'height',   $atts, $options, 240,        'max_height' );
-        $loop     = mf2tk\get_data_option( 'loop',     $atts, $options                           ) ? 'on' : 'off';
-        $autoplay = mf2tk\get_data_option( 'autoplay', $atts, $options                           ) ? 'on' : 'off';
-        $preload  = mf2tk\get_data_option( 'preload',  $atts, $options, 'metadata'               );
+        $width         = mf2tk\get_data_option( 'width',    $atts, $options, 320,        'max_width'  );
+        $height        = mf2tk\get_data_option( 'height',   $atts, $options, 240,        'max_height' );
+        $loop          = mf2tk\get_data_option( 'loop',     $atts, $options                           ) ? 'on' : 'off';
+        $autoplay      = mf2tk\get_data_option( 'autoplay', $atts, $options                           ) ? 'on' : 'off';
+        $preload       = mf2tk\get_data_option( 'preload',  $atts, $options, 'metadata'               );
+        $percent_mode  = substr_compare( $width, "%", -1 ) === 0;
+        $orig_width    = $width;
+        $orig_height   = $height;
+        if ( $percent_mode ) {
+            # wp_video_shortcode() expects an integer width so give it a dummy; we will replace it later
+            # in percent mode the browser should set the height so force $height to NULL
+            $width  = 333;
+            $height = NULL;
+        }
 
         unset( $atts );   # $atts is re-used later for the attribute array for wp media shortcode
 
@@ -281,7 +289,11 @@ EOD;
         $atts = array_filter( $atts, function( $v ) {
             return $v !== 'off';
         } );
-        $html = call_user_func( $wp_media_shortcode, $atts );   # html returned by reference
+        error_log( 'get_template():$atts=' . print_r( $atts, true ) );
+        $html   = call_user_func( $wp_media_shortcode, $atts );   # html returned by reference
+        error_log( 'get_template():$html=' . $html );
+        $width  = $orig_width;
+        $height = $orig_height;
     }
 
     # admin_refresh( ) is invoked by an AJAX request to reload the media element in the post editor

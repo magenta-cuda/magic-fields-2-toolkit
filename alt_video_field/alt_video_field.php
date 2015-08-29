@@ -197,7 +197,24 @@ class alt_video_field extends alt_media_field {
         $invalid_atts  = [ ];   # since parent::get_template() is shared with audio some entries are media specific
         parent::get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, 'video', 'wp_video_shortcode', 'alt_video_field',
             $height, $width, $hover, $caption, $poster, $link, $html );
-        if ( ( !$height || !$width ) && preg_match( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches ) ) {
+        $percent_mode  = substr_compare( $width, "%", -1 ) === 0;
+        if ( $percent_mode ) {
+            # since wp_video_shortcode() was given a dummy integer width and height replace those with 100%
+            $html = preg_replace_callback( '/style\s*=\s*("|\')(.*?;)?\s*(width:.*?)(;|\1)/', function( $matches ) {
+                error_log( 'get_video():$matches=' . print_r( $matches, true ) );
+                return str_replace( $matches[3], 'width:100%', $matches[0] );
+            }, $html );
+            $html = preg_replace_callback( '/<video\s[^>]*?(\sheight=("|\').*?\2)/', function( $matches ) {
+                error_log( 'get_video():$matches=' . print_r( $matches, true ) );
+                return str_replace( $matches[1], '', $matches[0] );
+            }, $html );
+            $html = preg_replace_callback( '/<video\s[^>]*?(\swidth=("|\').*?\2)/', function( $matches ) {
+                error_log( 'get_video():$matches=' . print_r( $matches, true ) );
+                return str_replace( $matches[1], ' width="100%" height="100%" style="width:100%;height:100%;"', $matches[0] );
+            }, $html );
+            error_log( 'get_video():$html=' . $html );
+        }
+        if ( !$percent_mode && ( !$height || !$width ) && preg_match( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches ) ) {
             # height or width not specified so emit javascript patch to resize mediaelement.js elements according to aspect ratio
             $id = $matches[1];
             $aspect_ratio = mf2tk\get_data_option( 'aspect_ratio', $original_atts, $options, '4:3' );
@@ -209,47 +226,52 @@ class alt_video_field extends alt_media_field {
 </script>
 EOD;
         }
-        
+        $hover_width = $caption ? '100%' : "{$width}px";
+        $html = <<<EOD
+<div style="position:relative;z-index:0;display:inline-block;width:{$hover_width};padding:0px;">
+    $html
+EOD;
         # if an optional mouse-over popup has been specified let the containing div handle the mouse-over event 
         if ( $hover ) {
-            $attrWidth  = $width  ? " width=\"$width\""   : '';
-            $attrHeight = $height ? " height=\"$height\"" : '';
+            $attrWidth       = $width  ? " width=\"$width\""   : '';
+            $attrHeight      = $height ? " height=\"$height\"" : '';
             $popup_width     = mf2tk\get_data_option( 'popup_width',     $original_atts, $options, 320 );
             $popup_height    = mf2tk\get_data_option( 'popup_height',    $original_atts, $options, 240 );
-            $popup_style     = mf2tk\get_data_option( 'popup_style',     $original_atts, $options,
-                                                      'background-color:white;border:2px solid black;' );
-            $popup_classname = mf2tk\get_data_option( 'popup_classname', $original_atts, $options      );
+            $popup_style     = mf2tk\get_data_option( 'popup_style',     $original_atts, $options, 'background-color:white;border:2px solid black;' );
+            $popup_classname = mf2tk\get_data_option( 'popup_classname', $original_atts, $options );
             $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
-            $hover = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
-            $hover_class = 'mf2tk-hover';
-            $overlay = <<<EOD
-<div class="$popup_classname"
-    style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width}px;height:{$popup_height}px;{$popup_style}">
-    $hover
-</div>
-EOD;
-            $html = <<<EOD
-<div style="position:relative;z-index:0;display:inline-block;width:{$width}px;padding:0px;">
-    $html
-    <div class="$hover_class mf2tk-top-80" style="position:absolute;left:0px;top:0px;z-index:10;display:block;width:{$width}px;height:80%;">
-        $overlay
+            $hover           = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
+            $hover_class     = 'mf2tk-hover';
+            $hover_width     = $caption ? '80%' : ( ( 4 * $width ) / 5 ) . 'px';
+            $html .= <<<EOD
+    <div class="$hover_class mf2tk-top-80" style="position:absolute;left:0px;top:0px;z-index:10;display:block;width:{$hover_width};height:80%;">
+        <div class="$popup_classname" style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width}px;height:{$popup_height}px;{$popup_style}">
+            $hover
+        </div>
     </div>
-</div>
 EOD;
         }
+        $html .= <<<EOD
+</div>
+EOD;
         if ( $caption ) {
             $width      = mf2tk\get_data_option( 'width',      $original_atts, $options, 160,           'max_width' );
             $class_name = mf2tk\get_data_option( 'class_name', $original_atts, $options                             );
             $align      = mf2tk\get_data_option( 'align',      $original_atts, $options, 'aligncenter'              );
             $align      = mf2tk\re_align( $align );
-            if ( !$width      ) { $width = 160;                                        }
-            if ( !$class_name ) { $class_name = "mf2tk-{$data['type']}-{$field_name}"; }
+            if ( !$width ) {
+                $width = 160;
+            }
+            if ( !$class_name ) {
+                $class_name = "mf2tk-{$data['type']}-{$field_name}";
+            }
             $class_name .= ' mf2tk-alt-video';
-            $html = img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name,
-                'caption' => $caption ], $html );
-            $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
-                return str_replace( $matches[1], "width:{$width}px", $matches[0] );  
-            }, $html, 1 );
+            $html = alt_media_field::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
+            if ( !$percent_mode ) {
+                $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
+                    return str_replace( $matches[1], "width:{$width}px", $matches[0] );  
+                }, $html, 1 );
+            }
         }      
         return $html;
     }  
