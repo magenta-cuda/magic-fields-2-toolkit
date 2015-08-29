@@ -14,13 +14,16 @@ abstract class alt_media_field extends mf_custom_fields {
     public function template( $field, $group_index, $field_index, $media_type, $wp_media_shortcode ) {
         global $mf_domain, $post;
 
-        $media_title = [ 'audio' => __( 'Audio', $mf_domain ), 'video' => __( 'Video', $mf_domain ) ];
-        $opts        = $field[ 'options' ];
-        $null        = NULL;
-        $width       = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
-        $height      = mf2tk\get_data_option( 'max_height', $null, $opts, 240 );
-        $dimensions  = [];
-      
+        $media_title  = [ 'audio' => __( 'Audio', $mf_domain ), 'video' => __( 'Video', $mf_domain ) ];
+        $opts         = $field[ 'options' ];
+        $null         = NULL;
+        $width        = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
+        $height       = mf2tk\get_data_option( 'max_height', $null, $opts, 180 );
+        $dimensions   = [];
+        if ( substr_compare( $width, "%", -1 ) === 0 ) {
+            $width  = 320;
+            $height = 0;
+        }
         if ( $media_type === 'video' ) {
             if ( $width  ) {
                 $dimensions[ 'width'  ] = $width;
@@ -220,7 +223,7 @@ abstract class alt_media_field extends mf_custom_fields {
                 $aspect_ratio = $matches1[1] / $matches1[2];
             }
             $do_width = !$width ? 'true' : 'false';
-            foreach( $matches[1] as $id ) {
+            foreach ( $matches[1] as $id ) {
             $html .= <<<EOD
 <script type="text/javascript">
     jQuery(document).ready(function(){mf2tkResizeVideo("video.wp-video-shortcode#$id",$aspect_ratio,$do_width);});
@@ -299,7 +302,6 @@ EOD;
     # admin_refresh( ) is invoked by an AJAX request to reload the media element in the post editor
 
     public static function admin_refresh( ) {
-
         global $wpdb;
         preg_match( '/magicfields\[(\w+)\]\[\d+\]\[\d+\]/', $_REQUEST[ 'field' ], $matches );
         $field      = str_replace( self::$suffix_fallback, '', str_replace( self::$suffix_alternate_fallback, '', $matches[1] ) );

@@ -135,6 +135,10 @@ class alt_image_field extends mf_custom_fields {
         $opts                  = $field[ 'options' ];
         $width                 = mf2tk\get_data_option( 'max_width',  NULL, $opts, 320 );
         $height                = mf2tk\get_data_option( 'max_height', NULL, $opts, 240 );
+        if ( substr_compare( $width, "%", -1 ) === 0 ) {
+            $width             = 320;
+            $height            = 0;
+        }
         $attrWidth             = $width  ? " width=\"$width\""   : '';
         $attrHeight            = $height ? " height=\"$height\"" : '';
         #set up caption field
