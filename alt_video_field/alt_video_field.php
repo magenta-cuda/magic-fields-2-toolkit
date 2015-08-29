@@ -20,7 +20,7 @@ class alt_video_field extends alt_media_field {
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'width in pixels - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
+                    'description' =>  __( 'width in pixels or percentage - e.g. &quot;320&quot;, &quot;320px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
                                           . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
@@ -135,7 +135,7 @@ class alt_video_field extends alt_media_field {
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
                     'default'     =>  '320',
-                    'description' =>  __( 'mouseover popup width in pixels - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
+                    'description' =>  __( 'mouseover popup width in pixels or percentage - e.g. &quot;240&quot;, &quot;240px&quot;, &quot;60%&quot; - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '320',
                     'div_class'   =>  '',
@@ -147,7 +147,7 @@ class alt_video_field extends alt_media_field {
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
                     'default'     =>  '240',
-                    'description' =>  __( 'mouseover popup height in pixels - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
+                    'description' =>  __( 'mouseover popup height in pixels or percentage - e.g. &quot;135&quot;, &quot;135px&quot;, &quot;60%&quot; - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '240',
                     'div_class'   =>  '',
@@ -236,7 +236,9 @@ EOD;
             $attrWidth       = $width  ? " width=\"$width\""   : '';
             $attrHeight      = $height ? " height=\"$height\"" : '';
             $popup_width     = mf2tk\get_data_option( 'popup_width',     $original_atts, $options, 320 );
+            $popup_width     = is_numeric( $popup_width )  ? "{$popup_width}px"  : $popup_width;
             $popup_height    = mf2tk\get_data_option( 'popup_height',    $original_atts, $options, 240 );
+            $popup_height    = is_numeric( $popup_height ) ? "{$popup_height}px" : $popup_height;
             $popup_style     = mf2tk\get_data_option( 'popup_style',     $original_atts, $options, 'background-color:white;border:2px solid black;' );
             $popup_classname = mf2tk\get_data_option( 'popup_classname', $original_atts, $options );
             $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
@@ -245,7 +247,7 @@ EOD;
             $hover_width     = $caption ? '80%' : ( ( 4 * $width ) / 5 ) . 'px';
             $html .= <<<EOD
     <div class="$hover_class mf2tk-top-80" style="position:absolute;left:0px;top:0px;z-index:10;display:block;width:{$hover_width};height:80%;">
-        <div class="$popup_classname" style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width}px;height:{$popup_height}px;{$popup_style}">
+        <div class="$popup_classname" style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width};height:{$popup_height};{$popup_style}">
             $hover
         </div>
     </div>
