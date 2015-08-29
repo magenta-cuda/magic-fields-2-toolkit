@@ -67,7 +67,7 @@ jQuery(document).ready(function(){
             var overlay=jqThis.find("div.mf2tk-overlay");
             var overlayWidth=overlay.outerWidth();
             var overlayHeight=overlay.outerHeight();
-            var parentWidth=jqThis.outerWidth();
+            var parentWidth=(jqThis.hasClass("mf2tk-top-80")?1.25:1)*jqThis.outerWidth();
             var parentHeight=(jqThis.hasClass("mf2tk-top-80")?1.25:1)*jqThis.outerHeight();
             var x=overlayWidth<parentWidth?(parentWidth-overlayWidth)/2:0;
             var y=overlayHeight<parentHeight?(parentHeight-overlayHeight)/2:0;
@@ -79,7 +79,12 @@ jQuery(document).ready(function(){
     );
     // propagate clicks on overlay to the mouse-overed element
     jQuery("div.mf2tk-hover div.mf2tk-overlay").click(function(e){
-        jQuery(this.parentNode).find("a")[0].click();
+        var parent=jQuery(this.parentNode);
+        if(parent.hasClass("mf2tk-top-80")){
+            parent.parent().find("video").click();
+        }else{
+            parent.find("a")[0].click();
+        }
     });
     // change the output of the shortcode mt_tabs into tabs
     jQuery("div.mf2tk-mt_tabs-jquery_pre_tabs").tabs({active:0});
