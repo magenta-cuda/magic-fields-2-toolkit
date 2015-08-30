@@ -321,19 +321,22 @@ EOD;
 
     public static function img_caption_shortcode( $attr, $content = null ) {
         error_log( 'img_caption_shortcode():$attr=' . print_r( $attr, true ) );
-        $width        = $attr[ 'width' ];
-        $percent_mode = substr_compare( $width, "%", -1 ) === 0;
-        if ( $percent_mode ) {
-            $attr[ 'width' ] = 333;
-        } else {
-            $width           = "{$width}px";
+        $width               = $attr[ 'width' ];
+        if ( $percent_mode   = substr_compare( $width, "%", -1 ) === 0 ) {
+            # replace percentage with a dummy integer
+            $attr[ 'width' ] = 320;
+        } else if ( substr_compare( $width, "px", -2 ) === 0 ) {
+            # remove px to get integer
+            $attr[ 'width' ] = intval( substr( $width, 0, -2 ) );
         }
-        $content      = img_caption_shortcode( $attr, $content );
+        $content             = img_caption_shortcode( $attr, $content );
         error_log( 'img_caption_shortcode():content=' . $content );
-        $html5 = strpos( $content, '<figure ' ) !== FALSE;
-        $content = preg_replace_callback( '/<(div|figure)\s(.*?)style="(.*?)width:\s*\d+px/', function( $matches ) use ( $width ) {
-            return "<{$matches[1]} {$matches[2]}style=\"{$matches[3]}width:{$width};max-width:100%";  
-        }, $content, 1 );
+        if ( $percent_mode ) {
+            # replace dummy width with percentage
+            $content = preg_replace_callback( '/<(div|figure)\s(.*?)style="(.*?)width:\s*\d+px/', function( $matches ) use ( $width ) {
+                return "<{$matches[1]} {$matches[2]}style=\"{$matches[3]}width:{$width};max-width:100%";  
+            }, $content, 1 );
+        }
         error_log( 'img_caption_shortcode():returns=' . $content );
         return $content;
     } 

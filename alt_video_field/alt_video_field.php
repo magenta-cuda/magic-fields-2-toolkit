@@ -173,8 +173,10 @@ class alt_video_field extends alt_media_field {
         $invalid_atts  = [ ];   # since parent::get_template() is shared with audio some entries are media specific
         parent::get_template( $field_name, $group_index, $field_index, $post_id, $atts, $invalid_atts, 'video', 'wp_video_shortcode', 'alt_video_field',
             $height, $width, $hover, $caption, $poster, $link, $html );
-        $percent_mode  = substr_compare( $width, "%", -1 ) === 0;
-        if ( $percent_mode ) {
+        if ( substr_compare( $width, "px", -2 ) === 0 ) { 
+            $width = intval( substr( $width, 0, -2 ) );
+        }
+        if ( $percent_mode = substr_compare( $width, "%", -1 ) === 0 ) {
             # since wp_video_shortcode() was given a dummy integer width and height replace those with 100%
             $html = preg_replace_callback( '/style\s*=\s*("|\')(.*?;)?\s*(width:.*?)(;|\1)/', function( $matches ) {
                 error_log( 'get_video():$matches=' . print_r( $matches, true ) );
@@ -185,10 +187,12 @@ class alt_video_field extends alt_media_field {
                 return str_replace( $matches[1], ' width="100%" style="width:100%;"', $matches[0] );
             }, $html );
             error_log( 'get_video():$html=' . $html );
+            $hover_width = $caption ? '100%' : $width;
+        } else {
+            $hover_width = "{$width}px";
         }
-        $hover_width = $caption ? '100%' : "{$width}px";
         $html = <<<EOD
-<div style="position:relative;z-index:0;display:inline-block;width:{$hover_width};padding:0px;">
+<div style="position:relative;z-index:0;display:inline-block;width:{$hover_width};max-width:100%;padding:0px;">
     $html
 EOD;
         # if an optional mouse-over popup has been specified let the containing div handle the mouse-over event 
@@ -232,8 +236,11 @@ EOD;
             $class_name .= ' mf2tk-alt-video';
             $html = parent::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
             if ( !$percent_mode ) {
+                if ( is_numeric( $width ) ) {
+                    $width = "{$width}px";
+                }
                 $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
-                    return str_replace( $matches[1], "width:{$width}px", $matches[0] );  
+                    return str_replace( $matches[1], "width:{$width}", $matches[0] );  
                 }, $html, 1 );
             }
         }      
