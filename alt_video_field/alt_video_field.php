@@ -21,20 +21,8 @@ class alt_video_field extends alt_media_field {
                     'name'        =>  'mf_field[option][max_width]',
                     'default'     =>  '320',
                     'description' =>  __( 'width in pixels or percentage - e.g. &quot;320&quot;, &quot;320px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
-                                          . " $show_custom_field_tag shortcode",
+                                          . " $show_custom_field_tag shortcode - the height will be set to preserve the aspect ratio",
                     'value'       =>  '320',
-                    'div_class'   =>  '',
-                    'class'       =>  ''
-                ],
-                'max_height'  => [
-                    'type'        =>  'text',
-                    'id'          =>  'max_height',
-                    'label'       =>  __( 'Height', $mf_domain ),
-                    'name'        =>  'mf_field[option][max_height]',
-                    'default'     =>  '0',
-                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended but you must at least load the meta data on page load - 0 does not work for Flash videos - this value can be overridden by specifying a &quot;height&quot; parameter with the',
-                                          $mf_domain ) . " $show_custom_field_tag shortcode",
-                    'value'       =>  '0',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -117,18 +105,6 @@ class alt_video_field extends alt_media_field {
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
-                'aspect_ratio'  => [
-                    'type'        =>  'text',
-                    'id'          =>  'aspect_ratio',
-                    'label'       =>  __( 'Default Aspect Ratio - width:height, e.g. 16:9', $mf_domain ),
-                    'name'        =>  'mf_field[option][aspect_ratio]',
-                    'default'     =>  '4:3',
-                    'description' =>  __( 'If the browser determines the height then use this as the aspect ratio when the browser is unable to determine the aspect ratio - i.e. for Flash videos - this value can be overridden by specifying a &quot;aspect_ratio&quot; parameter with the',
-                                          $mf_domain ) . " $show_custom_field_tag shortcode",
-                    'value'       =>  '4:3',
-                    'div_class'   =>  '',
-                    'class'       =>  ''
-                ],
                 'popup_width'  => [
                     'type'        =>  'text',
                     'id'          =>  'popup_width',
@@ -204,27 +180,11 @@ class alt_video_field extends alt_media_field {
                 error_log( 'get_video():$matches=' . print_r( $matches, true ) );
                 return str_replace( $matches[3], 'width:100%', $matches[0] );
             }, $html );
-            $html = preg_replace_callback( '/<video\s[^>]*?(\sheight=("|\').*?\2)/', function( $matches ) {
-                error_log( 'get_video():$matches=' . print_r( $matches, true ) );
-                return str_replace( $matches[1], '', $matches[0] );
-            }, $html );
             $html = preg_replace_callback( '/<video\s[^>]*?(\swidth=("|\').*?\2)/', function( $matches ) {
                 error_log( 'get_video():$matches=' . print_r( $matches, true ) );
-                return str_replace( $matches[1], ' width="100%" height="100%" style="width:100%;height:100%;"', $matches[0] );
+                return str_replace( $matches[1], ' width="100%" style="width:100%;"', $matches[0] );
             }, $html );
             error_log( 'get_video():$html=' . $html );
-        }
-        if ( !$percent_mode && ( !$height || !$width ) && preg_match( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches ) ) {
-            # height or width not specified so emit javascript patch to resize mediaelement.js elements according to aspect ratio
-            $id = $matches[1];
-            $aspect_ratio = mf2tk\get_data_option( 'aspect_ratio', $original_atts, $options, '4:3' );
-            if ( preg_match( '/([\d\.]+):([\d\.]+)/', $aspect_ratio, $matches ) ) { $aspect_ratio = $matches[1] / $matches[2]; }
-            $do_width = !$width ? 'true' : 'false';
-            $html .= <<<EOD
-<script type="text/javascript">
-    jQuery(document).ready(function(){mf2tkResizeVideo("video.wp-video-shortcode#$id",$aspect_ratio,$do_width);});
-</script>
-EOD;
         }
         $hover_width = $caption ? '100%' : "{$width}px";
         $html = <<<EOD
@@ -236,9 +196,11 @@ EOD;
             $attrWidth       = $width  ? " width=\"$width\""   : '';
             $attrHeight      = $height ? " height=\"$height\"" : '';
             $popup_width     = mf2tk\get_data_option( 'popup_width',     $original_atts, $options, 320 );
-            $popup_width     = is_numeric( $popup_width )  ? "{$popup_width}px"  : $popup_width;
+            $popup_width     = is_numeric( $popup_width )  ? "{$popup_width}px"  :
+                                   ( substr ( $popup_width,  -1 ) === '%' ? 1.25 * substr( $popup_width,  0, -1 ) . '%' : $popup_width  );
             $popup_height    = mf2tk\get_data_option( 'popup_height',    $original_atts, $options, 240 );
-            $popup_height    = is_numeric( $popup_height ) ? "{$popup_height}px" : $popup_height;
+            $popup_height    = is_numeric( $popup_height ) ? "{$popup_height}px" :
+                                   ( substr( $popup_height,  -1 ) === '%' ? 1.25 * substr( $popup_height, 0, -1 ) . '%' : $popup_height );
             $popup_style     = mf2tk\get_data_option( 'popup_style',     $original_atts, $options, 'background-color:white;border:2px solid black;' );
             $popup_classname = mf2tk\get_data_option( 'popup_classname', $original_atts, $options );
             $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
@@ -268,7 +230,7 @@ EOD;
                 $class_name = "mf2tk-{$data['type']}-{$field_name}";
             }
             $class_name .= ' mf2tk-alt-video';
-            $html = alt_media_field::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
+            $html = parent::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
             if ( !$percent_mode ) {
                 $html = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
                     return str_replace( $matches[1], "width:{$width}px", $matches[0] );  

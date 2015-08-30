@@ -20,22 +20,17 @@ abstract class alt_media_field extends mf_custom_fields {
         $width        = mf2tk\get_data_option( 'max_width',  $null, $opts, 320 );
         $height       = mf2tk\get_data_option( 'max_height', $null, $opts, 180 );
         $dimensions   = [];
-        if ( substr_compare( $width, "%", -1 ) === 0 ) {
-            $width  = 320;
-            $height = 0;
+        if ( !$width ) {
+            $width = '100%';
         }
+        $percent_mode = substr_compare( $width, '%', -1 ) === 0;
+        $admin_width  = $percent_mode ? 320 : ( substr_compare ( $width, 'px', -2 ) === 0 ? substr( $width, 0, -2 ) : $width );
         if ( $media_type === 'video' ) {
-            if ( $width  ) {
-                $dimensions[ 'width'  ] = $width;
-            }
-            if ( $height ) {
-                $dimensions[ 'height' ] = $height;
-            }
+            $dimensions[ 'width'  ] = $admin_width;
+            $dimensions[ 'height' ] = intval( 0.5625 * $admin_width );
         }
-
         $dimensions['preload'] = 'metadata';
-        $attrWidth             = $width  ? " width=\"$width\""   : '';
-        $attrHeight            = $height ? " height=\"$height\"" : '';
+        $poster_style          = " style=\"width:{$admin_width}px;max-width:100%;" . $height ? "height:{$height}px;\"" : '"';
         
         # setup main field
         $field_id    = "mf2tk-$field[name]-$group_index-$field_index";
@@ -115,7 +110,7 @@ abstract class alt_media_field extends mf_custom_fields {
                 <button id="<?php echo $field_id; ?>.media-library-button" class="mf2tk-media-library-button"><?php _e( 'Get URL from Media Library', $mf_domain ); ?></button>
                 <button id="<?php echo $field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh"><?php _e( 'Reload Media', $mf_domain ); ?></button>
                 <br>
-                <div class="mf2tk-media" style="width:<?php echo $width; ?>px;padding-top:10px;margin:auto;">
+                <div class="mf2tk-media" style="width:<?php echo $admin_width; ?>px;max-width:100%;padding-top:10px;margin:auto;">
                     <?php echo $media_shortcode; ?>
                 </div>
             </div>
@@ -133,7 +128,7 @@ abstract class alt_media_field extends mf_custom_fields {
                 <button id="<?php echo $fallback_field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh">
                     <?php _e( 'Reload Media', $mf_domain ); ?></button>
                 <br>
-                <div class="mf2tk-media" style="width:<?php echo $width; ?>px;padding-top:10px;margin:auto;">
+                <div class="mf2tk-media" style="width:<?php echo $admin_width; ?>px;max-width:100%;padding-top:10px;margin:auto;">
                     <?php echo $fallback_media_shortcode; ?>
                 </div>
             </div>
@@ -152,7 +147,7 @@ abstract class alt_media_field extends mf_custom_fields {
                 <button id="<?php echo $alternate_fallback_field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh">
                     <?php _e( 'Reload Media', $mf_domain ); ?></button>
                 <br>
-                <div class="mf2tk-media" style="width:<?php echo $width; ?>px;padding-top:10px;margin:auto;">
+                <div class="mf2tk-media" style="width:<?php echo $admin_width; ?>px;max-width:100%;padding-top:10px;margin:auto;">
                     <?php echo $alternate_fallback_media_shortcode; ?>
                 </div>
             </div>
@@ -178,8 +173,8 @@ abstract class alt_media_field extends mf_custom_fields {
                 <button id="<?php echo $poster_field_id; ?>.refresh-button" class="mf2tk-alt_media_admin-refresh">
                     <?php _e( 'Reload Media', $mf_domain ); ?></button>
                 <br>
-                <div style="width:<?php echo $width; ?>px;padding-top:10px;margin:auto;">
-                    <img class="mf2tk-poster" src="<?php echo $poster_input_value; ?>"<?php echo $attrWidth . $attrHeight; ?>>
+                <div style="width:<?php echo $admin_width; ?>px;max-width:100%;padding-top:10px;margin:auto;">
+                    <img class="mf2tk-poster" src="<?php echo $poster_input_value; ?>"<?php echo $poster_style; ?>>
                 </div>
             </div>
         </div>
@@ -216,21 +211,6 @@ abstract class alt_media_field extends mf_custom_fields {
         $html = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
             "alt_{$media_type}_field::get_{$media_type}", TRUE, $caption_input_value, $width ) . '</div>';
         ob_end_clean( );
-        if ( $media_type === 'video' && ( !$height || !$width )
-            && preg_match_all( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches, PREG_PATTERN_ORDER ) ) {
-            $aspect_ratio = mf2tk\get_data_option( 'aspect_ratio', $null, $opts, '4:3' );
-            if ( preg_match( '/([\d\.]+):([\d\.]+)/', $aspect_ratio, $matches1 ) ) {
-                $aspect_ratio = $matches1[1] / $matches1[2];
-            }
-            $do_width = !$width ? 'true' : 'false';
-            foreach ( $matches[1] as $id ) {
-            $html .= <<<EOD
-<script type="text/javascript">
-    jQuery(document).ready(function(){mf2tkResizeVideo("video.wp-video-shortcode#$id",$aspect_ratio,$do_width);});
-</script>
-EOD;
-            }
-        }
         return $html;
     }
 
@@ -265,20 +245,22 @@ EOD;
         $options = mf2tk\get_data2( $field_name, $group_index, $field_index, $post_id )['options'];
 
         $width         = mf2tk\get_data_option( 'width',    $atts, $options, 320,        'max_width'  );
-        $height        = mf2tk\get_data_option( 'height',   $atts, $options, 240,        'max_height' );
+        $height        = mf2tk\get_data_option( 'height',   $atts, $options,   0,        'max_height' );
         $loop          = mf2tk\get_data_option( 'loop',     $atts, $options                           ) ? 'on' : 'off';
         $autoplay      = mf2tk\get_data_option( 'autoplay', $atts, $options                           ) ? 'on' : 'off';
         $preload       = mf2tk\get_data_option( 'preload',  $atts, $options, 'metadata'               );
         $percent_mode  = substr_compare( $width, "%", -1 ) === 0;
         $orig_width    = $width;
         $orig_height   = $height;
-        if ( $percent_mode ) {
-            # wp_video_shortcode() expects an integer width so give it a dummy; we will replace it later
-            # in percent mode the browser should set the height so force $height to NULL
-            $width  = 333;
-            $height = NULL;
+        if ( $media_type === 'video' ) {
+            if ( $percent_mode ) {
+                # wp_video_shortcode() expects an integer width so give it a dummy; we will replace it later
+                # in percent mode the browser should set the height so force $height to NULL
+                $width  = 320;
+            }
+            # set height to something reasonable so if media cannot be decoded a reasonable rectangle is displayed
+            $height = intval( 0.5625 * $width );
         }
-
         unset( $atts );   # $atts is re-used later for the attribute array for wp media shortcode
 
         # construct attribute array for wp media shortcode
@@ -329,19 +311,9 @@ EOD;
             if ( typeof _wpmejsSettings !== 'undefined' ) {
                 settings.pluginPath = _wpmejsSettings.pluginPath;
             }
-            $('div.mf2tk-new-wp-media-shortcode .wp-audio-shortcode, div.mf2tk-new-wp-media-shortcode .wp-video-shortcode')
-                .mediaelementplayer( settings );
+            $('div.mf2tk-new-wp-media-shortcode .wp-audio-shortcode, div.mf2tk-new-wp-media-shortcode .wp-video-shortcode').mediaelementplayer( settings );
         }(jQuery));
 EOD;
-        if ( ( !$options[ 'max_height' ] || !$options[ 'max_width' ] ) && preg_match( '/<video\s+class="wp-video-shortcode"\s+id="([^"]+)"/', $html, $matches ) ) {
-            $id = $matches[1];
-            $aspect_ratio = array_key_exists( 'aspect_ratio', $options ) ? $options[ 'aspect_ratio' ] : '4:3';
-            if ( preg_match( '/([\d\.]+):([\d\.]+)/', $aspect_ratio, $matches ) ) {
-                $aspect_ratio = $matches[1] / $matches[2];
-            }
-            $do_width = !$options['max_width'] ? 'true' : 'false';
-            $html .= "mf2tkResizeVideo(\"div.mf2tk-new-wp-media-shortcode video.wp-video-shortcode#$id\",$aspect_ratio,$do_width);";
-        }
         $html .= 'jQuery("div.mf2tk-new-wp-media-shortcode").removeClass("mf2tk-new-wp-media-shortcode");</script>';
         echo $html;
         die;
