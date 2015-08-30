@@ -30,7 +30,7 @@ abstract class alt_media_field extends mf_custom_fields {
             $dimensions[ 'height' ] = intval( 0.5625 * $admin_width );
         }
         $dimensions['preload'] = 'metadata';
-        $poster_style          = " style=\"width:{$admin_width}px;max-width:100%;" . $height ? "height:{$height}px;\"" : '"';
+        $poster_style          = " style=\"width:{$admin_width}px;max-width:100%;" . ( $height ? "height:{$height}px;\"" : '"' );
         
         # setup main field
         $field_id    = "mf2tk-$field[name]-$group_index-$field_index";
@@ -291,12 +291,14 @@ abstract class alt_media_field extends mf_custom_fields {
         $options    = unserialize( $result['options'] );
         $dimensions = [];
         if ( $result[ 'type' ] === 'alt_video' ) {
-            if ( $options[ 'max_width' ]  ) {
-                $dimensions[ 'width' ]  = $options[ 'max_width' ];
+            $width                  = $options[ 'max_width' ];
+            if ( !$width ) {
+                $width              = '100%';
             }
-            if ( $options[ 'max_height' ] ) {
-                $dimensions[ 'height' ] = $options[ 'max_height' ];
-            }
+            $percent_mode           = substr_compare( $width, '%', -1 ) === 0;
+            $admin_width            = $percent_mode ? 320 : ( substr_compare ( $width, 'px', -2 ) === 0 ? substr( $width, 0, -2 ) : $width );
+            $dimensions[ 'width'  ] = $admin_width;
+            $dimensions[ 'height' ] = intval( 0.5625 * $admin_width );
         }
         $html = call_user_func( $result['type'] === 'alt_video' ? 'wp_video_shortcode' : 'wp_audio_shortcode',
             array_merge( [ 'src' => $_REQUEST[ 'url' ] ], $dimensions ) );

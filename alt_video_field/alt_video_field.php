@@ -210,7 +210,7 @@ EOD;
             $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
             $hover           = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
             $hover_class     = 'mf2tk-hover';
-            $hover_width     = $caption ? '80%' : ( ( 4 * $width ) / 5 ) . 'px';
+            $hover_width     = '80%';
             $html .= <<<EOD
     <div class="$hover_class mf2tk-top-80" style="position:absolute;left:0px;top:0px;z-index:10;display:block;width:{$hover_width};height:80%;">
         <div class="$popup_classname" style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width};height:{$popup_height};{$popup_style}">
