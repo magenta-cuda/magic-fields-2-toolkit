@@ -23,10 +23,10 @@ class alt_image_field extends mf_custom_fields {
                     'id'          =>  'max_width',
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
-                    'default'     =>  '320',
-                    'description' =>  __( 'width in pixels or percentage - e.g. &quot;240&quot;, &quot;240px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
+                    'default'     =>  '96%',
+                    'description' =>  __( 'width in pixels or percentage - e.g. &quot;320&quot;, &quot;320px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
                                           . " $show_custom_field_tag shortcode",
-                    'value'       =>  '320',
+                    'value'       =>  '96%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -36,7 +36,7 @@ class alt_image_field extends mf_custom_fields {
                     'label'       =>  __( 'Height', $mf_domain ),
                     'name'        =>  'mf_field[option][max_height]',
                     'default'     =>  '0',
-                    'description' =>  __( 'height in pixels - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the',
+                    'description' =>  __( 'height in pixels - e.g. &quot;240&quot;, &quot;240px&quot; - 0 lets the browser set the height to preserve the aspect ratio - recommended - this value can be overridden by specifying a &quot;height&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
                     'value'       =>  '0',
                     'div_class'   =>  '',
@@ -47,7 +47,7 @@ class alt_image_field extends mf_custom_fields {
                     'id'          => 'align',
                     'label'       => __( 'Alignment', $mf_domain ),
                     'name'        =>  'mf_field[option][align]',
-                    'default'     => '',
+                    'default'     => 'aligncenter',
                     'options'     => [
                                         'aligncenter' => __( 'Center', $mf_domain ),
                                         'alignright'  => __( 'Right',  $mf_domain ),
@@ -58,7 +58,7 @@ class alt_image_field extends mf_custom_fields {
                     'description' => __( 'alignment is effective only if a caption is specified - this value can be overridden by specifying an &quot;align&quot; parameter with the',
                                         $mf_domain ) . " $show_custom_field_tag shortcode - " . __( 'the parameter values are', $mf_domain )
                                         . ' &quot;aligncenter&quot;, &quot;alignright&quot; ' . __( 'and', $mf_domain ) . ' &quot;alignleft&quot;',
-                    'value'       => '',
+                    'value'       => 'aligncenter',
                     'div_class'   => '',
                     'class'       => ''
                 ],
@@ -79,10 +79,10 @@ class alt_image_field extends mf_custom_fields {
                     'id'          =>  'popup_width',
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
-                    'default'     =>  '320',
+                    'default'     =>  '60%',
                     'description' =>  __( 'mouseover popup width in pixels or percentage - e.g. &quot;240&quot;, &quot;240px&quot;, &quot;60%&quot; - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
-                    'value'       =>  '320',
+                    'value'       =>  '60%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -91,10 +91,10 @@ class alt_image_field extends mf_custom_fields {
                     'id'          =>  'popup_height',
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
-                    'default'     =>  '240',
+                    'default'     =>  '60%',
                     'description' =>  __( 'mouseover popup height in pixels or percentage - e.g. &quot;135&quot;, &quot;135px&quot;, &quot;60%&quot;- this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
-                    'value'       =>  '240',
+                    'value'       =>  '60%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -107,7 +107,7 @@ class alt_image_field extends mf_custom_fields {
                     'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
                                           . __( 'is good for text overlays', $mf_domain ),
-                    'value'       =>  'background-color:transparent;text-align:center;',
+                    'value'       =>  'background-color:transparent;text-align:center;border:2px solid red;border-radius:7px;',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
