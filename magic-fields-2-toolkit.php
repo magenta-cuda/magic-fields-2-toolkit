@@ -492,9 +492,6 @@ function get( $field_name, $group_index = 1, $field_index = 1, $post_id = NULL )
 
 function get_how_to_use_html( $field, $group_index, $field_index, $post, $parameters = '', $php_function = NULL, $has_caption = FALSE,
     $caption_input_value = NULL, $width = NULL ) {
-    error_log( 'get_how_to_use_html():$post->ID=' . $post->ID );
-    error_log( 'get_how_to_use_html():$field[name]=' . $field['name'] );
-    error_log( 'get_how_to_use_html():$caption_input_value=' . $caption_input_value );
     global $mf_domain;
     $index = $group_index === 1 && $field_index === 1 ? '' : "<$group_index,$field_index>";
     $show_custom_field_tag = get_tags( )[ 'show_custom_field' ];

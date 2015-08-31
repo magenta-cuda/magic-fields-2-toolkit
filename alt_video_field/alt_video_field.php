@@ -19,10 +19,10 @@ class alt_video_field extends alt_media_field {
                     'id'          =>  'max_width',
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
-                    'default'     =>  '320',
+                    'default'     =>  '96%',
                     'description' =>  __( 'width in pixels or percentage - e.g. &quot;320&quot;, &quot;320px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the', $mf_domain )
                                           . " $show_custom_field_tag shortcode - the height will be set to preserve the aspect ratio",
-                    'value'       =>  '320',
+                    'value'       =>  '96%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -110,10 +110,10 @@ class alt_video_field extends alt_media_field {
                     'id'          =>  'popup_width',
                     'label'       =>  __( 'Mouseover Popup Width', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_width]',
-                    'default'     =>  '320',
+                    'default'     =>  '60%',
                     'description' =>  __( 'mouseover popup width in pixels or percentage - e.g. &quot;240&quot;, &quot;240px&quot;, &quot;60%&quot; - this value can be overridden by specifying a &quot;popup_width&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
-                    'value'       =>  '320',
+                    'value'       =>  '60%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -122,10 +122,10 @@ class alt_video_field extends alt_media_field {
                     'id'          =>  'popup_height',
                     'label'       =>  __( 'Mouseover Popup Height', $mf_domain ),
                     'name'        =>  'mf_field[option][popup_height]',
-                    'default'     =>  '240',
+                    'default'     =>  '60%',
                     'description' =>  __( 'mouseover popup height in pixels or percentage - e.g. &quot;135&quot;, &quot;135px&quot;, &quot;60%&quot; - this value can be overridden by specifying a &quot;popup_height&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode",
-                    'value'       =>  '240',
+                    'value'       =>  '60%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],
@@ -179,14 +179,11 @@ class alt_video_field extends alt_media_field {
         if ( $percent_mode = substr_compare( $width, "%", -1 ) === 0 ) {
             # since wp_video_shortcode() was given a dummy integer width and height replace those with 100%
             $html = preg_replace_callback( '/style\s*=\s*("|\')(.*?;)?\s*(width:.*?)(;|\1)/', function( $matches ) {
-                error_log( 'get_video():$matches=' . print_r( $matches, true ) );
                 return str_replace( $matches[3], 'width:100%', $matches[0] );
             }, $html );
             $html = preg_replace_callback( '/<video\s[^>]*?(\swidth=("|\').*?\2)/', function( $matches ) {
-                error_log( 'get_video():$matches=' . print_r( $matches, true ) );
                 return str_replace( $matches[1], ' width="100%" style="width:100%;"', $matches[0] );
             }, $html );
-            error_log( 'get_video():$html=' . $html );
             $hover_width = $caption ? '100%' : $width;
         } else {
             $hover_width = "{$width}px";
