@@ -13,7 +13,7 @@ A toolkit for the Magic Fields 2 plugin for media oriented CMS web design by non
 This [toolkit](https://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/) transforms the [Magic Fields 2](https://wordpress.org/plugins/magic-fields-2/) plugin into something that can be used by a non programmer to do media oriented CMS web design.
 With this toolkit you can design your page content using only HTML, CSS and the [toolkit's shortcodes](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#shortcode).
 Using the [toolkit's content templates](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#macros) you can define a reusable template for page contents which can be used to create multiple pages using the page's custom fields to instantiate the template.
-This toolkit also simplifies the use of media (images, audio, video and embeds) by providing [configurable shortcodes](https://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#alt_media) for generating HTML wrappers for these media elements.
+This toolkit also simplifies the use of media (images, audio, video and embeds) by providing [configurable shortcodes](https://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#alt_media) for generating responsive HTML wrappers for these media elements.
 
 The current features are:
 
