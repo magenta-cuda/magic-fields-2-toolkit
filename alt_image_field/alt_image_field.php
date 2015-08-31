@@ -257,7 +257,7 @@ EOD;
             $overlay         = '';
         }
         $html = <<<EOD
-<div class="$hover_class" style="position:relative;display:inline-block;width:{$hover_width};padding:0px;">
+<div class="$hover_class" style="position:relative;display:inline-block;width:{$hover_width};max-width:100%;padding:0px;">
     <a href="$link" target="_blank"><img src="$data[meta_value]"{$attrSize}></a>
     $overlay
 </div>
