@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Magic Fields 2 Toolkit 1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/magic-fields-2-toolkitz\n"
-"POT-Creation-Date: 2015-09-01 05:00:11+00:00\n"
+"POT-Creation-Date: 2015-09-01 15:24:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -285,9 +285,9 @@ msgid "This is the Embed element for the URL specified above."
 msgstr ""
 
 #: alt_embed_field/alt_embed_field.php:113
-#: alt_image_field/alt_image_field.php:179
-#: alt_image_field/alt_image_field.php:188
-#: alt_image_field/alt_image_field.php:198 alt_media_field.php:57
+#: alt_image_field/alt_image_field.php:185
+#: alt_image_field/alt_image_field.php:194
+#: alt_image_field/alt_image_field.php:204 alt_media_field.php:57
 #: alt_media_field.php:72 alt_media_field.php:157 alt_media_field.php:166
 #: alt_media_field.php:186 alt_media_field.php:202
 #: alt_table_field/alt_table_field.php:132
@@ -324,41 +324,41 @@ msgstr ""
 msgid "mouseover popup height in pixels or percentage - e.g. &quot;135&quot;, &quot;135px&quot;, &quot;60%&quot;- this value can be overridden by specifying a &quot;popup_height&quot; parameter with the"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:165
-#: alt_image_field/alt_image_field.php:168
+#: alt_image_field/alt_image_field.php:171
+#: alt_image_field/alt_image_field.php:174
 msgid "URL of the Image"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:169 alt_media_field.php:110
+#: alt_image_field/alt_image_field.php:175 alt_media_field.php:110
 #: alt_media_field.php:127 alt_media_field.php:146 alt_media_field.php:172
 msgid "Get URL from Media Library"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:170 alt_media_field.php:111
+#: alt_image_field/alt_image_field.php:176 alt_media_field.php:111
 #: alt_media_field.php:129 alt_media_field.php:148 alt_media_field.php:174
 msgid "Reload Media"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:180
-#: alt_image_field/alt_image_field.php:183
+#: alt_image_field/alt_image_field.php:186
+#: alt_image_field/alt_image_field.php:189
 msgid "Optional Caption for Image"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:189
-#: alt_image_field/alt_image_field.php:192
+#: alt_image_field/alt_image_field.php:195
+#: alt_image_field/alt_image_field.php:198
 msgid "Optional Link for Image"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:193 alt_media_field.php:192
+#: alt_image_field/alt_image_field.php:199 alt_media_field.php:192
 #: alt_url_field/alt_url_field.php:54
 msgid "Test Load"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:199
+#: alt_image_field/alt_image_field.php:205
 msgid "Optional Mouseover Popup for Image"
 msgstr ""
 
-#: alt_image_field/alt_image_field.php:202 alt_media_field.php:206
+#: alt_image_field/alt_image_field.php:208 alt_media_field.php:206
 msgid "Enter post content fragment with show_custom_field and/or show_macro shortcodes. This will be displayed as a popup when the mouse is over the image. Although this could be plain HTML, using a reusable content template is probably more convenient."
 msgstr ""
 
