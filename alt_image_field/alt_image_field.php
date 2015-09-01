@@ -139,6 +139,11 @@ class alt_image_field extends mf_custom_fields {
         if ( substr_compare( $width, "%", -1 ) === 0 ) {
             $width             = 320;
             $height            = 0;
+        } else if ( substr_compare( $width, "px", -2 ) === 0 ) {
+            $width             = intval( substr( $width, 0, -2 ) );
+        }
+        if ( substr_compare( $height, "px", -2 ) === 0 ) {
+            $width             = intval( substr( $height, 0, -2 ) );
         }
         $attrWidth             = $width  ? " width=\"$width\""   : '';
         $attrHeight            = $height ? " height=\"$height\"" : '';
