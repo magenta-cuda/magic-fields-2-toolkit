@@ -135,6 +135,7 @@ class alt_image_field extends mf_custom_fields {
         $opts                  = $field[ 'options' ];
         $width                 = mf2tk\get_data_option( 'max_width',  NULL, $opts, 320 );
         $height                = mf2tk\get_data_option( 'max_height', NULL, $opts, 240 );
+        $orig_width            = $width;
         if ( substr_compare( $width, "%", -1 ) === 0 ) {
             $width             = 320;
             $height            = 0;
@@ -205,7 +206,7 @@ class alt_image_field extends mf_custom_fields {
     </div>
 <?php
         $output = ob_get_contents( ) . mf2tk\get_how_to_use_html( $field, $group_index, $field_index, $post, ' filter="url_to_media"',
-            'alt_image_field::get_image', TRUE, $caption_input_value, $width ) . '</div>';
+            'alt_image_field::get_image', TRUE, $caption_input_value, $orig_width ) . '</div>';
         ob_end_clean( );
         return $output;
     }
