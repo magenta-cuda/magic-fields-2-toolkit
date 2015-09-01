@@ -28,3 +28,8 @@ div.wp-caption.mf2tk-image-inline-block,figure.wp-caption.mf2tk-image-inline-blo
     display:inline-block;
     vertical-align:middle;
 }
+
+div.mf2tk-no-caption-media-box  embed,div.mf2tk-no-caption-media-box iframe,div.mf2tk-no-caption-media-box object,div.mf2tk-no-caption-media-box video,
+div.mf2tk-no-caption-media-box  div.mejs-container{
+    margin:0px;
+}
