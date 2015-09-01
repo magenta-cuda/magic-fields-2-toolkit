@@ -138,7 +138,7 @@ class alt_video_field extends alt_media_field {
                     'description' =>  __( 'mouseover popup style - this value can be overridden by specifying a &quot;popup_style&quot; parameter with the',
                                           $mf_domain ) . " $show_custom_field_tag shortcode - &quot;background-color:transparent;text-align:center;&quot; "
                                           . __( 'is good for text overlays', $mf_domain ),
-                    'value'       =>  'background-color:transparent;text-align:center;',
+                    'value'       =>  'background-color:transparent;text-align:center;border:2px solid red;border-radius:7px;',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],

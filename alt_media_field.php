@@ -274,9 +274,7 @@ abstract class alt_media_field extends mf_custom_fields {
         $atts = array_filter( $atts, function( $v ) {
             return $v !== 'off';
         } );
-        error_log( 'get_template():$atts=' . print_r( $atts, true ) );
         $html   = call_user_func( $wp_media_shortcode, $atts );   # html returned by reference
-        error_log( 'get_template():$html=' . $html );
         $width  = $orig_width;
         $height = $orig_height;
     }
@@ -322,7 +320,6 @@ EOD;
     }
 
     public static function img_caption_shortcode( $attr, $content = null ) {
-        error_log( 'img_caption_shortcode():$attr=' . print_r( $attr, true ) );
         $width               = $attr[ 'width' ];
         if ( $percent_mode   = substr_compare( $width, "%", -1 ) === 0 ) {
             # replace percentage with a dummy integer
@@ -332,14 +329,12 @@ EOD;
             $attr[ 'width' ] = intval( substr( $width, 0, -2 ) );
         }
         $content             = img_caption_shortcode( $attr, $content );
-        error_log( 'img_caption_shortcode():content=' . $content );
         if ( $percent_mode ) {
             # replace dummy width with percentage
             $content = preg_replace_callback( '/<(div|figure)\s(.*?)style="(.*?)width:\s*\d+px/', function( $matches ) use ( $width ) {
                 return "<{$matches[1]} {$matches[2]}style=\"{$matches[3]}width:{$width};max-width:100%";  
             }, $content, 1 );
         }
-        error_log( 'img_caption_shortcode():returns=' . $content );
         return $content;
     } 
 

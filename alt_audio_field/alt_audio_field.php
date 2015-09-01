@@ -211,9 +211,8 @@ class alt_audio_field extends alt_media_field {
                 $popup_classname = mf2tk\get_data_option( 'popup_classname', $original_atts, $opts );
                 $popup_classname = 'mf2tk-overlay' . ( $popup_classname ? ' ' . $popup_classname : '' );
                 $hover           = mf2tk\do_macro( [ 'post' => $post_id ], $hover );
-                $hover_class     = 'mf2tk-hover';
             $html = <<<EOD
-<div class="{$hover_class}" style="display:inline-block;width:{$hover_width};max-width:100%;padding:0px;margin:0px;">
+<div class="mf2tk-hover" style="position:relative;display:inline-block;width:{$hover_width};max-width:100%;padding:0px;margin:0px;">
     <a href="{$link}" target="_blank"><img src="{$poster}"{$img_style}></a>
     <div class="{$popup_classname}"
         style="display:none;position:absolute;z-index:10000;text-align:center;width:{$popup_width};height:{$popup_height};{$popup_style}">
