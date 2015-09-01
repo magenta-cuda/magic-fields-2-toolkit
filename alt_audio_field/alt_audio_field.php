@@ -241,7 +241,7 @@ EOD;
             if ( !$class_name ) {
                 $class_name = "mf2tk-{$data['type']}-{$field_name}";
             }
-            $class_name    .= ' mf2tk-alt-image';
+            $class_name    .= ' mf2tk-alt-audio';
             $html = alt_media_field::img_caption_shortcode( [ 'width' => $width, 'align' => $align, 'class' => $class_name, 'caption' => $caption ], $html );
             if ( !$percent_mode ) {
                 $html       = preg_replace_callback( '/<div\s.*?style=".*?(width:\s*\d+px)/', function( $matches ) use ( $width ) {
