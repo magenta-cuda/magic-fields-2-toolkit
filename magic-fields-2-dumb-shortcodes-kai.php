@@ -879,14 +879,20 @@ function tk_value_as_audio( $value, $field, $type, $classes, $group_index, $fiel
 
 function tk_value_as_image__( $parm, $value, $field, $type ) {
     if ( $type === 'image' || $type === 'image_media' || $type === 'alt_image' ) {
-        $height = '';
-        $width = '';
+        $height    = '';
+        $px_height = '';
+        $width     = '';
+        $px_width  = '';
         if ( substr( $parm, 0, 1 ) === 'h' ) {
-            $height = ' height="' . substr( $parm, 1 ) . '"';
+            $int_height = substr( $parm, 1 );
+            $height     = " height=\"{$int_height}\"";
+            $px_height  = "height:{$int_height}px;";
         } else if ( substr( $parm, 0, 1 ) === 'w' ) {
-            $width  = ' width="'  . substr( $parm, 1 ) . '"';
+            $int_width  = substr( $parm, 1 );
+            $width      = " width=\"{$int_width}\"";
+            $px_width   = "width:{$int_width}px;";
         }
-        $value = "<a href=\"$value\"><img src=\"$value\"{$width}{$height}></a>";
+        $value = "<a href=\"$value\"><img src=\"$value\"{$width}{$height} style=\"{$px_width}{$px_height}\"></a>";
      }
     return $value;
 }
@@ -902,14 +908,18 @@ function tk_value_as_video__( $parm, $value, $field, $type, $classes, $group_ind
     if ( $type === 'alt_video' ) {
         $int_height = 0;
         $height = '';
+        $px_height = '';
         $int_width = 0;
         $width = '';
+        $px_width = '';
         if ( substr( $parm, 0, 1 ) === 'h' ) {
             $int_height = substr( $parm, 1 );
-            $height = ' height="' . $int_height . '"';
+            $height     = " height=\"{$int_height}\"";
+            $px_height  = "height:{$int_height}px;";
         } else if ( substr( $parm, 0, 1 ) === 'w' ) {
-            $int_width = substr( $parm, 1 );
-            $width  = ' width="'  . $int_width . '"';
+            $int_width  = substr( $parm, 1 );
+            $width      = " width=\"{$int_width}\"";
+            $px_width   = "width:{$int_width}px";
         }
         ++$i;
         $id = "tk_video-$i";
@@ -917,11 +927,20 @@ function tk_value_as_video__( $parm, $value, $field, $type, $classes, $group_ind
         if ( count( $srcs ) === 1 ) {
             $url = reset( $srcs );
             $type = key( $srcs );
-            if ( $type === 'flv' ) { if ( $int_width ) { $height = ' height="' . intval( 3 * $int_width / 4 ) . '"'; }
-            else { $width = ' width="' . intval( 4 * $int_height / 3 ) . '"'; } }
-            $value = "<video id=\"$id\" src=\"$url\"{$width}{$height} controls=\"controls\"></video>";
+            if ( $type === 'flv' ) {
+                if ( $int_width ) {
+                    $int_height = intval( 9 * $int_width / 16 );
+                    $height     = " height=\"{$int_height}\"";
+                    $px_height  = "height:{$int_height}px;";
+                } else {
+                    $int_width  = intval( 16 * $int_height / 9 );
+                    $width      = " width=\"{$int_width}\"";
+                    $px_width   = "width:{$int_width}px";
+                }
+            }
+            $value = "<video id=\"$id\" src=\"$url\"{$width}{$height} controls=\"controls\" style=\"{$px_width}{$px_height}\"></video>";
         } else if ( count( $srcs ) > 1 ) {
-            $value = "<video id=\"$id\"{$width}{$height} controls=\"controls\">";
+            $value = "<video id=\"$id\"{$width}{$height} controls=\"controls\" style=\"{$px_width}{$px_height}\">";
             foreach ( $srcs as $type => $url ) {
                 if ( $type === 'flv' ) { $type = 'x-flv'; }
                 $value .= "<source src=\"$url\" type=\"video/$type\">";
