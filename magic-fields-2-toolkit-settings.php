@@ -156,6 +156,25 @@ class Magic_Fields_2_Toolkit_Settings {
                 }, 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_tags_sec', [ $name, $value ] );
             }, mf2tk\get_tags( ) );   # array_walk( $tags, function( $v, $i, $options ) {
 
+            add_settings_section( 'magic_fields_2_toolkit_theme_sec', __( 'Themes', $mf_domain ), function( ) {
+                global $mf_domain;
+?>
+<div style="padding:10px 50px;"><?php _e( 'You can select the theme used to display jQuery UI widgets (currently just Tabs from mt_tabs).',
+    $mf_domain ); ?></div>
+<?php
+            }, 'magic-fields-2-toolkit-page' );   #  add_settings_section( 'magic_fields_2_toolkit_theme_sec', __( 'Themes', $mf_domain ), function( ) {
+
+            add_settings_field( "magic_fields_2_toolkit-theme", 'jQuery UI Theme', function( ) {
+                $the_theme = get_option( 'magic_fields_2_toolkit_theme', 'mf2tk-jquery-ui-default.min.css' );
+                foreach ( scandir( __DIR__ . '/css' ) as $filename ) {
+                    if ( preg_match( '#mf2tk-jquery-ui.([\w-]+)(.min)?.css#', $filename, $matches ) !== 1 ) {
+                        continue;
+                    }
+                    $checked = $matches[0] === $the_theme ? ' checked' : '';
+                    echo( "<input name=\"magic_fields_2_toolkit_theme\" type=\"radio\" value=\"{$matches[0]}\"{$checked}>{$matches[1]}<br>" );
+                }
+            }, 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_theme_sec' );
+
             add_settings_section( 'magic_fields_2_toolkit_sync_sec', __( 'Sync the Toolkit\'s Fields with the Fields of Magic Fields 2', $mf_domain ),
                 function( ) {
                     global $mf_domain;
@@ -205,6 +224,11 @@ class Magic_Fields_2_Toolkit_Settings {
                 }
                 return $input;
             } );   # register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_tags', function( $input ) {
+                
+            register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_theme', function( $input ) {
+                error_log( 'magic_fields_2_toolkit_theme:' . print_r( $input, true ) );
+                return $input;
+            } );   #register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_theme', function( $input ) {
             
         } );   # add_action( 'admin_init', function() {
             

@@ -20,10 +20,10 @@ class alt_audio_field extends alt_media_field {
                     'id'          =>  'max_width',
                     'label'       =>  __( 'Width', $mf_domain ),
                     'name'        =>  'mf_field[option][max_width]',
-                    'default'     =>  '320',
+                    'default'     =>  '96%',
                     'description' =>  __( 'width for optional caption and/or optional image in pixels or percentage - e.g. &quot;320&quot;, &quot;320px&quot;, &quot;96%&quot; - this value can be overridden by specifying a &quot;width&quot; parameter with the ',
                                           $mf_domain ) . "$show_custom_field_tag shortcode",
-                    'value'       =>  '320',
+                    'value'       =>  '96%',
                     'div_class'   =>  '',
                     'class'       =>  ''
                 ],

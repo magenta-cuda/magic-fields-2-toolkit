@@ -4,7 +4,7 @@ Donate link:
 Tags: shortcodes, templates, custom fields, post copier
 Requires at least: 3.6
 Tested up to: 4.2
-Stable tag: 1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 A toolkit for the Magic Fields 2 plugin for media oriented CMS web design by non programmers.
@@ -21,6 +21,7 @@ The current features are:
 * [shortcode for showing Magic Fields 2 custom fields and taxonomies](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#shortcode). In particular, the shortcodes makes it easy to display a table of custom field names and their values.
 * [post content templates for HTML and WordPress shortcodes](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#macros) - these templates do not need PHP code.
 * [gallery shortcode for showing Magic Fields Media Library images](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#gallery).
+* [tabs shortcode for showing mt_template shortcodes in jQuery UI Tabs](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#tabs).
 
 = Additional custom fields =
 * [fields for WordPress's video and audio shortcodes](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#alt_media).
@@ -72,11 +73,17 @@ Version 0.4.6 has a new default content macro for sortable tables. However, the 
 == Screenshots ==
 
 == Changelog ==
+
+= 1.2.1 =
+* support configurable jQuery UI themes for the mt_tabs shortcode
+
 = 1.2 =
-* alt_image, alt_video, alt_embed and alt_audio fields now accept width in percentage (not just pixels) which is more appropriate for responsive design
+* alt_image, alt_video, and alt_audio fields now accept width in percentage (not just pixels) which is more appropriate for responsive design
 * more code re-written to fix bugs, improve security and improve software quality
+
 = 1.1.1 =
 * code rewritten to fix bugs, improve security, improve software quality and support localization
+
 = 1.1 =
 * Fixes for WordPress 4.3
 * Added a mt_show_tabs shortcode for displaying a list of [show_macro] shortcodes in jQuery UI tabs
@@ -391,5 +398,9 @@ added fields for embed, audio and video
 * code rewritten to fix bugs, improve security, improve software quality and support localization
 
 = 1.2 =
-* alt_image, alt_video, alt_embed and alt_audio fields now accept width in percentage (not just pixels) which is more appropriate for responsive design
+* alt_image, alt_video and alt_audio fields now accept width in percentage (not just pixels) which is more appropriate for responsive design
 * more code re-written to fix bugs, improve security and improve software quality
+
+= 1.2.1 =
+* support configurable jQuery UI themes for the mt_tabs shortcode
+
