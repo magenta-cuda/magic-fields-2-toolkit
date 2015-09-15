@@ -166,12 +166,12 @@ class Magic_Fields_2_Toolkit_Settings {
 
             add_settings_field( "magic_fields_2_toolkit-theme", 'jQuery UI Theme', function( ) {
                 $the_theme = get_option( 'magic_fields_2_toolkit_theme', 'mf2tk-jquery-ui-default.min.css' );
-                foreach ( scandir( __DIR__ . '/css' ) as $filename ) {
-                    if ( preg_match( '#mf2tk-jquery-ui.([\w-]+)(.min)?.css#', $filename, $matches ) !== 1 ) {
+                foreach ( scandir( __DIR__ . '/css/mf2tk-jquery-ui' ) as $filename ) {
+                    if ( !is_dir( __DIR__ . '/css/mf2tk-jquery-ui/' . $filename ) || $filename === '.' || $filename === '..' ) {
                         continue;
                     }
-                    $checked = $matches[0] === $the_theme ? ' checked' : '';
-                    echo( "<input name=\"magic_fields_2_toolkit_theme\" type=\"radio\" value=\"{$matches[0]}\"{$checked}>{$matches[1]}<br>" );
+                    $checked = $filename === $the_theme ? ' checked' : '';
+                    echo( "<input name=\"magic_fields_2_toolkit_theme\" type=\"radio\" value=\"{$filename}\"{$checked}>{$filename}<br>" );
                 }
             }, 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_theme_sec' );
 

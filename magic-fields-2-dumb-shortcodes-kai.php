@@ -68,8 +68,8 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
         
         add_action( 'wp_enqueue_scripts', function( ) {
             wp_enqueue_style( 'mf2tk_media', plugins_url( 'css/mf2tk_media.css', __FILE__ ) );
-            wp_enqueue_style( 'mf2tk-jquery-ui', plugins_url( 'css/' . get_option( 'magic_fields_2_toolkit_theme', 'mf2tk-jquery-ui-default.min.css' ),
-                                  __FILE__ ) );
+            wp_enqueue_style( 'mf2tk-jquery-ui', plugins_url( 'css/mf2tk-jquery-ui/' . get_option( 'magic_fields_2_toolkit_theme', 'default' )
+                                  . '/jquery-ui.min.css', __FILE__ ) );
             #wp_add_inline_style( '', '' );
             wp_enqueue_script( 'mf2tk_alt_media', plugins_url( 'js/mf2tk_alt_media.js', __FILE__ ), [ 'jquery', 'jquery-ui-tabs', 'wp-mediaelement' ] );
         } );
