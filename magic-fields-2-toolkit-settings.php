@@ -160,7 +160,9 @@ class Magic_Fields_2_Toolkit_Settings {
                 global $mf_domain;
 ?>
 <div style="padding:10px 50px;"><?php _e( 'You can select the theme used to display jQuery UI widgets (currently just Tabs from mt_tabs).',
-    $mf_domain ); ?></div>
+    $mf_domain ); ?> <?php _e( 'You can also roll your own theme using ', $mf_domain ); ?><a href="http://jqueryui.com/themeroller/">jQuery UI ThemeRoller</a>.
+    <?php _e( 'Rename the generated folder and place it into the plugin\'s &quot;css/mf2tk-jquery-ui&quot; folder.', $mf_domain ); ?>
+</div>
 <?php
             }, 'magic-fields-2-toolkit-page' );   #  add_settings_section( 'magic_fields_2_toolkit_theme_sec', __( 'Themes', $mf_domain ), function( ) {
 
@@ -226,7 +228,6 @@ class Magic_Fields_2_Toolkit_Settings {
             } );   # register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_tags', function( $input ) {
                 
             register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_theme', function( $input ) {
-                error_log( 'magic_fields_2_toolkit_theme:' . print_r( $input, true ) );
                 return $input;
             } );   #register_setting( 'magic-fields-2-toolkit-page', 'magic_fields_2_toolkit_theme', function( $input ) {
             
