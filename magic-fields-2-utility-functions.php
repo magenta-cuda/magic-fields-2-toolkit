@@ -25,24 +25,16 @@ namespace mf2tk;
 
 function get_field_id( $field_name, $post_type = NULL ) {
     global $post, $wpdb; 
-    static $field_id_cache = array();
-    
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-
+    static $field_id_cache = [ ];
     if ( !array_key_exists( $post_type, $field_id_cache ) ) {
-        $field_id_cache[$post_type] = array();
-
-        $sql = sprintf(
-            "SELECT name, id FROM %s WHERE post_type = '%s'",
-            MF_TABLE_CUSTOM_FIELDS, $post_type );
-
-        $results = $wpdb->get_results( $sql, ARRAY_A );
-        foreach ( $results as $result ) {
-            $field_id_cache[$post_type][$result['name']] = $result['id'];
+        $field_id_cache_item =& $field_id_cache[ $post_type ];
+        $field_id_cache_item = [ ];
+        foreach ( $wpdb->get_results( $wpdb->prepare( 'SELECT name, id FROM ' . MF_TABLE_CUSTOM_FIELDS . ' WHERE post_type = %s',
+            $post_type ? $post_type : get_post_type( $post->ID ) ), ARRAY_A ) as $result ) {
+            $field_id_cache_item[ $result[ 'name' ] ] = $result[ 'id' ];
         }
     }
-
-    return $field_id_cache[$post_type][$field_name];
+    return $field_id_cache[ $post_type ][ $field_name ];
 }
 
 /*
@@ -52,24 +44,16 @@ function get_field_id( $field_name, $post_type = NULL ) {
 
 function get_group_id( $group_name, $post_type = NULL ) {
     global $post, $wpdb; 
-    static $group_id_cache = array();
-    
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-
+    static $group_id_cache = [ ]; 
     if ( !array_key_exists( $post_type, $group_id_cache ) ) {
-        $group_id_cache[$post_type] = array();
-
-        $sql = sprintf(
-            "SELECT name, id FROM %s WHERE post_type = '%s'",
-            MF_TABLE_CUSTOM_GROUPS, $post_type );
-
-        $results = $wpdb->get_results( $sql, ARRAY_A );
-        foreach ( $results as $result ) {
-            $group_id_cache[$post_type][$result['name']] = $result['id'];
+        $group_id_cache_item =& $group_id_cache[ $post_type ];
+        $group_id_cache_item = [ ];
+        foreach ( $wpdb->get_results( $wpdb->prepare( 'SELECT name, id FROM ' . MF_TABLE_CUSTOM_GROUPS . ' WHERE post_type = %s',
+            $post_type ? $post_type : get_post_type( $post->ID ) ), ARRAY_A ) as $result ) {
+            $group_id_cache_item[ $result[ 'name' ] ] = $result[ 'id' ];
         }
     }
-
-    return $group_id_cache[$post_type][$group_name];
+    return $group_id_cache[ $post_type ][ $group_name ];
 }
 
 /*
@@ -79,22 +63,12 @@ function get_group_id( $group_name, $post_type = NULL ) {
 
 function get_field_names( $post_type = NULL ) {
     global $post, $wpdb; 
-    
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-    
-    $sql = sprintf( "SELECT name FROM %s WHERE post_type = '%s' " .
-        "ORDER BY custom_group_id, display_order",
-        MF_TABLE_CUSTOM_FIELDS, $post_type );
-
-    $results = $wpdb->get_results( $sql, ARRAY_A );
-
-    return array_map( '\mf2tk\_get_name_mc', $results );
+    return array_map( function( $row ) {
+        return $row[ 'name' ];
+    }, $wpdb->get_results( $wpdb->prepare( 'SELECT name FROM ' . MF_TABLE_CUSTOM_FIELDS . ' WHERE post_type = %s ORDER BY custom_group_id, display_order',
+        $post_type ? $post_type : get_post_type( $post->ID ) ), ARRAY_A ) );
 }
 
-function _get_name_mc( $row ) {
-    return $row[ 'name' ];
-}
-        
 /*
  * get_group_names() returns a numerically indexed array of all magic field 
  * group names in the given post type.
@@ -102,16 +76,10 @@ function _get_name_mc( $row ) {
 
 function get_group_names( $post_type = NULL ) {
     global $post, $wpdb; 
-    
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-  
-    $sql = sprintf(
-        "SELECT name FROM %s WHERE post_type = '%s'",
-        MF_TABLE_CUSTOM_GROUPS, $post_type );
-
-    $results = $wpdb->get_results( $sql, ARRAY_A );
-
-    return array_map( '\mf2tk\_get_name_mc', $results );
+    return array_map( function( $row ) {
+        return $row[ 'name' ];
+    }, $wpdb->get_results( $wpdb->prepare( 'SELECT name FROM ' . MF_TABLE_CUSTOM_GROUPS . ' WHERE post_type = %s',
+        $post_type ? $post_type : get_post_type( $post->ID ) ), ARRAY_A ) );
 }
  
 /*
@@ -120,18 +88,13 @@ function get_group_names( $post_type = NULL ) {
  */
 
 function get_field_names_in_group( $group_name, $post_type = NULL ) {
-    global $post, $wpdb; 
-
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-    $group_id = get_group_id( $group_name, $post_type );
-
-    $sql = sprintf( "SELECT name FROM %s WHERE post_type = '%s' " .
-        "AND custom_group_id = %d ORDER BY display_order",
-        MF_TABLE_CUSTOM_FIELDS, $post_type, $group_id );
-
-    $results = $wpdb->get_results( $sql, ARRAY_A );
-
-    return array_map( '\mf2tk\_get_name_mc', $results );
+    global $post, $wpdb;
+    $post_type = $post_type ? $post_type : get_post_type( $post->ID );
+    return array_map( function( $row ) {
+            return $row[ 'name' ];
+    }, $wpdb->get_results( $wpdb->prepare(
+        'SELECT name FROM ' . MF_TABLE_CUSTOM_FIELDS . ' WHERE post_type = %s AND custom_group_id = %d ORDER BY display_order',
+        $post_type, get_group_id( $group_name, $post_type ) ), ARRAY_A ) );
 }
 
 /*
@@ -142,24 +105,16 @@ function get_field_names_in_group( $group_name, $post_type = NULL ) {
 
 function get_field_type( $field, $post_type = NULL ) {
     global $wpdb, $post;
-    static $field_type_cache = array();
-
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-
+    static $field_type_cache = [ ];
     if ( !array_key_exists( $post_type, $field_type_cache ) ) {
-        $field_type_cache[$post_type] = array();
-
-        $sql = sprintf(
-            "SELECT name, type FROM %s WHERE post_type = '%s'",
-            MF_TABLE_CUSTOM_FIELDS, $post_type );
-
-        $results = $wpdb->get_results( $sql, ARRAY_A );
-        foreach ( $results as $result ) {
-            $field_type_cache[$post_type][$result['name']] = $result['type'];
+        $field_type_cache_item =& $field_type_cache[$post_type];
+        $field_type_cache_item = [ ];
+        foreach ( $wpdb->get_results( $wpdb->prepare( 'SELECT name, type FROM ' . MF_TABLE_CUSTOM_FIELDS . ' WHERE post_type = %s',
+            $post_type ? $post_type :get_post_type( $post->ID ) ), ARRAY_A ) as $result ) {
+            $field_type_cache_item[ $result[ 'name' ] ] = $result[ 'type' ];
         }
     }
-
-    return $field_type_cache[$post_type][$field];
+    return $field_type_cache[ $post_type ][ $field ];
 }
 
 /*
@@ -170,24 +125,16 @@ function get_field_type( $field, $post_type = NULL ) {
 
 function get_field_options( $field, $post_type = NULL ) {
     global $wpdb, $post;
-    static $field_options_cache = array();
-
-    if ( !$post_type ) { $post_type = get_post_type( $post->ID ); }
-
+    static $field_options_cache = [ ];
     if ( !array_key_exists( $post_type, $field_options_cache ) ) {
-        $field_options_cache[$post_type] = array();
-
-        $sql = sprintf(
-            "SELECT name, options FROM %s WHERE post_type = '%s'",
-            MF_TABLE_CUSTOM_FIELDS, $post_type );
-
-        $results = $wpdb->get_results( $sql, ARRAY_A );
-        foreach ( $results as $result ) {
-            $field_options_cache[$post_type][$result['name']] = unserialize( $result['options'] );
+        $field_options_cache_item =& $field_options_cache[ $post_type ];
+        $field_options_cache_item = [ ];
+        foreach ( $wpdb->get_results( $wpdb->prepare( 'SELECT name, options FROM ' . MF_TABLE_CUSTOM_FIELDS . ' WHERE post_type = %s',
+            $post_type ? $post_type : get_post_type( $post->ID ) ), ARRAY_A ) as $result ) {
+            $field_options_cache_item[ $result[ 'name' ] ] = unserialize( $result[ 'options' ] );
         }
     }
-
-    return $field_options_cache[$post_type][$field];
+    return $field_options_cache[ $post_type ][ $field ];
 }
 
 /*
