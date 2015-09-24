@@ -4,7 +4,7 @@ Donate link:
 Tags: shortcodes, templates, custom fields, post copier
 Requires at least: 3.6
 Tested up to: 4.2
-Stable tag: 1.2.1
+Stable tag: 1.2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 A toolkit for the Magic Fields 2 plugin for media oriented CMS web design by non programmers.
@@ -73,6 +73,9 @@ Version 0.4.6 has a new default content macro for sortable tables. However, the 
 == Screenshots ==
 
 == Changelog ==
+
+= 1.2.1.1 =
+* rewrote database access routines of utilities functions to improve security and efficiency
 
 = 1.2.1 =
 * support configurable jQuery UI themes for the mt_tabs shortcode
@@ -403,4 +406,8 @@ added fields for embed, audio and video
 
 = 1.2.1 =
 * support configurable jQuery UI themes for the mt_tabs shortcode
+
+= 1.2.1.1 =
+* rewrote database access routines of utilities functions to improve security and efficiency
+
 
