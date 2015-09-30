@@ -48,6 +48,58 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
             add_shortcode( $options[ 'show_custom_field_alias' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::show_custom_field_wrapper' );
         }
         
+        # Temporary fix for problem with the new shortcode_parse_atts() which will not parse unclosed HTML element tags in attribute values,
+        # e.g. alpha="<img src='" - see ticket 34039 https://core.trac.wordpress.org/ticket/34039. Additionally, wptexturize() is sometimes mangling shortcode
+        # attributes. This filter must run before the core 'the_content' filters do_shortcode() and wp_texturize() which runs at priority 11 and 10
+        # respectively. This filter essentially does the shortcode processing for the shortcode 'mt_field' before do_shortcode() and wp_texturize() are run so
+        # they cannot mangle the attributes for the shortcode 'mt_field'.
+        
+        if ( !is_admin( ) ) {
+            $template_regex = '#\[(' . $options[ 'show_macro' ]
+                     . ( isset( $options[ 'show_macro_alias' ] ) ? "|$options[show_macro_alias])" : ')' )
+                     . '(\s+\w+\s*=\s*("|\').*?\3)+\](.*?)\[/\1\]#s';
+            $field_regex = '#\[(' . $options[ 'show_custom_field' ]
+                     . ( isset( $options[ 'show_custom_field_alias' ] ) ? "|$options[show_custom_field_alias])" : ')' )
+                     . '(\s+\w+\s*=\s*("|\').*?\3)+\]#';
+            add_filter( 'the_content', function( $content ) use ( $template_regex, $field_regex ) {
+                global $wp_filter;
+                # Since apply_filters() uses the internal array pointers on the global $wp_filter and the shortcode 'mt_field' can be called recursively
+                # the previous state of the internal array pointers of the global $wp_filter needs to be saved and restored.
+                $arr0 =& $wp_filter[ 'the_content' ];
+                $key0 = key( $arr0 );
+                $arr1 =& $arr0[ $key0 ];
+                $key1 = key( $arr1 );
+                $content = preg_replace_callback( $template_regex, function( $matches ) {
+                    $atts = [ ];
+                    preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
+                        $atts[ $matches[1] ] = $matches[3];
+                        # return value is irrelevant since it is ignored; only the accumulated atts[] is relevant
+                        return $matches[0];
+                    }, $matches[0] );
+                    return mf2tk\do_macro( $atts, $matches[4] );
+                }, $content );
+                $content = preg_replace_callback( $field_regex, function( $matches ) {
+                    $atts = [ ];
+                    preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
+                        $atts[ $matches[1] ] = $matches[3];
+                        # return value is irrelevant since it is ignored; only the accumulated atts[] is relevant
+                        return $matches[0];
+                    }, $matches[0] );
+                    return Magic_Fields_2_Toolkit_Dumb_Shortcodes::show_custom_field_wrapper( $atts );
+                }, $content );
+                # Restore the previous state of the internal array pointers of the global $wp_filter.
+                reset( $arr0 );
+                while ( key( $arr0 ) !== $key0 ) {
+                    next( $arr0 );
+                }
+                reset( $arr1 );
+                while ( key( $arr1 ) !== $key1 ) {
+                    next( $arr1 );
+                }
+                return $content;
+            }, 9 );
+        }
+        
         if ( !empty( $options[ 'mt_show_gallery' ] ) ) {
             add_shortcode( $options[ 'mt_show_gallery' ], 'Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_gallery' );
         }
