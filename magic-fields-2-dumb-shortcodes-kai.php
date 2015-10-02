@@ -55,13 +55,16 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
         # they cannot mangle the attributes for the shortcode 'mt_field'.
         
         if ( !is_admin( ) ) {
+            $tabs_regex = '#\[(' . $options[ 'mt_show_tabs' ]
+                     . ( isset( $options[ 'mt_show_tabs_alias' ] ) ? "|$options[mt_show_tabs_alias])" : ')' )
+                     . '(\s+\w+\s*=\s*("|\').*?\3)*\](.*?)\[/\1\]#s';
             $template_regex = '#\[(' . $options[ 'show_macro' ]
                      . ( isset( $options[ 'show_macro_alias' ] ) ? "|$options[show_macro_alias])" : ')' )
-                     . '(\s+\w+\s*=\s*("|\').*?\3)+\](.*?)\[/\1\]#s';
+                     . '(\s+\w+\s*=\s*("|\').*?\3)*\](.*?)\[/\1\]#s';
             $field_regex = '#\[(' . $options[ 'show_custom_field' ]
                      . ( isset( $options[ 'show_custom_field_alias' ] ) ? "|$options[show_custom_field_alias])" : ')' )
                      . '(\s+\w+\s*=\s*("|\').*?\3)+\]#';
-            add_filter( 'the_content', function( $content ) use ( $template_regex, $field_regex ) {
+            add_filter( 'the_content', function( $content ) use ( $tabs_regex, $template_regex, $field_regex ) {
                 global $wp_filter;
                 # Since apply_filters() uses the internal array pointers on the global $wp_filter and the shortcode 'mt_field' can be called recursively
                 # the previous state of the internal array pointers of the global $wp_filter needs to be saved and restored.
@@ -69,6 +72,17 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                 $key0 = key( $arr0 );
                 $arr1 =& $arr0[ $key0 ];
                 $key1 = key( $arr1 );
+				# first do the mt_tabs shortcodes since they can contain mt_template shortcodes
+                $content = preg_replace_callback( $tabs_regex, function( $matches ) {
+                    $atts = [ ];
+                    preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
+                        $atts[ $matches[1] ] = $matches[3];
+                        # return value is irrelevant since it is ignored; only the accumulated atts[] is relevant
+                        return $matches[0];
+                    }, $matches[0] );
+                    return Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_tabs( $atts, $matches[4] );
+                }, $content );
+				# next do the mt_template shortcodes since they can contain mt_field shortcodes
                 $content = preg_replace_callback( $template_regex, function( $matches ) {
                     $atts = [ ];
                     preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
@@ -78,6 +92,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                     }, $matches[0] );
                     return mf2tk\do_macro( $atts, $matches[4] );
                 }, $content );
+				# finally do the mt_field shortcodes
                 $content = preg_replace_callback( $field_regex, function( $matches ) {
                     $atts = [ ];
                     preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
