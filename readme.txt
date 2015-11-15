@@ -4,12 +4,17 @@ Donate link:
 Tags: shortcodes, templates, custom fields, post copier
 Requires at least: 3.6
 Tested up to: 4.2
-Stable tag: 1.2.1.2
+Stable tag: 1.2.1.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 A toolkit for the Magic Fields 2 plugin for media oriented CMS web design by non programmers.
 
 == Description ==
+**This plugin is no longer being actively developed. This means no new features will be added to this plugin. 
+Moreover, I no longer use this plugin and will not know of a problem unless a user reports it.
+However, I remain absolutely committed to maintaining the existing feature set of this plugin and if a problem is reported I will do my very best to fix it.
+You can report problems using the [support page of this plugin](https://wordpress.org/support/plugin/magic-fields-2-toolkit).**
+
 This [toolkit](https://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/) transforms the [Magic Fields 2](https://wordpress.org/plugins/magic-fields-2/) plugin into something that can be used by a non programmer to do media oriented CMS web design.
 With this toolkit you can design your page content using only HTML, CSS and the [toolkit's shortcodes](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#shortcode).
 Using the [toolkit's content templates](http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/#macros) you can define a reusable template for page contents which can be used to create multiple pages using the page's custom fields to instantiate the template.
@@ -73,6 +78,9 @@ Version 0.4.6 has a new default content macro for sortable tables. However, the 
 == Screenshots ==
 
 == Changelog ==
+
+= 1.2.1.2.1 =
+* End of active development notice
 
 = 1.2.1.2 =
 * A workaround for problems with [shortcode_parse_atts()](https://core.trac.wordpress.org/ticket/34039) and [wptexturize()](https://wordpress.org/support/topic/wptexturize-inconsistent-behavior).
@@ -415,5 +423,8 @@ added fields for embed, audio and video
 
 = 1.2.1.2 =
 * A workaround for problems with [shortcode_parse_atts()](https://core.trac.wordpress.org/ticket/34039) and [wptexturize()](https://wordpress.org/support/topic/wptexturize-inconsistent-behavior).
+
+= 1.2.1.2.1 =
+* End of active development notice
 
 

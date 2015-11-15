@@ -4,7 +4,7 @@
 Plugin Name: Magic Fields 2 Toolkit
 Plugin URI:  http://magicfields17.wordpress.com/magic-fields-2-toolkit-0-4-2/
 Description: post content template interpreter, custom fields shortcode, media shortcodes, custom post copier, ...
-Version:     1.2.1.2
+Version:     1.2.1.2.1
 Author:      Magenta Cuda
 Author URI:  http://magentacuda.wordpress.com
 License:     GPL2
@@ -27,6 +27,11 @@ License:     GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+ /*
+  Project I: Magic Fields 2 Toolkit
+  This project is being maintained but no longer being actively developed.
+ */
+ 
 # The check for version is in its own file since if the file contains PHP 5.4 code an ugly fatal error will be triggered instead
 
 list( $major, $minor ) = sscanf( phpversion(), '%D.%D' );

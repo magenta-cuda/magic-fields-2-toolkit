@@ -72,7 +72,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                 $key0 = key( $arr0 );
                 $arr1 =& $arr0[ $key0 ];
                 $key1 = key( $arr1 );
-				# first do the mt_tabs shortcodes since they can contain mt_template shortcodes
+                # first do the mt_tabs shortcodes since they can contain mt_template shortcodes
                 $content = preg_replace_callback( $tabs_regex, function( $matches ) {
                     $atts = [ ];
                     preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
@@ -82,7 +82,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                     }, $matches[0] );
                     return Magic_Fields_2_Toolkit_Dumb_Shortcodes::mt_show_tabs( $atts, $matches[4] );
                 }, $content );
-				# next do the mt_template shortcodes since they can contain mt_field shortcodes
+                # next do the mt_template shortcodes since they can contain mt_field shortcodes
                 $content = preg_replace_callback( $template_regex, function( $matches ) {
                     $atts = [ ];
                     preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
@@ -92,7 +92,7 @@ class Magic_Fields_2_Toolkit_Dumb_Shortcodes {
                     }, $matches[0] );
                     return mf2tk\do_macro( $atts, $matches[4] );
                 }, $content );
-				# finally do the mt_field shortcodes
+                # finally do the mt_field shortcodes
                 $content = preg_replace_callback( $field_regex, function( $matches ) {
                     $atts = [ ];
                     preg_replace_callback( '#\s(\w+)\s*=\s*("|\')(.*?)\2#', function( $matches ) use ( &$atts ) {
